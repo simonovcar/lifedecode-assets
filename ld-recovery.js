@@ -1,3 +1,6 @@
+console.log("[LD] FILE PARSED");
+window.__LD_FILE_PARSED__ = true;
+
 (function () {
   function startWhenReady() {
     let tries = 0;
@@ -1521,3 +1524,4 @@ Mantra: “Urge ≠ order. I choose the next clean step.”
     startWhenReady();
   }
 })();
+
