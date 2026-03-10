@@ -1363,22 +1363,34 @@ A: Contact a trusted person or local emergency services.</div>
   obClose?.addEventListener("click", skipOnboarding);
   obBackdrop?.addEventListener("click", skipOnboarding);
 
-  async function boot(){
-    try{
-      setStatus("warn","LOADING…");
-      await loadState();
-      syncNameUI();
-      syncFocusUI();
-      initParticles();
-      renderStats();
-      setStatus("ok","READY");
-      openOnboarding(false);
-      console.log("[LD] Recovery loaded:", CFG.VERSION);
-    }catch(err){
-      console.error("[LD] boot error:", err);
-      setStatus("bad","BOOT ERROR");
-    }
+ async function boot(){
+  try{
+    setStatus("warn","LOADING…");
+    await loadState();
+    syncNameUI();
+    syncFocusUI();
+    initParticles();
+    renderStats();
+    setStatus("ok","READY");
+    openOnboarding(false);
+    console.log("[LD] Recovery loaded:", CFG.VERSION);
+  }catch(err){
+    console.error("[LD] boot error:", err);
+    setStatus("bad","BOOT ERROR");
   }
+}
 
+function initLifeDecode(){
+  if (window.__LD_BOOTED__) return;
+  window.__LD_BOOTED__ = true;
   boot();
+}
+
+if (document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", initLifeDecode);
+} else {
+  initLifeDecode();
+}
+
 })();
+
