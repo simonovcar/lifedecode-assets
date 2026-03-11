@@ -965,7 +965,7 @@ Step 3 (40s): Do ONE friction action (stand up, water, walk).</div>
 </div>
 
 <div id="ld_badge" aria-label="Version badge">
-  <span id="ld_badge_text">LD Recovery • v4.1 • Account Ready</span>
+  <span id="ld_badge_text">v4.3 • Stripe Test</span>
   <button id="ld_badge_close" aria-label="Hide badge">✕</button>
 </div>
 
