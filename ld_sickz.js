@@ -2636,7 +2636,7 @@ Rule: keep it short. One clean action > perfect plan.</div>
       STATE.auth.status = "authenticated";
       persistAuthCache();
       clearGuestState();
-      await loadState();
+     // await loadState();
       syncNameUI();
       syncFocusUI();
       renderStats();
