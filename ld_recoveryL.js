@@ -6,7 +6,7 @@ window.__LD_FILE_PARSED__ = true;
   window.__LD_RECOVERY_SINGLE_FILE__ = true;
 
 const CFG = {
-  VERSION: "v4.2 • Supabase Auth",
+  VERSION: "TEST",
   SUPABASE_URL: "https://nnqiahypfkdoqkclknoe.supabase.co",
   SUPABASE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ucWlhaHlwZmtkb3FrY2xrbm9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMjU3NTQsImV4cCI6MjA4ODgwMTc1NH0.j6oTDeSKvpx1OhY3yeCY_-Jo5ixmC22jW9VEuTnJ7hc",
   MAKE_WEBHOOK_URL: "https://hook.eu1.make.com/1w2h7pe88oqrf42uu0h41e3tazd02v2x",
@@ -965,7 +965,7 @@ Step 3 (40s): Do ONE friction action (stand up, water, walk).</div>
 </div>
 
 <div id="ld_badge" aria-label="Version badge">
-  <span id="ld_badge_text">v4.3 • Stripe Test</span>
+  <span id="ld_badge_text">TEST</span>
   <button id="ld_badge_close" aria-label="Hide badge">✕</button>
 </div>
 
