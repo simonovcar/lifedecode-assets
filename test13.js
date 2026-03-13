@@ -14,6 +14,13 @@ const CFG = {
   STRIPE_PAYMENT_LINK: "https://buy.stripe.com/cNibJ3fc52aMcN4fIPbQY00",
   FREE_PREVIEW_PER_24H: 1,
   XP: { CHECKIN: 120, TRIGGER: 60, RESCUE: 40, JOURNAL: 30 },
+    XP_COOLDOWNS: {
+    CHECKIN: 12 * 60 * 60 * 1000,
+    TRIGGER: 12 * 60 * 60 * 1000,
+    RESCUE: 12 * 60 * 60 * 1000,
+    JOURNAL: 12 * 60 * 60 * 1000
+  },
+  
   STORAGE_KEYS: {
     AUTH: "ld_auth_cache_v1",
     GUEST_STATE: "ld_guest_state_v1"
@@ -1196,6 +1203,12 @@ Step 3 (40s): Do ONE friction action (stand up, water, walk).</div>
       premium: { unlocked: false, plan: "free", until: null },
       xp: 0,
       streak: 0,
+       xpLocks: {
+        checkin: 0,
+        trigger: 0,
+        rescue: 0,
+        journal: 0
+      },
       lastCheckInDay: null,
       lastCheckInDayPrevious: null,
       lastMood: null,
@@ -1224,7 +1237,8 @@ Step 3 (40s): Do ONE friction action (stand up, water, walk).</div>
         premium: { ...DEFAULT_STATE.premium, ...((s && s.premium) || {}) },
         urges: { ...DEFAULT_STATE.urges, ...((s && s.urges) || {}) },
         coach: { ...DEFAULT_STATE.coach, ...((s && s.coach) || {}) },
-        freePreview: { ...DEFAULT_STATE.freePreview, ...((s && s.freePreview) || {}) }
+        freePreview: { ...DEFAULT_STATE.freePreview, ...((s && s.freePreview) || {}) },
+        xpLocks: { ...DEFAULT_STATE.xpLocks, ...((s && s.xpLocks) || {}) }
       };
 
       m.profile.name = (m.profile.name || "Member").trim() || "Member";
@@ -1621,6 +1635,44 @@ async function saveState() {
       return { name: cur.name, at: cur.at, nextXP: cur.next || cur.at + 3000 };
     }
 
+    function getXpCooldownRemaining(key, cooldownMs) {
+      const last = Number(STATE.xpLocks?.[key] || 0);
+      if (!last) return 0;
+      return Math.max(0, (last + cooldownMs) - now());
+    }
+
+    function formatRemaining(ms) {
+      const totalSec = Math.ceil(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      if (h > 0) return `${h}h ${m}m`;
+      return `${m}m`;
+    }
+
+    async function tryGrantXP(key, amount, cooldownMs, successText) {
+      if (!STATE.xpLocks) STATE.xpLocks = {};
+
+      const remaining = getXpCooldownRemaining(key, cooldownMs);
+
+      if (remaining > 0) {
+        setStatus("warn", `XP LOCKED • ${formatRemaining(remaining)}`);
+        setTimeout(() => setStatus("ok", "READY"), 1400);
+        return false;
+      }
+
+      STATE.xpLocks[key] = now();
+      STATE.xp = Math.max(0, (STATE.xp || 0) + amount);
+      await saveState();
+      renderStats();
+
+      if (successText) {
+        setStatus("ok", successText);
+        setTimeout(() => setStatus("ok", "READY"), 1200);
+      }
+
+      return true;
+    }
+    
     async function addXP(amount) {
       STATE.xp = Math.max(0, (STATE.xp || 0) + amount);
       await saveState();
@@ -2003,13 +2055,20 @@ function renderAuthPanel(tab) {
       updateUrgeBadge("Ready", "ok");
       setStatus("ok", "READY");
 
-      if (completed) {
+            if (completed) {
         STATE.urges.completedRescues = (STATE.urges.completedRescues || 0) + 1;
-        await addXP(CFG.XP.RESCUE);
-        await saveState();
-        renderStats();
-        setStatus("ok", `RESCUE COMPLETE +${CFG.XP.RESCUE} XP`);
-        setTimeout(() => setStatus("ok", "READY"), 1200);
+
+        const gotXP = await tryGrantXP(
+          "rescue",
+          CFG.XP.RESCUE,
+          CFG.XP_COOLDOWNS.RESCUE,
+          `RESCUE COMPLETE +${CFG.XP.RESCUE} XP`
+        );
+
+        if (!gotXP) {
+          await saveState();
+          renderStats();
+        }
       }
     }
 
@@ -2263,7 +2322,7 @@ Step 3 (40s): Do ONE friction action (stand up, water, walk).</div>
       const lockHint = $("#ld_coach_lock_hint");
       if (outEl) outEl.textContent = STATE.coach.preview || "No plan yet.";
      if (lockHint) {
-  lockHint.textContent = STATE.premium.unlocked
+   lockHint.textContent = isPremium()
     ? "Premium active: full 12-hour AI plans, saveable outputs, deeper support."
     : `Free plan: ${CFG.FREE_PREVIEW_PER_24H} coach preview per 24h. Premium unlocks unlimited full plans and saved outputs.`;
 }
@@ -2881,7 +2940,7 @@ Rule: keep it short. One clean action > perfect plan.</div>
           return;
         }
 
-        if (e.target.closest("#ld_ci_save")) {
+                if (e.target.closest("#ld_ci_save")) {
           const day = ymd();
           const already = STATE.lastCheckInDay === day;
 
@@ -2917,15 +2976,30 @@ Rule: keep it short. One clean action > perfect plan.</div>
             note
           });
 
-          if (!already) await addXP(CFG.XP.CHECKIN);
-          await saveState();
-          renderStats();
-          setStatus("ok", already ? "CHECK-IN UPDATED" : `CHECK-IN SAVED +${CFG.XP.CHECKIN} XP`);
+          let gotXP = false;
+
+          if (!already) {
+            gotXP = await tryGrantXP(
+              "checkin",
+              CFG.XP.CHECKIN,
+              CFG.XP_COOLDOWNS.CHECKIN,
+              `CHECK-IN SAVED +${CFG.XP.CHECKIN} XP`
+            );
+          } else {
+            await saveState();
+            renderStats();
+            setStatus("ok", "CHECK-IN UPDATED");
+            setTimeout(() => setStatus("ok", "READY"), 1100);
+          }
+
+          if (!already && !gotXP) {
+            await saveState();
+            renderStats();
+          }
+
           closeSheet();
-          setTimeout(() => setStatus("ok", "READY"), 1100);
           return;
         }
-
         if (e.target.closest("#ld_urge_sheet_start")) {
           await startRescue();
           return;
@@ -2948,7 +3022,7 @@ Rule: keep it short. One clean action > perfect plan.</div>
           return;
         }
 
-        if (e.target.closest("#ld_trig_save")) {
+                if (e.target.closest("#ld_trig_save")) {
           if (!requirePremium("Trigger Decoder")) return;
           const active = $("#ld_trig_labels .ld_chip.active");
           const picked = active ? active.dataset.l : null;
@@ -2976,11 +3050,18 @@ Rule: keep it short. One clean action > perfect plan.</div>
 • Script: “I can feel this AND still choose the next right step.”`;
           }
 
-          await addXP(CFG.XP.TRIGGER);
-          await saveState();
-          renderStats();
-          setStatus("ok", `TRIGGER SAVED +${CFG.XP.TRIGGER} XP`);
-          setTimeout(() => setStatus("ok", "READY"), 1200);
+          const gotXP = await tryGrantXP(
+            "trigger",
+            CFG.XP.TRIGGER,
+            CFG.XP_COOLDOWNS.TRIGGER,
+            `TRIGGER SAVED +${CFG.XP.TRIGGER} XP`
+          );
+
+          if (!gotXP) {
+            await saveState();
+            renderStats();
+          }
+
           return;
         }
 
@@ -3107,13 +3188,20 @@ Mantra: “Urge ≠ order. I choose the next clean step.”
           const text = ($("#ld_j_text")?.value || "").trim();
           if (!text) return;
           STATE.journal.unshift({ id: uid(), ts: now(), type: "journal", text });
-          await addXP(CFG.XP.JOURNAL);
-          await saveState();
-          renderStats();
-          setStatus("ok", `JOURNAL SAVED +${CFG.XP.JOURNAL} XP`);
-          setTimeout(() => setStatus("ok", "READY"), 1200);
+               const gotXP = await tryGrantXP(
+            "journal",
+            CFG.XP.JOURNAL,
+            CFG.XP_COOLDOWNS.JOURNAL,
+            `JOURNAL SAVED +${CFG.XP.JOURNAL} XP`
+          );
+
+          if (!gotXP) {
+            await saveState();
+            renderStats();
+          }
+
           closeSheet();
-          return;
+        return;
         }
 
         if (e.target.closest("#ld_tool_export")) {
