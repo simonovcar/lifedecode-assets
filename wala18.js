@@ -4225,59 +4225,166 @@ function playCrashSound() {
   o1.start(nowA);
   o1.stop(nowA + 0.17);
 }
+
+let lastGapCenter = null;
     
 function spawnPipe() {
-  const minTop = 90;
-  const minBottom = 90;
+  const minTop = 95;
+  const minBottom = 95;
   const playH = H - GROUND_H;
 
   const minCenter = minTop + pipeGap / 2;
   const maxCenter = playH - minBottom - pipeGap / 2;
 
-  const centerY = playH * 0.5;
-  const drift = (Math.random() - 0.5) * 70;
+  if (lastGapCenter == null) {
+    lastGapCenter = playH * 0.5;
+  }
 
-  let gapCenter = centerY + drift;
+  // namesto divjega randoma: majhen postopen premik
+  const driftStep = (Math.random() - 0.5) * 80;
+  let gapCenter = lastGapCenter + driftStep;
+
   gapCenter = Math.max(minCenter, Math.min(maxCenter, gapCenter));
+  lastGapCenter = gapCenter;
 
   const gapTop = gapCenter - pipeGap / 2;
   const gapBottom = gapCenter + pipeGap / 2;
+
+  // vizualna variacija stebrov
+  const skin = Math.floor(Math.random() * 3); // 0,1,2
 
   pipes.push({
     x: W + 60,
     w: pipeWidth,
     gapTop,
     gapBottom,
-    passed: false
+    passed: false,
+    skin
   });
 }
-  function drawBackground() {
-    const bg = ctx.createLinearGradient(0, 0, 0, H);
+  function getStage() {
+  if (score < 5) return "neon-night";
+  if (score < 10) return "sunset-palms";
+  if (score < 20) return "purple-mountains";
+  return "cyber-storm";
+}
+    
+    function drawBackground() {
+  const stage = getStage();
+
+  let bg = ctx.createLinearGradient(0, 0, 0, H);
+
+  if (stage === "neon-night") {
     bg.addColorStop(0, "rgba(18,24,58,1)");
     bg.addColorStop(0.55, "rgba(10,14,34,1)");
     bg.addColorStop(1, "rgba(7,9,18,1)");
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    ctx.strokeStyle = "rgba(255,255,255,.04)";
-    ctx.lineWidth = 1;
-    for (let i = 1; i < 6; i++) {
-      const y = (H / 6) * i;
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(W, y);
-      ctx.stroke();
-    }
-
-    for (let i = 0; i < 14; i++) {
-      const x = (i * 170 + (Date.now() * 0.02) % 170) % (W + 170) - 85;
-      const y = 60 + (i % 5) * 80;
-      ctx.fillStyle = "rgba(255,255,255,.045)";
-      ctx.beginPath();
-      ctx.arc(x, y, 3 + (i % 2), 0, Math.PI * 2);
-      ctx.fill();
-    }
+  } else if (stage === "sunset-palms") {
+    bg.addColorStop(0, "rgba(255,120,140,1)");
+    bg.addColorStop(0.45, "rgba(122,92,255,1)");
+    bg.addColorStop(1, "rgba(12,16,34,1)");
+  } else if (stage === "purple-mountains") {
+    bg.addColorStop(0, "rgba(100,120,255,1)");
+    bg.addColorStop(0.5, "rgba(80,40,140,1)");
+    bg.addColorStop(1, "rgba(10,12,24,1)");
+  } else {
+    bg.addColorStop(0, "rgba(30,40,80,1)");
+    bg.addColorStop(0.45, "rgba(15,18,40,1)");
+    bg.addColorStop(1, "rgba(5,8,18,1)");
   }
+
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // grid lines
+  ctx.strokeStyle = "rgba(255,255,255,.04)";
+  ctx.lineWidth = 1;
+  for (let i = 1; i < 6; i++) {
+    const y = (H / 6) * i;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(W, y);
+    ctx.stroke();
+  }
+
+  // decorative stage elements
+  if (stage === "sunset-palms") {
+    drawPalm(90, H - GROUND_H - 20, 0.9);
+    drawPalm(W - 120, H - GROUND_H - 30, 1.1);
+  }
+
+  if (stage === "purple-mountains") {
+    drawMountain(40, H - GROUND_H, 220, 130);
+    drawMountain(220, H - GROUND_H, 300, 160);
+    drawMountain(W - 280, H - GROUND_H, 260, 140);
+  }
+
+  if (stage === "cyber-storm") {
+    drawLightning(W * 0.75, 60, 5);
+  }
+
+  // ambient dots
+  for (let i = 0; i < 12; i++) {
+    const x = (i * 190 + (Date.now() * 0.02) % 190) % (W + 190) - 95;
+    const y = 70 + (i % 4) * 95;
+    ctx.fillStyle = "rgba(255,255,255,.05)";
+    ctx.beginPath();
+    ctx.arc(x, y, 3 + (i % 2), 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+    function drawPalm(x, y, s = 1) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+
+  ctx.strokeStyle = "rgba(20,10,10,.5)";
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.quadraticCurveTo(-6, -30, 6, -70);
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(80,255,180,.28)";
+  ctx.lineWidth = 5;
+  for (let i = -2; i <= 2; i++) {
+    ctx.beginPath();
+    ctx.moveTo(6, -70);
+    ctx.quadraticCurveTo(20 * i, -95, 38 * i, -82);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawMountain(x, y, w, h) {
+  ctx.save();
+  ctx.fillStyle = "rgba(255,255,255,.08)";
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + w * 0.5, y - h);
+  ctx.lineTo(x + w, y);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawLightning(x, y, segments = 5) {
+  ctx.save();
+  ctx.strokeStyle = "rgba(120,220,255,.20)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  let cx = x;
+  let cy = y;
+  for (let i = 0; i < segments; i++) {
+    cx += (Math.random() - 0.5) * 20;
+    cy += 20 + Math.random() * 18;
+    ctx.lineTo(cx, cy);
+  }
+  ctx.stroke();
+  ctx.restore();
+}
 
   function drawOrbGlow(x, y, r) {
     const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.1);
@@ -4316,33 +4423,39 @@ function spawnPipe() {
     ctx.restore();
   }
 
-  function drawPipes() {
-    pipes.forEach((p) => {
-      const grad = ctx.createLinearGradient(p.x, 0, p.x + p.w, 0);
+ function drawPipes() {
+  pipes.forEach((p) => {
+    let grad = ctx.createLinearGradient(p.x, 0, p.x + p.w, 0);
+
+    if (p.skin === 0) {
       grad.addColorStop(0, "rgba(56,215,255,.98)");
       grad.addColorStop(0.5, "rgba(122,92,255,.96)");
       grad.addColorStop(1, "rgba(255,79,216,.96)");
+    } else if (p.skin === 1) {
+      grad.addColorStop(0, "rgba(120,255,220,.96)");
+      grad.addColorStop(0.5, "rgba(56,215,255,.94)");
+      grad.addColorStop(1, "rgba(122,92,255,.95)");
+    } else {
+      grad.addColorStop(0, "rgba(255,170,120,.95)");
+      grad.addColorStop(0.45, "rgba(255,79,216,.92)");
+      grad.addColorStop(1, "rgba(122,92,255,.95)");
+    }
 
-      ctx.fillStyle = grad;
+    ctx.fillStyle = grad;
 
-      // top pillar
-      ctx.fillRect(p.x, 0, p.w, p.gapTop);
-      // bottom pillar
-      ctx.fillRect(p.x, p.gapBottom, p.w, H - GROUND_H - p.gapBottom);
+    ctx.fillRect(p.x, 0, p.w, p.gapTop);
+    ctx.fillRect(p.x, p.gapBottom, p.w, H - GROUND_H - p.gapBottom);
 
-      // lip
-      ctx.fillStyle = "rgba(255,255,255,.16)";
-      ctx.fillRect(p.x - 5, p.gapTop - 14, p.w + 10, 14);
-      ctx.fillRect(p.x - 5, p.gapBottom, p.w + 10, 14);
+    ctx.fillStyle = "rgba(255,255,255,.16)";
+    ctx.fillRect(p.x - 5, p.gapTop - 14, p.w + 10, 14);
+    ctx.fillRect(p.x - 5, p.gapBottom, p.w + 10, 14);
 
-      // outline
-      ctx.strokeStyle = "rgba(255,255,255,.24)";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(p.x, 0, p.w, p.gapTop);
-      ctx.strokeRect(p.x, p.gapBottom, p.w, H - GROUND_H - p.gapBottom);
-    });
-  }
-
+    ctx.strokeStyle = "rgba(255,255,255,.18)";
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(p.x, 0, p.w, p.gapTop);
+    ctx.strokeRect(p.x, p.gapBottom, p.w, H - GROUND_H - p.gapBottom);
+  });
+}
   function drawGround() {
     ctx.fillStyle = "rgba(255,255,255,.06)";
     ctx.fillRect(0, H - GROUND_H, W, GROUND_H);
@@ -4429,8 +4542,9 @@ playCrashSound();
         if (!p.passed && p.x + p.w < bird.x) {
           p.passed = true;
           score += 1;
-           playScoreSound();
-          updateStats();
+playScoreSound();
+spawnPopup("+1", bird.x + 30, bird.y - 20);
+updateStats();
         }
 
         if (collidePipe(p)) {
@@ -4455,9 +4569,45 @@ playCrashSound();
     drawBird();
     drawHUD();
 
+    drawScoreFlash(dt);
+    drawPopups(dt);
     raf = requestAnimationFrame(step);
   }
 
+function drawScoreFlash(dt) {
+  if (scoreFlash <= 0) return;
+  scoreFlash -= dt;
+
+  ctx.save();
+  ctx.globalAlpha = Math.max(0, scoreFlash * 1.8);
+  ctx.fillStyle = "rgba(255,255,255,.08)";
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+}
+    
+function drawPopups(dt) {
+  for (let i = popups.length - 1; i >= 0; i--) {
+    const p = popups[i];
+    p.y -= 24 * dt;
+    p.life -= 0.9 * dt;
+
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = "rgba(255,255,255,.95)";
+    ctx.font = "900 18px Inter, sans-serif";
+    ctx.fillText(p.text, p.x, p.y);
+    ctx.restore();
+
+    if (p.life <= 0) popups.splice(i, 1);
+  }
+}
+
+let scoreFlash = 0;
+    
+function spawnPopup(text, x, y) {
+  popups.push({ text, x, y, life: 1 });
+}
+    
   function flapBird() {
     if (!running) return;
     bird.vy = flap;
@@ -4466,6 +4616,7 @@ playCrashSound();
 
   function startGame() {
     resetRound();
+    lastGapCenter = null;
     running = true;
     roundStartAt = performance.now();
     bird.vy = flap * 0.34;
