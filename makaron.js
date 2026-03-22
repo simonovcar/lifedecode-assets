@@ -2096,6 +2096,68 @@ Step 3 (40s): Do ONE friction action (stand up, water, walk).</div>
   }
 
   function initLifeDecode() {
+   const CONTENT = {
+  recordMode: false,
+  tone: "savage"
+};
+
+function safeRead(key, def){
+  try{
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : def;
+  }catch(e){ return def; }
+}
+
+function safeWrite(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){}
+}
+
+CONTENT.recordMode = safeRead(CFG.STORAGE_KEYS.UI_MODE, false);
+CONTENT.tone = safeRead(CFG.STORAGE_KEYS.TONE_MODE, "savage") || "savage";
+
+function applyRecordMode(){
+  document.body.classList.toggle("ld_record_mode", CONTENT.recordMode);
+
+  const btn = document.getElementById("ld_btn_recordmode");
+  if(btn){
+    btn.classList.toggle("active", CONTENT.recordMode);
+    btn.textContent = CONTENT.recordMode ? "🎥 Exit Record Mode" : "🎥 Record Mode";
+  }
+}
+
+function applyTone(){
+  document.querySelectorAll("#ld_tone_group [data-tone]").forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.tone === CONTENT.tone);
+  });
+}
+
+document.getElementById("ld_btn_recordmode")?.addEventListener("click", ()=>{
+  CONTENT.recordMode = !CONTENT.recordMode;
+  safeWrite(CFG.STORAGE_KEYS.UI_MODE, CONTENT.recordMode);
+  applyRecordMode();
+});
+
+document.querySelectorAll("#ld_tone_group [data-tone]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    CONTENT.tone = btn.dataset.tone;
+    safeWrite(CFG.STORAGE_KEYS.TONE_MODE, CONTENT.tone);
+    applyTone();
+  });
+});
+
+document.getElementById("ld_btn_random_question")?.addEventListener("click", ()=>{
+  const arr = CFG.RANDOM_QUESTIONS || [];
+  const q = arr[Math.floor(Math.random()*arr.length)] || "What truth am I avoiding?";
+
+  const el = document.getElementById("ld_coach_preview");
+  const el = document.getElementById("ld_coach_preview");
+if(el) el.textContent = q;
+
+navigator.clipboard?.writeText(q);
+});
+    
+applyRecordMode();
+applyTone();
     if (window.__LD_Focused_INIT__) return;
     window.__LD_Focused_INIT__ = true;
 
