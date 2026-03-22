@@ -42,20 +42,20 @@ const CFG = {
 }
 
 #ld_sheet.ld_game_sheet{
-  width:min(1200px, calc(100vw - 12px));
-  max-height:min(96svh, 980px);
+  width:min(1380px, calc(100vw - 8px));
+  max-height:min(98svh, 1200px);
 }
 
 #ld_sheet.ld_game_sheet .sbd{
-  padding:10px;
+  padding:8px;
 }
 
 #ld_sheet.ld_game_sheet #ld_game_canvas{
   width:100%;
   height:auto;
-  aspect-ratio:16/10;
-  min-height:62svh;
-  max-height:78svh;
+  aspect-ratio:16/9;
+  min-height:72svh;
+  max-height:84svh;
 }
 
 .ld_help_icon{
@@ -3999,20 +3999,20 @@ function showCheckinAiComment(text) {
   let roundStartAt = 0;
 
   const bird = {
-    x: 190,
-    y: 270,
-    r: 16,
-    vy: 0
-  };
+  x: 150,
+  y: 270,
+  r: 14,
+  vy: 0
+};
 
   const pipes = [];
-  const gravity = 1280;
-  const flap = -470;
-  const speed = 245;
-  const pipeWidth = 82;
-  const pipeGap = 160;
-
-  function resize() {
+ const gravity = 980;
+const flap = -360;
+const speed = 185;
+const pipeWidth = 72;
+const pipeGap = 220;
+ 
+    function resize() {
     const rect = canvas.getBoundingClientRect();
     const ratio = 16 / 9;
     const cssW = rect.width || canvas.parentElement?.clientWidth || 960;
@@ -4073,7 +4073,7 @@ function showCheckinAiComment(text) {
   }
 
   function spawnPipe() {
-    const margin = 72;
+    const margin = 95;
     const gapTop = margin + Math.random() * Math.max(40, H - pipeGap - margin * 2);
     pipes.push({
       x: W + 20,
@@ -4284,7 +4284,7 @@ function showCheckinAiComment(text) {
         }
       }
 
-      if (ts - roundStartAt > 350) {
+      if (ts - roundStartAt > 550) {
         if (bird.y - bird.r < 0 || bird.y + bird.r > H - 24) {
           endGame();
         }
@@ -4309,7 +4309,7 @@ function showCheckinAiComment(text) {
     resetRound();
     running = true;
     roundStartAt = performance.now();
-    bird.vy = flap * 0.9;
+    bird.vy = flap * 0.72;
     hideOverlay();
   }
 
