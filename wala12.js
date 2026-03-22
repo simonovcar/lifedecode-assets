@@ -42,20 +42,20 @@ const CFG = {
 }
 
 #ld_sheet.ld_game_sheet{
-  width:min(1480px, calc(100vw - 6px));
-  max-height:min(99svh, 1400px);
+  width:min(1600px, calc(100vw - 4px));
+  max-height:min(99svh, 1600px);
 }
 
 #ld_sheet.ld_game_sheet .sbd{
-  padding:6px;
+  padding:4px;
 }
 
 #ld_sheet.ld_game_sheet #ld_game_canvas{
   width:100%;
   height:auto;
   aspect-ratio:16/9;
-  min-height:78svh;
-  max-height:88svh;
+  min-height:82svh;
+  max-height:90svh;
 }
 
 .ld_help_icon{
@@ -4066,21 +4066,25 @@ function showCheckinAiComment(text) {
   let score = 0;
   let roundStartAt = 0;
 
-  const bird = {
-  x: 130,
-  y: 270,
-  r: 13,
-  vy: 0
-};
+  const START_X = 110;
+  const GROUND_H = 20;
 
-const pipes = [];
-const gravity = 820;
-const flap = -315;
-const speed = 155;
-const pipeWidth = 64;
-const pipeGap = 250;
- 
-    function resize() {
+  const bird = {
+    x: START_X,
+    y: 270,
+    r: 10,
+    vy: 0
+  };
+
+  const pipes = [];
+  const gravity = 620;
+  const flap = -255;
+  const speed = 118;
+  const pipeWidth = 58;
+  const pipeGap = 300;
+  const spawnEvery = 1.9;
+
+  function resize() {
     const rect = canvas.getBoundingClientRect();
     const ratio = 16 / 9;
     const cssW = rect.width || canvas.parentElement?.clientWidth || 960;
@@ -4101,12 +4105,12 @@ const pipeGap = 250;
     if (reward10El) {
       reward10El.textContent = STATE.minigame?.rewardsClaimed?.score10
         ? "CLAIMED"
-        : `+${CFG.XP.GAME_10} XP @ 10`;
+        : `+${CFG.XP.GAME_10}`;
     }
     if (reward20El) {
       reward20El.textContent = STATE.minigame?.rewardsClaimed?.score20
         ? "CLAIMED"
-        : `+${CFG.XP.GAME_20} XP @ 20`;
+        : `+${CFG.XP.GAME_20}`;
     }
   }
 
@@ -4118,15 +4122,15 @@ const pipeGap = 250;
   }
 
   function resetRound() {
-  bird.x = 130;
-  bird.y = H * 0.5;
-  bird.vy = 0;
-  pipes.length = 0;
-  spawnTimer = 0;
-  score = 0;
-  lastTs = 0;
-  updateStats();
-}
+    bird.x = START_X;
+    bird.y = H * 0.48;
+    bird.vy = 0;
+    pipes.length = 0;
+    spawnTimer = 0;
+    score = 0;
+    lastTs = 0;
+    updateStats();
+  }
 
   function showOverlay(title, sub) {
     if (!overlay) return;
@@ -4141,10 +4145,12 @@ const pipeGap = 250;
   }
 
   function spawnPipe() {
-    const margin = 110;
-    const gapTop = margin + Math.random() * Math.max(40, H - pipeGap - margin * 2);
+    const margin = 85;
+    const usable = Math.max(80, H - GROUND_H - pipeGap - margin * 2);
+    const gapTop = margin + Math.random() * usable;
+
     pipes.push({
-      x: W + 20,
+      x: W + 40,
       w: pipeWidth,
       gapTop,
       gapBottom: gapTop + pipeGap,
@@ -4154,39 +4160,40 @@ const pipeGap = 250;
 
   function drawBackground() {
     const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, "rgba(22,28,66,1)");
-    bg.addColorStop(0.55, "rgba(11,14,34,1)");
+    bg.addColorStop(0, "rgba(18,24,58,1)");
+    bg.addColorStop(0.55, "rgba(10,14,34,1)");
     bg.addColorStop(1, "rgba(7,9,18,1)");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    for (let i = 0; i < 12; i++) {
-      const y = 50 + i * 38;
-      ctx.strokeStyle = "rgba(255,255,255,.04)";
-      ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(255,255,255,.04)";
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 6; i++) {
+      const y = (H / 6) * i;
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(W, y);
       ctx.stroke();
     }
 
-    for (let i = 0; i < 18; i++) {
-      const x = (i * 130 + (Date.now() * 0.025) % 130) % (W + 130) - 65;
-      ctx.fillStyle = "rgba(255,255,255,.05)";
+    for (let i = 0; i < 14; i++) {
+      const x = (i * 170 + (Date.now() * 0.02) % 170) % (W + 170) - 85;
+      const y = 60 + (i % 5) * 80;
+      ctx.fillStyle = "rgba(255,255,255,.045)";
       ctx.beginPath();
-      ctx.arc(x, 70 + (i % 5) * 36, 2 + (i % 3), 0, Math.PI * 2);
+      ctx.arc(x, y, 3 + (i % 2), 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
   function drawOrbGlow(x, y, r) {
-    const g = ctx.createRadialGradient(x, y, 0, x, y, r * 2.8);
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.1);
     g.addColorStop(0, "rgba(56,215,255,.34)");
-    g.addColorStop(0.5, "rgba(122,92,255,.22)");
+    g.addColorStop(0.45, "rgba(122,92,255,.20)");
     g.addColorStop(1, "rgba(255,79,216,0)");
     ctx.fillStyle = g;
     ctx.beginPath();
-    ctx.arc(x, y, r * 2.8, 0, Math.PI * 2);
+    ctx.arc(x, y, r * 3.1, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -4196,27 +4203,21 @@ const pipeGap = 250;
 
     drawOrbGlow(0, 0, bird.r);
 
-    const orb = ctx.createRadialGradient(-4, -6, 2, 0, 0, bird.r);
+    const orb = ctx.createRadialGradient(-3, -4, 1, 0, 0, bird.r);
     orb.addColorStop(0, "rgba(255,255,255,.98)");
     orb.addColorStop(0.25, "rgba(56,215,255,.98)");
-    orb.addColorStop(0.6, "rgba(122,92,255,.98)");
-    orb.addColorStop(1, "rgba(255,79,216,.98)");
+    orb.addColorStop(0.65, "rgba(122,92,255,.96)");
+    orb.addColorStop(1, "rgba(255,79,216,.96)");
 
     ctx.fillStyle = orb;
     ctx.beginPath();
     ctx.arc(0, 0, bird.r, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.strokeStyle = "rgba(255,255,255,.35)";
+    ctx.strokeStyle = "rgba(255,255,255,.30)";
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(0, 0, bird.r + 5, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.strokeStyle = "rgba(56,215,255,.6)";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(0, 0, bird.r + 10, 0, Math.PI * 2);
+    ctx.arc(0, 0, bird.r + 4, 0, Math.PI * 2);
     ctx.stroke();
 
     ctx.restore();
@@ -4225,63 +4226,53 @@ const pipeGap = 250;
   function drawPipes() {
     pipes.forEach((p) => {
       const grad = ctx.createLinearGradient(p.x, 0, p.x + p.w, 0);
-      grad.addColorStop(0, "rgba(56,215,255,.95)");
-      grad.addColorStop(0.45, "rgba(122,92,255,.95)");
-      grad.addColorStop(1, "rgba(255,79,216,.95)");
+      grad.addColorStop(0, "rgba(56,215,255,.98)");
+      grad.addColorStop(0.5, "rgba(122,92,255,.96)");
+      grad.addColorStop(1, "rgba(255,79,216,.96)");
 
       ctx.fillStyle = grad;
+
+      // top pillar
       ctx.fillRect(p.x, 0, p.w, p.gapTop);
-      ctx.fillRect(p.x, p.gapBottom, p.w, H - p.gapBottom);
+      // bottom pillar
+      ctx.fillRect(p.x, p.gapBottom, p.w, H - GROUND_H - p.gapBottom);
 
-      ctx.fillStyle = "rgba(255,255,255,.15)";
-      ctx.fillRect(p.x - 6, p.gapTop - 18, p.w + 12, 18);
-      ctx.fillRect(p.x - 6, p.gapBottom, p.w + 12, 18);
+      // lip
+      ctx.fillStyle = "rgba(255,255,255,.16)";
+      ctx.fillRect(p.x - 5, p.gapTop - 14, p.w + 10, 14);
+      ctx.fillRect(p.x - 5, p.gapBottom, p.w + 10, 14);
 
-      ctx.strokeStyle = "rgba(255,255,255,.28)";
-      ctx.lineWidth = 2;
+      // outline
+      ctx.strokeStyle = "rgba(255,255,255,.24)";
+      ctx.lineWidth = 1.5;
       ctx.strokeRect(p.x, 0, p.w, p.gapTop);
-      ctx.strokeRect(p.x, p.gapBottom, p.w, H - p.gapBottom);
-
-      ctx.strokeStyle = "rgba(56,215,255,.18)";
-      ctx.lineWidth = 1;
-      for (let y = 0; y < p.gapTop; y += 28) {
-        ctx.beginPath();
-        ctx.moveTo(p.x + 8, y + 8);
-        ctx.lineTo(p.x + p.w - 8, y + 8);
-        ctx.stroke();
-      }
-      for (let y = p.gapBottom; y < H; y += 28) {
-        ctx.beginPath();
-        ctx.moveTo(p.x + 8, y + 8);
-        ctx.lineTo(p.x + p.w - 8, y + 8);
-        ctx.stroke();
-      }
+      ctx.strokeRect(p.x, p.gapBottom, p.w, H - GROUND_H - p.gapBottom);
     });
   }
 
   function drawGround() {
     ctx.fillStyle = "rgba(255,255,255,.06)";
-    ctx.fillRect(0, H - 24, W, 24);
+    ctx.fillRect(0, H - GROUND_H, W, GROUND_H);
 
-    ctx.fillStyle = "rgba(255,255,255,.10)";
-    for (let i = 0; i < W; i += 32) {
-      ctx.fillRect(i, H - 24, 16, 4);
+    ctx.fillStyle = "rgba(255,255,255,.12)";
+    for (let i = 0; i < W; i += 38) {
+      ctx.fillRect(i, H - GROUND_H + 6, 18, 4);
     }
   }
 
   function drawHUD() {
-    ctx.fillStyle = "rgba(255,255,255,.94)";
-    ctx.font = "900 18px Inter, sans-serif";
-    ctx.fillText("FOCUS JUMP", 18, 32);
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.font = "900 16px Inter, sans-serif";
+    ctx.fillText("FOCUS JUMP", 18, 30);
 
-    ctx.fillStyle = "rgba(255,255,255,.68)";
-    ctx.font = "700 13px Inter, sans-serif";
-    ctx.fillText("SPACE / CLICK / TAP", 18, 52);
+    ctx.fillStyle = "rgba(255,255,255,.64)";
+    ctx.font = "700 12px Inter, sans-serif";
+    ctx.fillText("SPACE / CLICK / TAP", 18, 48);
 
-    ctx.fillStyle = "rgba(255,255,255,.98)";
-    ctx.font = "900 28px Inter, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,.96)";
+    ctx.font = "900 24px Inter, sans-serif";
     ctx.textAlign = "right";
-    ctx.fillText(String(score), W - 20, 34);
+    ctx.fillText(String(score), W - 18, 30);
     ctx.textAlign = "left";
   }
 
@@ -4299,7 +4290,9 @@ const pipeGap = 250;
   }
 
   async function endGame() {
+    if (!running) return;
     running = false;
+
     STATE.minigame.last = score;
     STATE.minigame.plays = (STATE.minigame.plays || 0) + 1;
 
@@ -4328,7 +4321,7 @@ const pipeGap = 250;
       bird.y += bird.vy * dt;
 
       spawnTimer += dt;
-      if (spawnTimer >= 1.55) {
+      if (spawnTimer >= spawnEvery) {
         spawnTimer = 0;
         spawnPipe();
       }
@@ -4347,13 +4340,13 @@ const pipeGap = 250;
           endGame();
         }
 
-        if (p.x + p.w < -20) {
+        if (p.x + p.w < -30) {
           pipes.splice(i, 1);
         }
       }
 
-      if (ts - roundStartAt > 700) {
-        if (bird.y - bird.r < 0 || bird.y + bird.r > H - 24) {
+      if (ts - roundStartAt > 850) {
+        if (bird.y - bird.r < 0 || bird.y + bird.r > H - GROUND_H) {
           endGame();
         }
       }
@@ -4377,7 +4370,7 @@ const pipeGap = 250;
     resetRound();
     running = true;
     roundStartAt = performance.now();
-    bird.vy = flap * 0.62;
+    bird.vy = flap * 0.55;
     hideOverlay();
   }
 
@@ -4389,7 +4382,6 @@ const pipeGap = 250;
     flapBird();
   }
 
-    
   function onKey(e) {
     if (e.code === "Space") {
       e.preventDefault();
@@ -4402,7 +4394,7 @@ const pipeGap = 250;
 
   showOverlay(
     "Focus Jump",
-    "Premium mini-game. Click, tap, or press SPACE to keep the LD orb alive. Neon pipes, best score, and XP rewards at 10 and 20."
+    "Proper Flappy style: top and bottom pillars with a wide center gap. Tap rhythm, don't spam."
   );
 
   canvas.addEventListener("pointerdown", handleCanvasAction);
@@ -4423,7 +4415,7 @@ const pipeGap = 250;
   };
 }
 
-   function moduleMiniGame() {
+  function moduleMiniGame() {
   openSheet(
     "FOCUS JUMP",
     `
