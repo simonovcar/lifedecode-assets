@@ -42,20 +42,20 @@ const CFG = {
 }
 
 #ld_sheet.ld_game_sheet{
-  width:min(1380px, calc(100vw - 8px));
-  max-height:min(98svh, 1200px);
+  width:min(1480px, calc(100vw - 6px));
+  max-height:min(99svh, 1400px);
 }
 
 #ld_sheet.ld_game_sheet .sbd{
-  padding:8px;
+  padding:6px;
 }
 
 #ld_sheet.ld_game_sheet #ld_game_canvas{
   width:100%;
   height:auto;
   aspect-ratio:16/9;
-  min-height:72svh;
-  max-height:84svh;
+  min-height:78svh;
+  max-height:88svh;
 }
 
 .ld_help_icon{
@@ -1383,6 +1383,74 @@ textarea.ld_field{ min-height:120px; resize:vertical; }
     min-width:unset;
     flex:1 1 calc(50% - 10px);
   }
+}
+
+.ld_game_shell_compact{
+  gap:10px;
+}
+
+.ld_game_top_compact{
+  align-items:flex-start;
+  gap:8px;
+}
+
+.ld_game_stats_compact{
+  gap:8px;
+}
+
+.ld_game_stats_compact .ld_game_stat{
+  min-width:92px;
+  padding:8px 10px;
+}
+
+.ld_game_stats_compact .ld_game_stat .k{
+  font-size:10px;
+}
+
+.ld_game_stats_compact .ld_game_stat .v{
+  font-size:15px;
+  margin-top:4px;
+}
+
+.ld_game_wrap_compact{
+  min-height:0;
+}
+
+.ld_game_bottombar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.ld_game_live{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.ld_game_livebox{
+  min-width:90px;
+  padding:8px 10px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+}
+
+.ld_game_livebox .k{
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted2);
+  font-weight:800;
+}
+
+.ld_game_livebox .v{
+  margin-top:4px;
+  font-size:16px;
+  font-weight:900;
+  color:rgba(245,247,255,.96);
 }
   
   `;
@@ -3999,18 +4067,18 @@ function showCheckinAiComment(text) {
   let roundStartAt = 0;
 
   const bird = {
-  x: 150,
+  x: 130,
   y: 270,
-  r: 14,
+  r: 13,
   vy: 0
 };
 
-  const pipes = [];
- const gravity = 980;
-const flap = -360;
-const speed = 185;
-const pipeWidth = 72;
-const pipeGap = 220;
+const pipes = [];
+const gravity = 820;
+const flap = -315;
+const speed = 155;
+const pipeWidth = 64;
+const pipeGap = 250;
  
     function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -4050,15 +4118,15 @@ const pipeGap = 220;
   }
 
   function resetRound() {
-    bird.x = 190;
-    bird.y = H * 0.5;
-    bird.vy = 0;
-    pipes.length = 0;
-    spawnTimer = 0;
-    score = 0;
-    lastTs = 0;
-    updateStats();
-  }
+  bird.x = 130;
+  bird.y = H * 0.5;
+  bird.vy = 0;
+  pipes.length = 0;
+  spawnTimer = 0;
+  score = 0;
+  lastTs = 0;
+  updateStats();
+}
 
   function showOverlay(title, sub) {
     if (!overlay) return;
@@ -4073,7 +4141,7 @@ const pipeGap = 220;
   }
 
   function spawnPipe() {
-    const margin = 95;
+    const margin = 110;
     const gapTop = margin + Math.random() * Math.max(40, H - pipeGap - margin * 2);
     pipes.push({
       x: W + 20,
@@ -4284,7 +4352,7 @@ const pipeGap = 220;
         }
       }
 
-      if (ts - roundStartAt > 550) {
+      if (ts - roundStartAt > 700) {
         if (bird.y - bird.r < 0 || bird.y + bird.r > H - 24) {
           endGame();
         }
@@ -4309,7 +4377,7 @@ const pipeGap = 220;
     resetRound();
     running = true;
     roundStartAt = performance.now();
-    bird.vy = flap * 0.72;
+    bird.vy = flap * 0.62;
     hideOverlay();
   }
 
@@ -4355,68 +4423,69 @@ const pipeGap = 220;
   };
 }
 
-    function moduleMiniGame() {
-      openSheet(
-        "FOCUS JUMP",
-        `
-        <div class="ld_game_shell">
-          <div class="ld_game_top">
-            <div>
-              <div class="kicker">PREMIUM MINI-GAME</div>
-              <h3 style="margin:6px 0 0;">Focus Jump</h3>
-            </div>
+   function moduleMiniGame() {
+  openSheet(
+    "FOCUS JUMP",
+    `
+    <div class="ld_game_shell ld_game_shell_compact">
+      <div class="ld_game_top ld_game_top_compact">
+        <div>
+          <div class="kicker">PREMIUM MINI-GAME</div>
+          <h3 style="margin:6px 0 0;">Focus Jump</h3>
+        </div>
 
-            <div class="ld_game_stats">
-              <div class="ld_game_stat">
-                <div class="k">Score</div>
-                <div class="v" id="ld_game_score">0</div>
-              </div>
-              <div class="ld_game_stat">
-                <div class="k">Best</div>
-                <div class="v" id="ld_game_best">${STATE.minigame?.best || 0}</div>
-              </div>
-              <div class="ld_game_stat">
-                <div class="k">Plays</div>
-                <div class="v" id="ld_game_plays">${STATE.minigame?.plays || 0}</div>
-              </div>
-              <div class="ld_game_stat">
-                <div class="k">Reward 10</div>
-                <div class="v" id="ld_game_reward10">${STATE.minigame?.rewardsClaimed?.score10 ? "CLAIMED" : `+${CFG.XP.GAME_10} XP @ 10`}</div>
-              </div>
-              <div class="ld_game_stat">
-                <div class="k">Reward 20</div>
-                <div class="v" id="ld_game_reward20">${STATE.minigame?.rewardsClaimed?.score20 ? "CLAIMED" : `+${CFG.XP.GAME_20} XP @ 20`}</div>
-              </div>
-            </div>
+        <div class="ld_game_stats ld_game_stats_compact">
+          <div class="ld_game_stat">
+            <div class="k">Best</div>
+            <div class="v" id="ld_game_best">${STATE.minigame?.best || 0}</div>
           </div>
-
-          <div class="ld_game_wrap">
-            <canvas id="ld_game_canvas" width="960" height="540"></canvas>
-
-            <div class="ld_game_overlay" id="ld_game_overlay">
-              <div class="ld_game_overlaybox">
-                <div class="ld_game_title" id="ld_game_overlay_title">Focus Jump</div>
-                <div class="ld_game_sub" id="ld_game_overlay_sub">Press Start</div>
-              </div>
-            </div>
+          <div class="ld_game_stat">
+            <div class="k">Reward 10</div>
+            <div class="v" id="ld_game_reward10">${STATE.minigame?.rewardsClaimed?.score10 ? "CLAIMED" : `+${CFG.XP.GAME_10}`}</div>
           </div>
-
-          <div class="ld_game_controls">
-            <button class="ld_btn primary" id="ld_game_start">Start</button>
-            <button class="ld_btn" id="ld_game_flap">Jump / Flap</button>
-          </div>
-
-          <div class="ld_game_note">
-            Premium-only cyber mini-game with LD orb, neon obstacles, saved best score, and one-time XP rewards for hitting score 10 and 20.
+          <div class="ld_game_stat">
+            <div class="k">Reward 20</div>
+            <div class="v" id="ld_game_reward20">${STATE.minigame?.rewardsClaimed?.score20 ? "CLAIMED" : `+${CFG.XP.GAME_20}`}</div>
           </div>
         </div>
-        `,
-        { gameLarge: true }
-      );
+      </div>
 
-      destroyMiniGame();
-      LD_GAME = createFocusJumpGame();
-    }
+      <div class="ld_game_wrap ld_game_wrap_compact">
+        <canvas id="ld_game_canvas" width="960" height="540"></canvas>
+
+        <div class="ld_game_overlay" id="ld_game_overlay">
+          <div class="ld_game_overlaybox">
+            <div class="ld_game_title" id="ld_game_overlay_title">Focus Jump</div>
+            <div class="ld_game_sub" id="ld_game_overlay_sub">Press Start</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ld_game_bottombar">
+        <div class="ld_game_live">
+          <div class="ld_game_livebox">
+            <div class="k">Score</div>
+            <div class="v" id="ld_game_score">0</div>
+          </div>
+          <div class="ld_game_livebox">
+            <div class="k">Plays</div>
+            <div class="v" id="ld_game_plays">${STATE.minigame?.plays || 0}</div>
+          </div>
+        </div>
+
+        <div class="ld_game_controls">
+          <button class="ld_btn primary" id="ld_game_start">Start</button>
+          <button class="ld_btn" id="ld_game_flap">Jump / Flap</button>
+        </div>
+      </div>
+    </div>
+    `,
+    { gameLarge: true }
+  );
+
+  destroyMiniGame();
+  LD_GAME = createFocusJumpGame();
+}
     
     const OPENERS = {
   dashboard: moduleDashboard,
