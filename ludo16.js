@@ -2091,7 +2091,7 @@ textarea.ld_field:focus{
   <div id="ld_top">
     <div id="ld_top_main">
       <div id="ld_brand">
-        <img id="ld_logo_img" src="https://imgur.com/OO2zJwM" alt="LifeDecode logo" loading="eager" referrerpolicy="no-referrer">
+        <img id="ld_logo_img" src="https://i.imgur.com/OO2zJwM.png" alt="LifeDecode logo" loading="eager" referrerpolicy="no-referrer">
         <div id="ld_brand_meta">
           <span class="ld_brandname">LifeDecode</span>
           <span class="ld_brandtag">Emotional AI System</span>
