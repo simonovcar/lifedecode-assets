@@ -1189,21 +1189,8 @@ textarea.ld_field{ min-height:120px; resize:vertical; }
   }
 }
 
-/* ===== LIFEDECODE PREMIUM WORDMARK + LEGAL FOOTER PATCH ===== */
-#ld_top{
-  padding:20px 20px 16px;
-  gap:16px;
-  border-radius:30px;
-  background:
-    radial-gradient(900px 220px at 50% 0%, rgba(124,83,255,.18), transparent 62%),
-    linear-gradient(180deg, rgba(9,9,22,.92), rgba(7,6,17,.84));
-  border:1px solid rgba(185,145,255,.26);
-  box-shadow:
-    0 24px 64px rgba(0,0,0,.42),
-    0 0 0 1px rgba(255,255,255,.035) inset,
-    0 0 34px rgba(116,76,255,.10);
-}
-
+/* ===== TOP BRAND WORDMARK PATCH ===== */
+#ld_top{padding:18px 18px;gap:16px;}
 #ld_top_main{justify-content:center;}
 #ld_brand{width:100%;display:flex;align-items:center;justify-content:center;text-align:center;}
 #ld_logo,
@@ -1211,146 +1198,46 @@ textarea.ld_field{ min-height:120px; resize:vertical; }
 #ld_brand_meta,
 .ld_brandname,
 .ld_brandtag{display:none !important;}
-
-.ld_brand_wordmark{
-  position:relative;
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  line-height:.86;
-  padding:4px 12px 10px;
-  isolation:isolate;
-}
-
-.ld_brand_wordmark::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  bottom:0;
-  width:min(520px, 82vw);
-  height:1px;
-  transform:translateX(-50%);
-  background:linear-gradient(90deg, transparent, rgba(135,112,255,.38), rgba(232,126,255,.34), transparent);
-  box-shadow:0 0 18px rgba(158,117,255,.22);
-  opacity:.95;
-}
-
-.ld_brand_wordmark::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:50%;
-  z-index:-1;
-  width:min(520px, 78vw);
-  height:78px;
-  transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse at center, rgba(119,76,255,.18), transparent 68%);
-  filter:blur(10px);
-  opacity:.95;
-  pointer-events:none;
-}
-
+.ld_brand_wordmark{display:flex;align-items:flex-end;justify-content:center;gap:10px;flex-wrap:wrap;line-height:.9;}
 .ld_brand_wordmark_main{
-  font-family:'Orbitron','Rajdhani',Inter,system-ui,sans-serif;
-  font-size:clamp(34px,4.9vw,66px);
-  font-weight:950;
-  letter-spacing:.115em;
-  background:linear-gradient(92deg, #f7fbff 0%, #8fb4ff 18%, #6f65ff 44%, #b05cff 70%, #f19aff 100%);
+  font-family:'Orbitron','Rajdhani',sans-serif;
+  font-size:clamp(28px,4.6vw,58px);
+  font-weight:900;
+  letter-spacing:.08em;
+  background:linear-gradient(90deg,#155bff 0%, #4173ff 30%, #785cff 58%, #da6cff 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  text-shadow:
-    0 0 18px rgba(108,100,255,.16),
-    0 0 38px rgba(203,92,255,.10);
+  text-shadow:0 0 22px rgba(78,84,255,.20), 0 0 30px rgba(205,92,255,.10);
 }
-
 .ld_brand_wordmark_sub{
-  font-family:'Orbitron','Rajdhani',Inter,system-ui,sans-serif;
-  font-size:clamp(16px,2vw,27px);
-  font-weight:950;
-  letter-spacing:.28em;
-  padding-bottom:.17em;
-  background:linear-gradient(92deg, #fff, #e8b7ff 52%, #9fdcff 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  text-shadow:0 0 22px rgba(224,143,255,.22);
+  font-family:'Orbitron','Rajdhani',sans-serif;
+  font-size:clamp(16px,2vw,26px);
+  font-weight:900;
+  letter-spacing:.22em;
+  padding-bottom:.2em;
+  color:#d98cff;
+  text-shadow:0 0 18px rgba(217,140,255,.22);
 }
-
 #ld_topnav{display:none !important;}
 #ld_top_actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
-#ld_top_actions .ld_btn{
-  min-height:54px;
-  border-radius:18px;
-  font-size:15px;
-  font-weight:900;
-  padding:14px 16px;
-  border-color:rgba(190,151,255,.18);
-  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
-}
-#ld_top_actions .ld_btn:hover{border-color:rgba(220,190,255,.34);background:rgba(255,255,255,.075);}
+#ld_top_actions .ld_btn{min-height:54px;border-radius:18px;font-size:16px;font-weight:850;padding:14px 16px;}
 .ld_actionsRow .ld_btn{min-height:64px;font-size:17px;}
-
-.ld_legal_footer{
-  width:100%;
-  max-width:var(--max);
-  margin:22px auto 0;
-  padding:18px 8px 28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.ld_legal_footer a{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:42px;
-  padding:11px 16px;
-  border-radius:999px;
-  text-decoration:none;
-  color:rgba(245,241,255,.86);
-  font-size:12px;
-  font-weight:850;
-  letter-spacing:.09em;
-  text-transform:uppercase;
-  border:1px solid rgba(180,138,255,.18);
-  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.022));
-  box-shadow:0 14px 30px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.035);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  transition:transform .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
-}
-
-.ld_legal_footer a:hover{
-  transform:translateY(-1px);
-  color:#fff;
-  background:linear-gradient(180deg, rgba(255,255,255,.078), rgba(255,255,255,.035));
-  border-color:rgba(222,190,255,.32);
-}
-
 @media (max-width:560px){
-  #ld_top{padding:15px 12px 12px;gap:12px;border-radius:22px;}
-  .ld_brand_wordmark{gap:8px;padding:2px 8px 9px;}
-  .ld_brand_wordmark_main{font-size:clamp(24px,8.2vw,40px);letter-spacing:.075em;}
-  .ld_brand_wordmark_sub{font-size:clamp(12px,3.8vw,18px);letter-spacing:.20em;}
+  #ld_top{padding:14px 12px;gap:12px;}
+  .ld_brand_wordmark{gap:8px;}
+  .ld_brand_wordmark_main{font-size:clamp(22px,8.6vw,40px);letter-spacing:.07em;}
+  .ld_brand_wordmark_sub{font-size:clamp(13px,4vw,18px);letter-spacing:.18em;}
   #ld_top_actions{gap:8px;}
-  #ld_top_actions .ld_btn{min-height:48px;font-size:12px;border-radius:16px;padding:10px 12px;}
+  #ld_top_actions .ld_btn{min-height:48px;font-size:13px;border-radius:16px;padding:10px 12px;}
   .ld_actionsRow .ld_btn{min-height:60px;font-size:16px;}
   .ld_mbtn{min-height:58px;padding:11px 8px;}
   .ld_mbtn span{font-size:11px;}
-  .ld_legal_footer{margin-top:16px;padding:14px 6px 22px;gap:8px;}
-  .ld_legal_footer a{font-size:10px;min-height:38px;padding:10px 12px;letter-spacing:.07em;}
 }
-
 @media (max-width:430px){
-  .ld_brand_wordmark_main{font-size:clamp(21px,7.8vw,32px);}
-  .ld_brand_wordmark_sub{font-size:11px;}
-  #ld_top_actions .ld_btn{font-size:11px;min-height:46px;}
+  .ld_brand_wordmark_main{font-size:clamp(20px,8vw,32px);}
+  .ld_brand_wordmark_sub{font-size:12px;}
+  #ld_top_actions .ld_btn{font-size:12px;min-height:46px;}
 }
 
 .ld_coach_shell{
@@ -2552,11 +2439,6 @@ textarea.ld_field:focus{
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="ld_legal_footer" aria-label="Legal links">
-    <a href="/policy">Privacy Policy</a>
-    <a href="/terms">Terms of Service</a>
   </div>
 </div>
 
