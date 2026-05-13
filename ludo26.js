@@ -2239,6 +2239,79 @@ textarea.ld_field:focus{
 }
 
 
+/* ===== ALWAYS-VISIBLE LEGAL LINKS PATCH ===== */
+.ld_top_legal_links{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:-2px;
+  padding:2px 0 0;
+}
+
+.ld_top_legal_links a,
+.ld_fixed_legal_links a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:8px 13px;
+  border-radius:999px;
+  text-decoration:none;
+  color:rgba(245,241,255,.82);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  border:1px solid rgba(180,138,255,.18);
+  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+  box-shadow:0 12px 26px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.035);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:transform .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.ld_top_legal_links a:hover,
+.ld_fixed_legal_links a:hover{
+  transform:translateY(-1px);
+  color:#fff;
+  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  border-color:rgba(222,190,255,.32);
+}
+
+.ld_fixed_legal_links{
+  position:fixed;
+  left:50%;
+  bottom:calc(12px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  z-index:59;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  pointer-events:auto;
+}
+
+@media (max-width:860px){
+  .ld_fixed_legal_links{
+    bottom:calc(86px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width:430px){
+  .ld_top_legal_links{gap:7px;}
+  .ld_top_legal_links a,
+  .ld_fixed_legal_links a{
+    min-height:32px;
+    padding:8px 10px;
+    font-size:9px;
+    letter-spacing:.07em;
+  }
+}
+
+
   `;
   const HTML = `
 <div id="ld_bg" aria-hidden="true"></div>
@@ -2280,6 +2353,11 @@ textarea.ld_field:focus{
       <button class="ld_btn ghost compact" id="ld_btn_menu" title="Open menu" aria-label="Open menu" style="display:none !important;">
         <span>MENU</span>
       </button>
+    </div>
+
+    <div class="ld_top_legal_links" aria-label="Legal links">
+      <a href="/policy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
     </div>
   </div>
 
@@ -2558,6 +2636,12 @@ textarea.ld_field:focus{
     <a href="/policy">Privacy Policy</a>
     <a href="/terms">Terms of Service</a>
   </div>
+</div>
+
+
+<div class="ld_fixed_legal_links" aria-label="Legal links quick access">
+  <a href="/policy">Privacy Policy</a>
+  <a href="/terms">Terms of Service</a>
 </div>
 
 <div id="ld_mnav" role="navigation" aria-label="Quick modules">
