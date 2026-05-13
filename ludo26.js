@@ -1,3 +1,15 @@
+const path = window.location.pathname.toLowerCase();
+
+if (
+  path.includes("/terms") ||
+  path.includes("/policy")
+) {
+  console.log("Legal page detected - skipping app redirect.");
+} else {
+
+  // VSE OSTALO naj bo znotraj tega bloka
+
+
 /* === CYBERPUNK FONT PATCH === */
 document.addEventListener('DOMContentLoaded', () => {
   document.body.style.fontFamily = "'Orbitron', 'Rajdhani', sans-serif";
@@ -7118,3 +7130,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+}
