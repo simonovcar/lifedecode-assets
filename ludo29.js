@@ -2312,6 +2312,120 @@ textarea.ld_field:focus{
 }
 
 
+/* ===== GOOGLE OAUTH PUBLIC HOMEPAGE VERIFICATION SECTION ===== */
+.ld_public_homepage{
+  max-width:var(--max);
+  margin:0 auto var(--gap);
+  border:1px solid rgba(185,145,255,.20);
+  border-radius:30px;
+  background:
+    radial-gradient(900px 280px at 50% 0%, rgba(124,83,255,.15), transparent 64%),
+    linear-gradient(180deg, rgba(11,10,25,.82), rgba(7,6,17,.72));
+  box-shadow:0 22px 54px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.04);
+  padding:clamp(20px,3vw,34px);
+  color:#f5f1ff;
+}
+
+.ld_public_homepage h1{
+  margin:0 0 10px;
+  font-size:clamp(30px,4vw,50px);
+  line-height:1.02;
+  letter-spacing:-.045em;
+  color:#fff;
+}
+
+.ld_public_homepage h2{
+  margin:20px 0 8px;
+  font-size:clamp(18px,2.5vw,25px);
+  color:#fff;
+  letter-spacing:-.02em;
+}
+
+.ld_public_homepage p,
+.ld_public_homepage li{
+  color:rgba(236,230,255,.82);
+  font-size:15px;
+  line-height:1.65;
+}
+
+.ld_public_homepage ul{
+  margin:10px 0 0;
+  padding-left:22px;
+}
+
+.ld_public_kicker{
+  margin-bottom:10px;
+  color:#9b6cff;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+
+.ld_public_grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+
+.ld_public_card{
+  border:1px solid rgba(185,145,255,.14);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.022));
+  padding:16px;
+}
+
+.ld_public_card b{
+  display:block;
+  color:#fff;
+  margin-bottom:7px;
+  font-size:15px;
+}
+
+.ld_public_links{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-top:18px;
+}
+
+.ld_public_links a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:11px 16px;
+  border-radius:999px;
+  color:#f5f1ff;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  border:1px solid rgba(180,138,255,.25);
+  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+}
+
+.ld_public_links a:hover{
+  border-color:rgba(222,190,255,.38);
+  background:rgba(255,255,255,.08);
+}
+
+.ld_public_data_note{
+  margin-top:18px;
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(155,108,255,.22);
+  background:rgba(155,108,255,.07);
+}
+
+@media (max-width:860px){
+  .ld_public_grid{grid-template-columns:1fr;}
+}
+
+
   `;
   const HTML = `
 <div id="ld_bg" aria-hidden="true"></div>
@@ -2320,11 +2434,47 @@ textarea.ld_field:focus{
 <canvas id="ld_particles" aria-hidden="true"></canvas>
 
 <div id="ld_shell">
+
+
+  <section class="ld_public_homepage" aria-label="About LifeDecode">
+    <div class="ld_public_kicker">Public App Overview</div>
+    <h1>LifeDecode</h1>
+    <p>
+      LifeDecode is an AI-powered self-development and emotional clarity platform. It helps users reflect on daily check-ins, decode emotional triggers, understand patterns, generate practical plans, and get support tools for moments of stress, urges, overthinking, or personal confusion.
+    </p>
+
+    <div class="ld_public_grid">
+      <div class="ld_public_card">
+        <b>AI self-development tools</b>
+        <p>Users can create check-ins, generate short action plans, decode triggers, and use guided reflection tools to better understand their behaviour and emotional state.</p>
+      </div>
+      <div class="ld_public_card">
+        <b>Emergency support flow</b>
+        <p>The app includes an emergency reset button and calm-down protocol designed to help users slow down, reflect, and choose a safer next step.</p>
+      </div>
+      <div class="ld_public_card">
+        <b>Screenshot and pattern decoding</b>
+        <p>LifeDecode can help users analyze confusing messages, emotional patterns, and relationship dynamics in a structured AI-supported way.</p>
+      </div>
+    </div>
+
+    <div class="ld_public_data_note">
+      <h2>Why LifeDecode requests user data</h2>
+      <p>
+        LifeDecode uses basic account information such as email, profile name, login provider, and session data to authenticate users, keep accounts secure, save progress, sync features across devices, prevent abuse, and provide personalized app functionality. Users can also voluntarily submit text, check-ins, screenshots, and reflections so the app can generate relevant AI-supported responses.
+      </p>
+    </div>
+
+    <div class="ld_public_links" aria-label="LifeDecode legal links">
+      <a href="https://www.lifedecode.app/policy">Privacy Policy</a>
+      <a href="https://www.lifedecode.app/terms">Terms of Service</a>
+    </div>
+  </section>
   <div id="ld_top">
     <div id="ld_top_main">
       <div id="ld_brand">
-        <div class="ld_brand_wordmark" aria-label="LIFEDECODE AI">
-          <span class="ld_brand_wordmark_main">LIFEDECODE</span>
+        <div class="ld_brand_wordmark" aria-label="LifeDecode">
+          <span class="ld_brand_wordmark_main">LifeDecode</span>
           <span class="ld_brand_wordmark_sub">AI</span>
         </div>
       </div>
@@ -2356,8 +2506,8 @@ textarea.ld_field:focus{
     </div>
 
     <div class="ld_top_legal_links" aria-label="Legal links">
-      <a href="/policy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
+      <a href="https://www.lifedecode.app/policy">Privacy Policy</a>
+      <a href="https://www.lifedecode.app/terms">Terms of Service</a>
     </div>
   </div>
 
@@ -2633,15 +2783,15 @@ textarea.ld_field:focus{
   </div>
 
   <div class="ld_legal_footer" aria-label="Legal links">
-    <a href="/policy">Privacy Policy</a>
-    <a href="/terms">Terms of Service</a>
+    <a href="https://www.lifedecode.app/policy">Privacy Policy</a>
+    <a href="https://www.lifedecode.app/terms">Terms of Service</a>
   </div>
 </div>
 
 
 <div class="ld_fixed_legal_links" aria-label="Legal links quick access">
-  <a href="/policy">Privacy Policy</a>
-  <a href="/terms">Terms of Service</a>
+  <a href="https://www.lifedecode.app/policy">Privacy Policy</a>
+  <a href="https://www.lifedecode.app/terms">Terms of Service</a>
 </div>
 
 <div id="ld_mnav" role="navigation" aria-label="Quick modules">
@@ -7333,9 +7483,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 }
-
-
-<div style="text-align:center;padding:40px 0;color:#999;font-family:Inter,sans-serif;">
-  <a href="/policy" style="color:#b388ff;margin-right:20px;">Privacy Policy</a>
-  <a href="/terms" style="color:#b388ff;">Terms of Service</a>
-</div>
