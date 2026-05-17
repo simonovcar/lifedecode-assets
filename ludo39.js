@@ -7239,7 +7239,7 @@ if (styleChip) {
         }
 
         if (e.target.closest("#ld_btn_world")) {
-  window.location.href = "https://lifedecode-game.simon-ovcar12.workers.dev/#";
+  window.location.href = "https://world.lifedecode.app/";
   return;
 }
 
@@ -7826,7 +7826,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("ld_btn_world");
   if (btn) {
     btn.addEventListener("click", () => {
-      window.location.href = "https://lifedecode-game.simon-ovcar12.workers.dev/#";
+      window.location.href = "https://world.lifedecode.app/";
     });
   }
 });
