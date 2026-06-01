@@ -14,12 +14,12 @@
 
   const CFG = {
     VERSION: "lifedecode-app-v5-stable-world-auth-ai-checkin-iconic-bg",
-    ICONIC_URL: "/assets/iconic.png?v=lifedecode-iconic-bg-v5",
+    ICONIC_URL: "/assets/iconic2.png?v=lifedecode-iconic-bg-v5",
     ICONIC_FALLBACKS: [
-      "assets/iconic.png?v=lifedecode-iconic-bg-v5",
-      "/iconic.png?v=lifedecode-iconic-bg-v5",
-      "https://raw.githubusercontent.com/simonovcar/lifedecode-assets/main/iconic.png?v=lifedecode-iconic-bg-v5",
-      "https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@main/iconic.png?v=lifedecode-iconic-bg-v5"
+      "assets/iconic2.png?v=lifedecode-iconic-bg-v5",
+      "/iconic2.png?v=lifedecode-iconic-bg-v5",
+      "https://raw.githubusercontent.com/simonovcar/lifedecode-assets/main/iconic2.png?v=lifedecode-iconic-bg-v5",
+      "https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@main/iconic2.png?v=lifedecode-iconic-bg-v5"
     ],
     WORLD_URL: "https://world.lifedecode.app/#",
     POLICY_URL: "/policy",
