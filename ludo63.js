@@ -14,12 +14,16 @@
 
   const CFG = {
     VERSION: "lifedecode-app-v8-secure-render-rescue",
-    ICONIC_URL: "/assets/iconic2.png?v=lifedecode-iconic-bg-v5",
+    // Webflow does not serve this repo's files at any relative path (no
+    // /assets/, no site root) — only assets uploaded through Webflow's own
+    // asset manager get a same-origin URL. So the wallpaper has to be loaded
+    // from GitHub directly. jsdelivr is the primary (proper CDN, already
+    // used for the landing script itself); raw.githubusercontent.com is the
+    // fallback. Both URLs must include the "assets/" path segment — the
+    // file lives at assets/iconic2.png in the repo, not at the repo root.
+    ICONIC_URL: "https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@main/assets/iconic2.png?v=lifedecode-iconic-bg-v6",
     ICONIC_FALLBACKS: [
-      "assets/iconic2.png?v=lifedecode-iconic-bg-v5",
-      "/iconic2.png?v=lifedecode-iconic-bg-v5",
-      "https://raw.githubusercontent.com/simonovcar/lifedecode-assets/main/iconic2.png?v=lifedecode-iconic-bg-v5",
-      "https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@main/iconic2.png?v=lifedecode-iconic-bg-v5"
+      "https://raw.githubusercontent.com/simonovcar/lifedecode-assets/main/assets/iconic2.png?v=lifedecode-iconic-bg-v6"
     ],
     WORLD_URL: "https://world.lifedecode.app/#",
     POLICY_URL: "/policy",
