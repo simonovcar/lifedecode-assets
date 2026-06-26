@@ -1,0 +1,1134 @@
+(function () {
+  "use strict";
+
+  const path = (window.location.pathname || "").toLowerCase();
+
+  // Never touch legal pages. Keeps Google/Supabase verification + policy pages clean.
+  if (path.includes("/terms") || path.includes("/policy") || path.includes("/privacy")) {
+    console.log("[LD] Legal page detected — LifeDecode landing script skipped.");
+    return;
+  }
+
+  if (window.__LD_WORLD_LANDING_LOADED__) return;
+  window.__LD_WORLD_LANDING_LOADED__ = true;
+
+  const CFG = {
+    VERSION: "lifedecode-app-v8-secure-render-rescue",
+    // Webflow does not serve this repo's files at any relative path (no
+    // /assets/, no site root) — only assets uploaded through Webflow's own
+    // asset manager get a same-origin URL. So the wallpaper has to be loaded
+    // from GitHub directly. jsdelivr is the primary (proper CDN, already
+    // used for the landing script itself); raw.githubusercontent.com is the
+    // fallback. Both URLs must include the "assets/" path segment — the
+    // file lives at assets/iconic2.png in the repo, not at the repo root.
+    ICONIC_URL: "https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@main/assets/iconic2.png?v=lifedecode-iconic-bg-v6",
+    ICONIC_FALLBACKS: [
+      "https://raw.githubusercontent.com/simonovcar/lifedecode-assets/main/assets/iconic2.png?v=lifedecode-iconic-bg-v6"
+    ],
+    WORLD_URL: "https://world.lifedecode.app/#",
+    POLICY_URL: "/policy",
+    TERMS_URL: "/terms",
+    PREMIUM_URL: "https://lifedecode.app/premium",
+    STORAGE_KEY: "ld_world_daily_checkin_v1",
+    PENDING_XP_KEY: "ld_world_pending_daily_xp_v1",
+    LAST_CHECKIN_AWARD_KEY: "ld_world_daily_checkin_last_award_v1",
+    CHECKIN_COOLDOWN_MS: 24 * 60 * 60 * 1000,
+    DAILY_XP: 75,
+    API_BASE_URL: "https://lifedecode-game-production.up.railway.app",
+    DAILY_CHECKIN_API_URL: "https://lifedecode-game-production.up.railway.app/api/daily-checkin",
+    DB_TABLE: "ld_user_state",
+    DB_KEY: "world",
+    AUTH_REDIRECT_URL: window.location.origin + window.location.pathname,
+    SUPABASE_URL: "https://nnqiahypfkdoqkclknoe.supabase.co",
+    SUPABASE_KEY: "sb_publishable_t2Nl119Q73xYsR4Vdrg79Q_v1pC7DAL"
+  };
+
+  const CSS = `
+:root{
+  --ld-bg:#03020a;
+  --ld-panel:rgba(9,6,24,.68);
+  --ld-panel2:rgba(7,4,18,.82);
+  --ld-line:rgba(225,158,255,.20);
+  --ld-text:#fff7ff;
+  --ld-muted:rgba(255,247,255,.74);
+  --ld-soft:rgba(255,247,255,.54);
+  --ld-pink:#ff55df;
+  --ld-purple:#9b5cff;
+  --ld-blue:#43d8ff;
+  --ld-green:#86ff58;
+  --ld-gold:#ffd36a;
+  --ldw-iconic-image:url("${CFG.ICONIC_URL}");
+}
+html,body{margin:0;min-height:100%;background:var(--ld-bg)!important;}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ld-text);overflow-x:hidden;}
+body.ld-no-scroll{overflow:hidden;}
+#ldw_app,#ldw_app *{box-sizing:border-box;}
+#ldw_app{min-height:100svh;position:relative;isolation:isolate;background:transparent;color:var(--ld-text);overflow-x:hidden;display:block!important;visibility:visible!important;opacity:1!important;}
+#ldw_bg{position:fixed;inset:0;z-index:0;background:#03020a;overflow:hidden;pointer-events:none;}
+#ldw_bg:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(3,2,10,.08),rgba(3,2,10,.32) 46%,rgba(3,2,10,.82) 96%),radial-gradient(900px 560px at 50% 8%,rgba(201,62,255,.28),transparent 62%),var(--ldw-iconic-image);background-size:cover,cover,cover;background-position:center,center,center 42%;filter:saturate(1.12) contrast(1.05);opacity:.95;transform:scale(1.018);}
+#ldw_bg:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(3,2,10,.34) 70%,rgba(3,2,10,.88) 100%),linear-gradient(90deg,rgba(3,2,10,.90),transparent 22%,transparent 78%,rgba(3,2,10,.90));}
+#ldw_noise{position:fixed;inset:0;z-index:1;opacity:.09;pointer-events:none;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");}
+#ldw_stars{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.58;}
+.ldw_shell{position:relative;z-index:3;width:min(1360px,calc(100% - 28px));margin:0 auto;padding:16px 0 36px;}
+.ldw_top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid rgba(225,158,255,.22);border-radius:26px;background:linear-gradient(180deg,rgba(9,6,24,.76),rgba(5,3,14,.58));backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.38),0 0 60px rgba(170,70,255,.10);}
+.ldw_brand{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.ldw_brand_main{font-family:Orbitron,Inter,system-ui,sans-serif;font-weight:1000;letter-spacing:.10em;font-size:clamp(20px,3vw,44px);line-height:.9;background:linear-gradient(92deg,#fff,#b9eaff 24%,#a56cff 52%,#ff67e1 82%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 28px rgba(176,79,255,.18);white-space:nowrap;}
+.ldw_brand_sub{font-family:Orbitron,Inter,system-ui,sans-serif;font-weight:950;letter-spacing:.28em;font-size:clamp(10px,1.25vw,18px);color:rgba(255,235,255,.82);text-transform:uppercase;}
+.ldw_nav{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end;}
+.ldw_btn,.ldw_linkbtn{border:1px solid rgba(225,158,255,.20);background:linear-gradient(180deg,rgba(18,10,40,.76),rgba(8,5,22,.72));color:var(--ld-text);border-radius:999px;min-height:44px;padding:11px 15px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:transform .16s ease,border-color .16s ease,background .16s ease,filter .16s ease;}
+.ldw_btn:hover,.ldw_linkbtn:hover{transform:translateY(-1px);border-color:rgba(245,205,255,.38);filter:brightness(1.08);}
+.ldw_btn_primary{background:radial-gradient(120% 150% at 10% 0%,rgba(255,255,255,.24),transparent 36%),linear-gradient(135deg,rgba(124,60,255,.98),rgba(255,62,222,.74) 54%,rgba(42,214,255,.74));box-shadow:0 18px 46px rgba(160,70,255,.32),0 0 54px rgba(255,71,225,.16);border-color:rgba(255,255,255,.24);}
+.ldw_hero{position:relative;min-height:clamp(650px,75svh,900px);margin-top:14px;border:1px solid rgba(225,158,255,.24);border-radius:36px;overflow:hidden;background:linear-gradient(180deg,rgba(9,5,24,.68),rgba(5,3,14,.74));box-shadow:0 34px 110px rgba(0,0,0,.56),0 0 90px rgba(159,72,255,.14);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:clamp(24px,4vw,52px);}
+.ldw_hero:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(3,2,10,.00),rgba(3,2,10,.12) 40%,rgba(3,2,10,.88) 92%),var(--ldw-iconic-image);background-size:cover;background-position:center 42%;z-index:0;filter:saturate(1.16) contrast(1.05);}
+.ldw_hero:after{content:"YEE-HAW • HMPH • ARRR • REALLY?";position:absolute;left:50%;top:24px;transform:translateX(-50%);width:min(760px,92%);padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(4,2,12,.42);color:rgba(255,255,255,.78);font-size:11px;font-weight:1000;letter-spacing:.20em;text-transform:uppercase;box-shadow:0 18px 45px rgba(0,0,0,.30);backdrop-filter:blur(10px);z-index:2;}
+.ldw_hero_inner{position:relative;z-index:1;width:min(920px,100%);padding-top:92px;}
+.ldw_badge{display:inline-flex;align-items:center;justify-content:center;margin:0 0 14px;padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(135deg,rgba(74,33,145,.62),rgba(255,68,222,.18));color:#fff;font-size:12px;font-weight:1000;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 0 28px rgba(205,72,255,.20);}
+.ldw_title{margin:0 auto 14px;font-family:Orbitron,Inter,system-ui,sans-serif;font-size:clamp(38px,7vw,100px);font-weight:1000;line-height:.88;letter-spacing:-.06em;text-shadow:0 0 34px rgba(168,76,255,.38),0 10px 42px rgba(0,0,0,.70);}
+.ldw_title span{background:linear-gradient(92deg,#fff 0%,#b8eaff 22%,#a66cff 48%,#ff61df 76%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ldw_sub{max-width:830px;margin:0 auto;color:rgba(250,245,255,.88);font-size:clamp(15px,1.6vw,21px);line-height:1.48;text-shadow:0 4px 18px rgba(0,0,0,.80);}
+.ldw_actions{width:min(760px,100%);margin:26px auto 0;display:grid;gap:14px;justify-items:center;}
+.ldw_enter{width:100%;max-width:720px;min-height:92px;border-radius:30px;font-size:clamp(14px,1.6vw,20px);flex-direction:column;line-height:1.2;box-shadow:0 18px 46px rgba(160,70,255,.32),0 0 54px rgba(255,71,225,.16),0 0 64px rgba(255,196,107,.16);}
+.ldw_enter small{font-size:clamp(10px,1vw,13px);opacity:.78;letter-spacing:.08em;}
+.ldw_micro{margin:14px auto 0;color:rgba(255,255,255,.70);font-size:12px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;}
+.ldw_grid{margin-top:18px;display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start;}
+.ldw_card{border:1px solid rgba(225,158,255,.18);border-radius:28px;background:linear-gradient(180deg,rgba(10,6,26,.76),rgba(6,4,16,.68));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 24px 70px rgba(0,0,0,.30);overflow:hidden;}
+.ldw_card_head{padding:18px 18px 12px;border-bottom:1px solid rgba(255,255,255,.08);}
+.ldw_kicker{font-size:11px;font-weight:1000;letter-spacing:.20em;text-transform:uppercase;color:rgba(255,236,255,.52);}
+.ldw_card h2{margin:8px 0 0;font-size:clamp(22px,2.6vw,36px);line-height:1.02;letter-spacing:-.04em;}
+.ldw_card_body{padding:18px;}
+.ldw_features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.ldw_feature{border:1px solid rgba(255,255,255,.10);border-radius:20px;background:rgba(255,255,255,.045);padding:14px;min-height:118px;}
+.ldw_feature b{display:block;font-size:15px;margin-bottom:7px;}
+.ldw_feature p{margin:0;color:var(--ld-muted);font-size:13px;line-height:1.42;}
+.ldw_checkin_box{display:grid;gap:12px;}
+.ldw_textarea{width:100%;min-height:142px;resize:vertical;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.055);color:var(--ld-text);padding:14px;outline:none;font:inherit;line-height:1.45;}
+.ldw_textarea:focus{border-color:rgba(255,107,227,.42);box-shadow:0 0 0 4px rgba(155,92,255,.12);}
+.ldw_saved{min-height:50px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.04);padding:12px;color:var(--ld-muted);font-size:13px;line-height:1.45;white-space:pre-wrap;}
+.ldw_ai_reply{min-height:92px;border:1px solid rgba(255,85,223,.18);border-radius:20px;background:linear-gradient(180deg,rgba(255,85,223,.08),rgba(67,216,255,.045));padding:14px;color:rgba(255,247,255,.88);font-size:14px;line-height:1.52;white-space:pre-wrap;box-shadow:inset 0 0 26px rgba(155,92,255,.06);}
+.ldw_note{color:var(--ld-soft);font-size:12px;line-height:1.45;}
+.ldw_accordion{margin-top:18px;border:1px solid rgba(225,158,255,.16);border-radius:24px;background:linear-gradient(180deg,rgba(10,6,25,.62),rgba(6,4,16,.50));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden;}
+.ldw_accordion summary{cursor:pointer;padding:16px 18px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,247,255,.88);}
+.ldw_accordion div{padding:0 18px 18px;color:var(--ld-muted);line-height:1.55;font-size:14px;}
+.ldw_footer{padding:22px 0 4px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+.ldw_footer a{color:rgba(245,239,255,.76);text-decoration:none;font-size:11px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;border:1px solid rgba(214,164,255,.14);background:rgba(255,255,255,.035);padding:10px 13px;border-radius:999px;}
+.ldw_footer a:hover{color:#fff;border-color:rgba(230,190,255,.30);background:rgba(255,255,255,.07);}
+.ldw_auth_modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;overflow:hidden;background:radial-gradient(900px 560px at 18% 8%,rgba(255,176,107,.22),transparent 58%),radial-gradient(760px 560px at 84% 14%,rgba(155,92,255,.20),transparent 58%),radial-gradient(640px 480px at 50% 100%,rgba(255,140,190,.12),transparent 60%),rgba(2,3,10,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.ldw_auth_modal.open{display:flex;}
+.ldw_auth_ambient{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;border-radius:34px;}
+.ldw_auth_mote{position:absolute;bottom:-10px;border-radius:50%;opacity:0;animation-name:ldwAuthFloat;animation-timing-function:ease-in;animation-iteration-count:infinite;filter:blur(.2px);}
+@keyframes ldwAuthFloat{0%{transform:translateY(0) scale(.6);opacity:0;}12%{opacity:.9;}88%{opacity:.22;}100%{transform:translateY(-360px) scale(1.15);opacity:0;}}
+.ldw_modal_box{position:relative;width:min(460px,calc(100vw - 28px));max-height:min(92vh,820px);overflow-y:auto;border:1px solid rgba(255,221,170,.26);border-radius:34px;background:linear-gradient(165deg,rgba(24,17,34,.90),rgba(7,7,15,.95));box-shadow:0 34px 110px rgba(0,0,0,.62),0 0 60px rgba(255,196,107,.14),0 0 80px rgba(155,92,255,.14);scrollbar-width:thin;scrollbar-color:rgba(255,196,107,.4) transparent;}
+.ldw_modal_head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:26px 26px 6px;border-bottom:0;}
+.ldw_modal_head h3{margin:0;font-size:clamp(22px,3vw,28px);line-height:1.1;letter-spacing:-.03em;font-weight:950;background:linear-gradient(90deg,#fff,#ffe6c2);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ldw_modal_head .ldw_auth_kicker{margin-bottom:10px;font-size:11px;line-height:1;text-transform:uppercase;letter-spacing:.20em;color:#ffd68a;font-weight:1000;}
+.ldw_modal_head .ldw_auth_sub{margin-top:10px;max-width:610px;color:rgba(255,247,255,.74);font-size:13.5px;line-height:1.5;font-weight:500;}
+.ldw_modal_body{position:relative;z-index:1;padding:10px 26px 26px;display:grid;gap:12px;}
+.ldw_auth_tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.055);box-shadow:inset 0 0 22px rgba(0,0,0,.18);}
+.ldw_auth_tab{border:0;border-radius:14px;min-height:42px;background:transparent;color:rgba(255,247,255,.62);font:inherit;font-size:12px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:transform .15s ease,filter .15s ease,color .15s ease,background .15s ease;}
+.ldw_auth_tab.active{color:#1a0f00;background:linear-gradient(90deg,#ffe6b3,#ffd68a,#d8c4ff);box-shadow:0 8px 20px rgba(255,196,107,.22);}
+.ldw_auth_tab:hover{filter:brightness(1.06);}
+.ldw_input{width:100%;min-height:50px;border:1px solid rgba(255,221,170,.20);border-radius:18px;background:rgba(255,255,255,.06);color:var(--ld-text);padding:0 16px;outline:none;font:inherit;font-size:15px;font-weight:750;transition:border-color .15s ease,box-shadow .15s ease;}
+.ldw_input:focus{border-color:rgba(255,196,107,.65);box-shadow:0 0 0 4px rgba(255,196,107,.12);}
+.ldw_auth_actions{display:grid;gap:10px;}
+.ldw_auth_primary{min-height:50px!important;border-radius:999px!important;font-size:14px!important;font-weight:950!important;letter-spacing:0!important;text-transform:none!important;background:linear-gradient(90deg,#ffe6b3,#ffd68a,#d8c4ff)!important;color:#1a0f00!important;border-color:rgba(255,255,255,.30)!important;box-shadow:0 14px 32px rgba(255,196,107,.24)!important;}
+.ldw_auth_google{min-height:50px!important;border-radius:999px!important;background:#fff!important;color:#3c4043!important;border-color:#dadce0!important;text-transform:none!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;gap:10px!important;box-shadow:0 10px 26px rgba(0,0,0,.18)!important;}
+.ldw_auth_google_icon{width:18px;height:18px;flex-shrink:0;}
+.ldw_auth_apple{min-height:50px!important;border-radius:999px!important;background:#000!important;color:#fff!important;border-color:rgba(255,255,255,.14)!important;text-transform:none!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;gap:10px!important;box-shadow:0 10px 26px rgba(0,0,0,.30)!important;}
+.ldw_auth_apple_icon{width:14px;height:17px;flex-shrink:0;}
+.ldw_auth_ghost{min-height:50px!important;border-radius:999px!important;background:rgba(255,255,255,.075)!important;text-transform:none!important;font-size:14px!important;font-weight:800!important;letter-spacing:0!important;}
+.ldw_auth_link{border:0!important;background:transparent!important;min-height:auto!important;padding:4px 6px!important;color:#ffd68a!important;text-transform:none!important;font-size:13px!important;letter-spacing:.01em!important;font-weight:900!important;box-shadow:none!important;justify-self:center;}
+.ldw_auth_link:hover{text-decoration:underline;transform:none!important;filter:none!important;}
+.ldw_auth_divider{display:flex;align-items:center;gap:10px;margin:6px 0 2px;color:rgba(255,255,255,.42);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+.ldw_auth_divider:before,.ldw_auth_divider:after{content:"";flex:1;height:1px;background:rgba(255,255,255,.14);}
+.ldw_auth_resend{display:none;}
+.ldw_status{min-height:20px;color:rgba(255,247,255,.74);font-size:13px;line-height:1.45;text-align:center;font-weight:650;}
+.ldw_auth_hidden{display:none!important;}
+@media(prefers-reduced-motion:reduce){.ldw_auth_mote{animation:none;display:none;}}
+@media(max-width:560px){.ldw_auth_modal{align-items:flex-start;padding:12px}.ldw_modal_box{width:100%;border-radius:26px;margin:8px 0;max-height:96vh}.ldw_modal_head{padding:22px 20px 6px}.ldw_modal_body{padding:8px 20px 20px}.ldw_modal_head h3{font-size:22px}.ldw_modal_head .ldw_auth_sub{font-size:12.5px}}
+@media(max-width:900px){.ldw_top{align-items:flex-start;flex-direction:column}.ldw_nav{justify-content:flex-start}.ldw_grid{grid-template-columns:1fr}.ldw_features{grid-template-columns:1fr}}
+@media(max-width:560px){.ldw_shell{width:min(100% - 16px,1360px);padding-top:8px}.ldw_top{border-radius:20px;padding:12px}.ldw_nav{width:100%;display:grid;grid-template-columns:.9fr 1.22fr .9fr;gap:7px}.ldw_btn,.ldw_linkbtn{font-size:9.5px;padding:9px 7px;min-height:42px;letter-spacing:.055em;text-align:center;line-height:1.12;white-space:normal}.ldw_nav #ldw_scroll_checkin{font-size:8.8px;letter-spacing:.015em;white-space:nowrap;padding-left:5px;padding-right:5px}.ldw_hero{min-height:610px;border-radius:24px;padding:92px 12px 22px}.ldw_hero_inner{padding-top:78px}.ldw_hero:before{background-size:auto 66%;background-repeat:no-repeat;background-position:center 64px}.ldw_hero:after{top:15px;font-size:8px;letter-spacing:.11em;padding:8px 10px;width:calc(100% - 30px);line-height:1.25}.ldw_badge{font-size:9px;letter-spacing:.09em;padding:8px 10px;margin-top:0}.ldw_title{font-size:clamp(35px,12vw,56px)}.ldw_sub{font-size:14px}.ldw_enter{min-height:82px;border-radius:24px}.ldw_micro{font-size:10px;line-height:1.45}.ldw_card{border-radius:22px}.ldw_card_body,.ldw_card_head{padding:14px}.ldw_footer a{font-size:10px;padding:9px 11px}}
+`;
+
+  const HTML = `
+<div id="ldw_bg" aria-hidden="true"></div>
+<div id="ldw_noise" aria-hidden="true"></div>
+<canvas id="ldw_stars" aria-hidden="true"></canvas>
+<div class="ldw_shell">
+  <header class="ldw_top">
+    <div class="ldw_brand" aria-label="LifeDecode World">
+      <div class="ldw_brand_main">LIFEDECODE</div>
+      <div class="ldw_brand_sub">WORLD</div>
+    </div>
+    <nav class="ldw_nav" aria-label="Main navigation">
+      <a class="ldw_linkbtn ldw_btn_primary" href="${CFG.WORLD_URL}">Enter World</a>
+      <button class="ldw_btn" id="ldw_scroll_checkin" type="button">Daily Check-In</button>
+      <a class="ldw_linkbtn" id="ldw_premium_nav" href="${CFG.WORLD_URL}">Shop</a>
+      <button class="ldw_btn" id="ldw_login_btn" type="button">Login</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="ldw_hero" aria-label="LifeDecode World intro">
+      <div class="ldw_hero_inner">
+        <div class="ldw_badge">Silly Squad is assembling</div>
+        <h1 class="ldw_title"><span>ENTER THE WORLD</span></h1>
+        <p class="ldw_sub">A mysterious social world where spirits explore rooms, meet ridiculous NPCs, collect Dust, unlock cosmetics, and slowly become better humans without the boring self-help lecture energy.</p>
+        <div class="ldw_actions">
+          <a class="ldw_btn ldw_btn_primary ldw_enter" href="${CFG.WORLD_URL}">
+            <span>ENTER LIFEDECODE WORLD</span>
+            <small>Play, explore, meet NPCs, collect Dust & cause emotional damage</small>
+          </a>
+          <button class="ldw_btn" id="ldw_hero_checkin" type="button">Do Daily Check-In first</button>
+          <a class="ldw_btn ldw_btn_primary" id="ldw_premium_hero" href="${CFG.WORLD_URL}">Purchases are available inside LifeDecode World</a>
+        </div>
+        <div class="ldw_micro">No login wall before landing • Privacy & terms stay available • Daily Check-In stays alive</div>
+      </div>
+    </section>
+
+    <section class="ldw_grid" id="ldw_checkin_section">
+      <article class="ldw_card">
+        <div class="ldw_card_head">
+          <div class="ldw_kicker">Why this world exists</div>
+          <h2>Not pay-to-win. Not soulless. Just weird, cozy, iconic progression.</h2>
+        </div>
+        <div class="ldw_card_body">
+          <div class="ldw_features">
+            <div class="ldw_feature"><b>🌎 Explore rooms</b><p>Plaza, Brew Haven, Soulcore, Mind Zone and future maps with lore, quests and secrets.</p></div>
+            <div class="ldw_feature"><b>👻 Build your spirit</b><p>Cosmetics, sets, identity and style without destroying the actual game balance.</p></div>
+            <div class="ldw_feature"><b>🧠 Grow through play</b><p>Daily check-ins, symbolic systems, choices and NPC moments that quietly teach real-life skills.</p></div>
+            <div class="ldw_feature"><b>✨ Meet the chaos</b><p>Cowboys, ninjas, pirates, princesses, emotional goblins and probably one NPC with tax issues.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="ldw_card">
+        <div class="ldw_card_head">
+          <div class="ldw_kicker">Daily Check-In</div>
+          <h2>Drop your current state before entering the chaos.</h2>
+        </div>
+        <div class="ldw_card_body">
+          <div class="ldw_checkin_box">
+            <textarea class="ldw_textarea" id="ldw_checkin_text" placeholder="How are you really doing today? One sentence is enough. No fake wellness influencer nonsense required."></textarea>
+            <button class="ldw_btn ldw_btn_primary" id="ldw_save_checkin" type="button">Save Check-In + Claim XP</button>
+            <div class="ldw_ai_reply" id="ldw_ai_reply">AI response will appear here after your check-in.</div>
+            <div class="ldw_saved" id="ldw_saved_checkin">Your last check-in will appear here.</div>
+            <div class="ldw_note">Logged-in users get +${CFG.DAILY_XP} XP once every 24 hours directly into the same World database state. If not logged in, the check-in saves locally and waits for login.</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <details class="ldw_accordion">
+      <summary>Privacy, safety and boring-but-important adult paperwork</summary>
+      <div>
+        LifeDecode World keeps the landing open before login, while Privacy Policy and Terms stay directly accessible. This page is focused on the World, but the important legal links remain visible for visitors, app verification, and general sanity.
+      </div>
+    </details>
+  </main>
+
+  <footer class="ldw_footer" aria-label="Legal footer">
+    <a href="${CFG.POLICY_URL}">Privacy Policy</a>
+    <a href="${CFG.TERMS_URL}">Terms of Service</a>
+    <a href="mailto:simon.ovcar12@gmail.com">Contact</a>
+  </footer>
+</div>
+
+<div class="ldw_auth_modal" id="ldw_auth_modal" aria-hidden="true">
+  <div class="ldw_modal_box" role="dialog" aria-modal="true" aria-label="LifeDecode account">
+    <div class="ldw_auth_ambient" id="ldw_auth_ambient"></div>
+    <div class="ldw_modal_head">
+      <div>
+        <div class="ldw_auth_kicker">&#10024; LifeDecode World</div>
+        <h3 id="ldw_auth_title">Welcome back, adventurer</h3>
+        <div class="ldw_auth_sub" id="ldw_auth_sub">Sign in to keep your Beans, Dust, and unlocks safe &mdash; or jump in as a guest right now.</div>
+      </div>
+      <button class="ldw_btn" id="ldw_close_login" type="button">Close</button>
+    </div>
+    <div class="ldw_modal_body">
+      <div class="ldw_auth_tabs" role="tablist" aria-label="Auth tabs">
+        <button class="ldw_auth_tab active" id="ldw_tab_login" type="button">Login</button>
+        <button class="ldw_auth_tab" id="ldw_tab_register" type="button">Register</button>
+      </div>
+      <input class="ldw_input" id="ldw_email" type="email" autocomplete="email" placeholder="Email">
+      <input class="ldw_input" id="ldw_password" type="password" autocomplete="current-password" placeholder="Password">
+      <div class="ldw_auth_actions">
+        <button class="ldw_btn ldw_btn_primary ldw_auth_primary" id="ldw_email_login" type="button">Login</button>
+        <button class="ldw_btn ldw_btn_primary ldw_auth_primary ldw_auth_hidden" id="ldw_email_signup" type="button">Create account</button>
+        <button class="ldw_btn ldw_auth_link" id="ldw_forgot_password" type="button">Forgot password?</button>
+
+        <div class="ldw_auth_divider"><span>or continue with</span></div>
+
+        <button class="ldw_btn ldw_auth_google" id="ldw_google_login" type="button">
+          <svg class="ldw_auth_google_icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </button>
+        <button class="ldw_btn ldw_auth_apple" id="ldw_apple_login" type="button">
+          <svg class="ldw_auth_apple_icon" viewBox="0 0 814 1000" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="#ffffff" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-89.6 123.1-159.5 123.1s-94-44.9-180.4-44.9c-91.1 0-119.7 44.9-191.2 44.9-71.5 0-122.6-65.6-167.4-128.3-58.4-81.5-105.2-208.6-105.2-329.1 0-192.3 124.4-294.2 246.9-294.2 75.4 0 138 41.7 184.5 41.7 41.7 0 110.3-44.9 192.1-44.9 31.6 0 145.4 2.9 222.6 113.1zM560.3 144.4c20.4-22.2 35.4-53.8 35.4-85.4 0-4.5-.4-9.1-1.2-12.8-29.9 1.2-65.2 19.8-87 44.9-19.5 22-37.1 53.4-37.1 84.6 0 5.1.8 10.1 1.2 11.7 2.5.6 6.7 1.2 11.1 1.2 26.9 0 60.7-17.9 77.6-44.2z"/>
+          </svg>
+          <span>Sign in with Apple</span>
+        </button>
+
+        <button class="ldw_btn ldw_auth_ghost" id="ldw_guest_continue" type="button">&#127881; Continue as Guest</button>
+        <button class="ldw_btn ldw_auth_link ldw_auth_resend" id="ldw_resend_verify" type="button">Resend verification email</button>
+        <a class="ldw_btn ldw_btn_primary ldw_auth_primary" id="ldw_buy_premium" href="${CFG.WORLD_URL}">Open LifeDecode World</a>
+        <button class="ldw_btn ldw_auth_ghost" id="ldw_logout" type="button" style="display:none">Logout</button>
+      </div>
+      <div class="ldw_status" id="ldw_auth_status"></div>
+    </div>
+  </div>
+</div>
+`;
+
+  function ready(fn) {
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true });
+    else fn();
+  }
+
+  function injectFonts() {
+    if (!document.getElementById("ldw_fonts")) {
+      const link = document.createElement("link");
+      link.id = "ldw_fonts";
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap";
+      document.head.appendChild(link);
+    }
+  }
+
+  function setIconicWallpaperUrl(url) {
+    try {
+      document.documentElement.style.setProperty("--ldw-iconic-image", `url("${url}")`);
+    } catch (e) {}
+  }
+
+  function testImage(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  }
+
+  async function preloadIconicWallpaper() {
+    const urls = [CFG.ICONIC_URL].concat(CFG.ICONIC_FALLBACKS || []);
+    for (const url of urls) {
+      if (!url) continue;
+      setIconicWallpaperUrl(url);
+      const ok = await testImage(url);
+      if (ok) {
+        if (!document.getElementById("ldw_iconic_preload")) {
+          const link = document.createElement("link");
+          link.id = "ldw_iconic_preload";
+          link.rel = "preload";
+          link.as = "image";
+          link.href = url;
+          document.head.appendChild(link);
+        }
+        console.log("[LD] iconic wallpaper loaded:", url);
+        return url;
+      }
+    }
+    console.warn("[LD] iconic wallpaper failed on all URLs. Check asset name/path/case in GitHub/Webflow assets.");
+    return null;
+  }
+
+  function injectCSS() {
+    if (document.getElementById("ldw_style")) return;
+    const style = document.createElement("style");
+    style.id = "ldw_style";
+    style.textContent = CSS;
+    document.head.appendChild(style);
+  }
+
+  // Lightweight ambient sparkles for the login modal — pure CSS keyframes,
+  // no animation loop/timer. Mirrors the same technique used on the
+  // LifeDecode World login panel for visual consistency.
+  function buildAuthMotesHtml() {
+    const colors = ["#ffd68a", "#ff9ecb", "#b99cff", "#9ee9ff"];
+    let html = "";
+    for (let i = 0; i < 14; i++) {
+      const left = Math.round(Math.random() * 100);
+      const delay = (Math.random() * 10).toFixed(2);
+      const dur = (8 + Math.random() * 7).toFixed(2);
+      const size = (2 + Math.random() * 3).toFixed(1);
+      const color = colors[i % colors.length];
+      html += '<span class="ldw_auth_mote" style="left:' + left + '%;width:' + size + 'px;height:' + size + 'px;background:' + color + ';animation-delay:' + delay + 's;animation-duration:' + dur + 's;"></span>';
+    }
+    return html;
+  }
+
+  function render() {
+    // WHITE-SCREEN RESCUE v8:
+    // Always create a top-level app directly under body and make it visually independent
+    // from Webflow wrappers/interactions. This prevents a hidden parent wrapper from hiding the app.
+    let oldNested = document.getElementById("ldw_app") || document.getElementById("ld_app");
+    if (oldNested && oldNested.parentElement !== document.body) {
+      oldNested.remove();
+    }
+
+    let app = document.getElementById("ldw_app");
+    if (!app || app.parentElement !== document.body) {
+      app = document.createElement("div");
+      app.id = "ldw_app";
+      document.body.insertBefore(app, document.body.firstChild || null);
+    }
+
+    Object.assign(app.style, {
+      display: "block",
+      visibility: "visible",
+      opacity: "1",
+      minHeight: "100svh",
+      position: "relative",
+      zIndex: "2147483000"
+    });
+
+    app.innerHTML = HTML;
+
+    const authAmbient = document.getElementById("ldw_auth_ambient");
+    if (authAmbient) authAmbient.innerHTML = buildAuthMotesHtml();
+
+    // Hide Webflow default visible sections only after our app exists and has content.
+    Array.from(document.body.children).forEach((el) => {
+      if (el === app) return;
+      const tag = (el.tagName || "").toUpperCase();
+      if (tag === "SCRIPT" || tag === "STYLE" || tag === "LINK") return;
+      el.setAttribute("data-ldw-hidden", "1");
+      el.style.display = "none";
+    });
+
+    // If any external script/style later hides the body/app, force it back once more.
+    setTimeout(() => {
+      try {
+        document.documentElement.style.background = "#03020a";
+        document.body.style.background = "#03020a";
+        app.style.display = "block";
+        app.style.visibility = "visible";
+        app.style.opacity = "1";
+      } catch (err) {}
+    }, 250);
+  }
+
+  function loadSupabaseScript() {
+    return new Promise((resolve) => {
+      if (window.supabase && window.supabase.createClient) return resolve(true);
+      const existing = document.querySelector('script[src*="@supabase/supabase-js"]');
+      if (existing) {
+        existing.addEventListener("load", () => resolve(true), { once: true });
+        existing.addEventListener("error", () => resolve(false), { once: true });
+        setTimeout(() => resolve(!!(window.supabase && window.supabase.createClient)), 4500);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.head.appendChild(script);
+    });
+  }
+
+  async function getSupabase() {
+    const loaded = await loadSupabaseScript();
+    if (!loaded || !window.supabase || !window.supabase.createClient) return null;
+    if (!window.__LDW_SUPABASE__) {
+      window.__LDW_SUPABASE__ = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_KEY, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+    }
+    return window.__LDW_SUPABASE__;
+  }
+
+  async function getSession() {
+    const client = await getSupabase();
+    if (!client) return { client: null, session: null };
+    const { data } = await client.auth.getSession();
+    return { client, session: data && data.session ? data.session : null };
+  }
+
+  async function callDailyCheckinServer(text, options = {}) {
+    const { session } = await getSession();
+    const token = session && session.access_token ? session.access_token : "";
+    const body = {
+      text: String(text || "").trim(),
+      checkin: String(text || "").trim(),
+      source: "lifedecode-app-landing",
+      npc: "Ria",
+      mode: "daily_checkin",
+      awardXp: options.awardXp !== false,
+      skipAI: options.skipAI === true,
+      skipXp: options.skipXp === true,
+      xp: CFG.DAILY_XP,
+      timestamp: new Date().toISOString()
+    };
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), Number(options.timeoutMs || 25000));
+
+    try {
+      const res = await fetch(CFG.DAILY_CHECKIN_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json, text/plain, */*",
+          ...(token ? { "Authorization": "Bearer " + token } : {})
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      const contentType = res.headers.get("content-type") || "";
+      const raw = contentType.includes("application/json") ? await res.json() : await res.text();
+
+      if (!res.ok) {
+        const msg = raw && raw.error ? raw.error : (typeof raw === "string" ? raw : ("Server request failed: " + res.status));
+        throw new Error(msg);
+      }
+
+      return raw && typeof raw === "object" ? raw : { ok: true, reply: String(raw || "") };
+    } catch (err) {
+      clearTimeout(timeout);
+      throw err;
+    }
+  }
+
+  function getXPForLevel(level) {
+    const cleanLevel = Math.max(1, Math.floor(Number(level) || 1));
+    if (cleanLevel <= 1) return 0;
+    return Math.floor(100 * Math.pow(cleanLevel - 1, 1.35));
+  }
+
+  function getLevelFromXP(xp) {
+    const cleanXP = Math.max(0, Math.floor(Number(xp) || 0));
+    let lvl = 1;
+    for (let next = 2; next <= 100; next++) {
+      if (cleanXP >= getXPForLevel(next)) lvl = next;
+      else break;
+    }
+    return lvl;
+  }
+
+  function extractAIReply(data) {
+    if (typeof data === "string") return data.trim();
+    if (!data || typeof data !== "object") return "";
+
+    if (Array.isArray(data)) {
+      for (const item of data) {
+        const nested = extractAIReply(item);
+        if (nested) return nested;
+      }
+      return "";
+    }
+
+    const direct = data.reply || data.answer || data.message || data.text || data.output || data.result ||
+      data.response || data.content || data.ai || data.body || data.advice || data.ria || "";
+
+    if (direct && typeof direct === "object") return extractAIReply(direct);
+    if (direct) return String(direct).trim();
+
+    for (const key of ["data", "payload", "choices"]) {
+      const nested = extractAIReply(data[key]);
+      if (nested) return nested;
+    }
+
+    try {
+      const firstChoice = data.choices && data.choices[0] && (data.choices[0].message || data.choices[0].text);
+      const nested = extractAIReply(firstChoice);
+      if (nested) return nested;
+    } catch (e) {}
+
+    return "";
+  }
+
+  function buildLocalCheckinAdvice(text) {
+    const clean = String(text || "").trim();
+    const lower = clean.toLowerCase();
+
+    let focus = "First: pause. Breathe in for 4, hold for 2, out for 6. Do that three times before you make any dramatic little goblin decisions.";
+    if (/(anx|panic|strah|nerv|tesn|overwhelm|stres|stress)/i.test(lower)) {
+      focus = "Your nervous system sounds overloaded. Do 3 slow breaths, unclench your jaw, drink water, then pick ONE tiny next action. Not ten. One.";
+    } else if (/(sad|žal|zal|depres|empty|praz|lonely|sam|down|slab)/i.test(lower)) {
+      focus = "This sounds heavy, not lazy. Lower the bar today: shower, food, fresh air for 5 minutes. Tiny wins count. The goblin brain hates that, tragic for him.";
+    } else if (/(angry|jezn|besn|mad|frustr|rage|fuck|kurc)/i.test(lower)) {
+      focus = "You sound activated. Do not reply, buy, quit, text, or burn the village yet. Move your body for 2 minutes, then decide from a calmer state.";
+    } else if (/(tired|utruj|sleep|spat|exhaust|burn)/i.test(lower)) {
+      focus = "Your body is waving a tiny white flag. Make the next task stupidly small, then sleep or rest as soon as possible. Productivity is cute, but biology owns the building.";
+    } else if (/(good|dobr|super|happy|mirn|ok|fine|great)/i.test(lower)) {
+      focus = "Good. Use the stable mood like a cheat code: do one useful thing now while your brain is cooperating for once. Gorgeous. Suspicious, but gorgeous.";
+    }
+
+    return "Ria says:\n" + focus + "\n\nTiny mission for today: write down what triggered this mood, choose one next action, and enter the World only after you do that one thing. +XP is cute, but self-control is the real loot.";
+  }
+
+  async function requestDailyCheckinAI(text) {
+    try {
+      const data = await callDailyCheckinServer(text, { awardXp: false, skipXp: true, timeoutMs: 25000 });
+      const reply = extractAIReply(data) || data.reply || data.answer || data.message || "";
+      return {
+        ok: true,
+        reply: reply || buildLocalCheckinAdvice(text)
+      };
+    } catch (err) {
+      console.error("[LD] Daily Check-In AI server error:", err);
+      return {
+        ok: false,
+        reply: buildLocalCheckinAdvice(text) + "\n\nNote: Secure server AI endpoint did not return properly, so this fallback kept the check-in alive instead of leaving the user staring into the void like a cursed loading screen."
+      };
+    }
+  }
+
+  function normalizeWorldStateForXP(state, deltaXP) {
+    const cleanState = state && typeof state === "object" ? state : {};
+    const world = cleanState[CFG.DB_KEY] && typeof cleanState[CFG.DB_KEY] === "object" ? cleanState[CFG.DB_KEY] : {};
+    const xpSystem = cleanState.xpSystem && typeof cleanState.xpSystem === "object" ? cleanState.xpSystem : (world.xpSystem && typeof world.xpSystem === "object" ? world.xpSystem : {});
+    const oldXP = Math.max(0, Math.floor(Number(cleanState.xp ?? cleanState.exp ?? world.xp ?? xpSystem.xp ?? xpSystem.total ?? 0) || 0));
+    const newXP = Math.max(0, oldXP + Math.max(0, Math.floor(Number(deltaXP) || 0)));
+    const level = getLevelFromXP(newXP);
+    const now = new Date().toISOString();
+    const awardLog = xpSystem.awardLog && typeof xpSystem.awardLog === "object" ? xpSystem.awardLog : {};
+    const dailyKey = "landing_daily_checkin_" + new Date().toISOString().slice(0, 10);
+    awardLog[dailyKey] = { action: "landing_daily_checkin", xp: deltaXP, at: now };
+    const nextXPSystem = { ...xpSystem, xp: newXP, total: newXP, level, awardLog, updatedAt: now, lastDailyCheckinAt: now };
+    const xpMeta = { total: newXP, level, updatedAt: now, source: "lifedecode-app-daily-checkin" };
+    return {
+      ...cleanState,
+      [CFG.DB_KEY]: { ...world, xpSystem: nextXPSystem, xp: newXP, level, lastDailyCheckin: { at: now, xp: deltaXP, source: "lifedecode.app" } },
+      xp: newXP,
+      exp: newXP,
+      level,
+      xpMeta,
+      xpSystem: nextXPSystem,
+      lastDailyCheckin: { at: now, xp: deltaXP, source: "lifedecode.app" }
+    };
+  }
+
+  async function awardDailyCheckinXP(text) {
+    const { session } = await getSession();
+    const now = new Date().toISOString();
+    const payload = {
+      text,
+      date: new Date().toLocaleString(),
+      iso: now,
+      xp: CFG.DAILY_XP,
+      awarded: false,
+      user_id: session && session.user ? session.user.id : null
+    };
+
+    try { localStorage.setItem(CFG.PENDING_XP_KEY, JSON.stringify(payload)); } catch (e) {}
+
+    const cooldown = await getDailyCheckinCooldownInfo();
+    if (!cooldown.allowed) {
+      return { ok: false, blocked: true, message: `Daily Check-In is already claimed. Come back in ${formatDuration(cooldown.remainingMs)} for the next +${CFG.DAILY_XP} XP.` };
+    }
+
+    if (!session || !session.user || !session.access_token) {
+      return { ok: false, queued: true, message: `Saved locally. Login first to claim +${CFG.DAILY_XP} XP in the World.` };
+    }
+
+    try {
+      const data = await callDailyCheckinServer(text, { awardXp: true, skipAI: true, timeoutMs: 25000 });
+
+      if (data && data.ok && data.xp && data.xp.gained > 0) {
+        payload.awarded = true;
+        payload.lastAwardAt = data.xp.lastDailyCheckinAt || new Date().toISOString();
+        rememberDailyCheckinAward(text);
+        try { localStorage.setItem(CFG.PENDING_XP_KEY, JSON.stringify(payload)); } catch (e) {}
+        return { ok: true, message: `Daily Check-In saved. +${data.xp.gained || CFG.DAILY_XP} XP added securely by the server.` };
+      }
+
+      if (data && data.xp && data.xp.blocked) {
+        const remainingMs = Number(data.xp.remainingMs || 0);
+        return {
+          ok: false,
+          blocked: true,
+          message: `Daily Check-In is already claimed. Come back in ${formatDuration(remainingMs)} for the next +${CFG.DAILY_XP} XP.`
+        };
+      }
+
+      return { ok: false, queued: true, message: (data && data.message) || `Check-In saved, but XP was not awarded.` };
+    } catch (err) {
+      console.warn("[LD] Secure XP endpoint failed:", err);
+      return { ok: false, queued: true, message: `Check-In saved locally, but secure XP server failed: ${err.message || err}` };
+    }
+  }
+
+
+  function formatDuration(ms) {
+    const clean = Math.max(0, Number(ms) || 0);
+    const totalMinutes = Math.ceil(clean / 60000);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    if (hours <= 0) return minutes + "m";
+    if (minutes <= 0) return hours + "h";
+    return hours + "h " + minutes + "m";
+  }
+
+  function getStoredLastCheckinAt() {
+    try {
+      const award = JSON.parse(localStorage.getItem(CFG.LAST_CHECKIN_AWARD_KEY) || "null");
+      const awardRaw = award && award.lastAwardAt;
+      const awardTime = awardRaw ? new Date(awardRaw).getTime() : 0;
+      if (awardTime && Number.isFinite(awardTime)) return awardTime;
+    } catch (e) {}
+
+    try {
+      const pending = JSON.parse(localStorage.getItem(CFG.PENDING_XP_KEY) || "null");
+      // Only an already-awarded pending payload counts for the 24h lock.
+      // A freshly queued unsent payload must not block its own XP write.
+      if (pending && pending.awarded) {
+        const pendingRaw = pending.lastAwardAt || pending.iso || pending.at;
+        const pendingTime = pendingRaw ? new Date(pendingRaw).getTime() : 0;
+        if (pendingTime && Number.isFinite(pendingTime)) return pendingTime;
+      }
+    } catch (e) {}
+
+    return 0;
+  }
+
+  async function getRemoteLastCheckinAt() {
+    const { client, session } = await getSession();
+    if (!client || !session || !session.user) return 0;
+    try {
+      const { data } = await client
+        .from(CFG.DB_TABLE)
+        .select("state")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+      const state = data && data.state && typeof data.state === "object" ? data.state : {};
+      const candidates = [
+        state.lastDailyCheckin && state.lastDailyCheckin.at,
+        state.world && state.world.lastDailyCheckin && state.world.lastDailyCheckin.at,
+        state.xpSystem && state.xpSystem.lastDailyCheckinAt,
+        state.world && state.world.xpSystem && state.world.xpSystem.lastDailyCheckinAt
+      ];
+      for (const raw of candidates) {
+        const time = raw ? new Date(raw).getTime() : 0;
+        if (time && Number.isFinite(time)) return time;
+      }
+    } catch (err) {
+      console.warn("[LD] Could not read remote daily check-in timer:", err);
+    }
+    return 0;
+  }
+
+  async function getDailyCheckinCooldownInfo() {
+    const localAt = getStoredLastCheckinAt();
+    const remoteAt = await getRemoteLastCheckinAt();
+    const lastAt = Math.max(localAt, remoteAt);
+    if (!lastAt) return { allowed: true, lastAt: 0, remainingMs: 0 };
+    const remainingMs = CFG.CHECKIN_COOLDOWN_MS - (Date.now() - lastAt);
+    return {
+      allowed: remainingMs <= 0,
+      lastAt,
+      remainingMs: Math.max(0, remainingMs)
+    };
+  }
+
+  function rememberDailyCheckinAward(text) {
+    const now = new Date().toISOString();
+    try {
+      localStorage.setItem(CFG.LAST_CHECKIN_AWARD_KEY, JSON.stringify({
+        text: String(text || "").slice(0, 500),
+        lastAwardAt: now,
+        xp: CFG.DAILY_XP
+      }));
+    } catch (e) {}
+  }
+
+  async function updateAuthUI() {
+    const btn = document.getElementById("ldw_login_btn");
+    const logoutBtn = document.getElementById("ldw_logout");
+    const status = document.getElementById("ldw_auth_status");
+    const title = document.getElementById("ldw_auth_title");
+    const sub = document.getElementById("ldw_auth_sub");
+    const authTabs = document.querySelector(".ldw_auth_tabs");
+    const authFields = [
+      document.getElementById("ldw_email"),
+      document.getElementById("ldw_password"),
+      document.getElementById("ldw_email_login"),
+      document.getElementById("ldw_email_signup"),
+      document.getElementById("ldw_forgot_password"),
+      document.getElementById("ldw_google_login"),
+      document.getElementById("ldw_apple_login"),
+      document.getElementById("ldw_guest_continue"),
+      document.getElementById("ldw_resend_verify")
+    ];
+    const premiumBtn = document.getElementById("ldw_buy_premium");
+    const { session } = await getSession();
+
+    if (session && session.user) {
+      if (btn) {
+        btn.textContent = "Account";
+        btn.title = session.user.email || "Logged in";
+      }
+      if (title) title.textContent = "Your LifeDecode account";
+      if (sub) sub.textContent = "Logged in as " + (session.user.email || "LifeDecode user") + ". Enter the World to continue your progress.";
+      if (authTabs) authTabs.classList.add("ldw_auth_hidden");
+      authFields.forEach((el) => { if (el) el.classList.add("ldw_auth_hidden"); });
+      if (premiumBtn) premiumBtn.classList.remove("ldw_auth_hidden");
+      if (logoutBtn) {
+        logoutBtn.style.display = "inline-flex";
+        logoutBtn.classList.remove("ldw_auth_hidden");
+      }
+      if (status && !status.textContent) status.textContent = "Logged in as " + (session.user.email || "LifeDecode user") + ".";
+    } else {
+      if (btn) {
+        btn.textContent = "Login";
+        btn.title = "";
+      }
+      if (title) title.textContent = "Welcome back, adventurer";
+      if (sub) sub.textContent = "Sign in to keep your Beans, Dust, and unlocks safe — or jump in as a guest right now.";
+      if (authTabs) authTabs.classList.remove("ldw_auth_hidden");
+      if (premiumBtn) premiumBtn.classList.remove("ldw_auth_hidden");
+      if (logoutBtn) logoutBtn.style.display = "none";
+      // setAuthMode() restores the correct login/register fields when opening the modal.
+    }
+  }
+
+  async function flushPendingCheckinXP() {
+    let pending = null;
+    try { pending = JSON.parse(localStorage.getItem(CFG.PENDING_XP_KEY) || "null"); } catch (e) {}
+    if (!pending || pending.awarded || !pending.text) return null;
+    const { session } = await getSession();
+    if (!session || !session.user) return null;
+    const result = await awardDailyCheckinXP(pending.text);
+    const status = document.getElementById("ldw_auth_status");
+    if (status && result && result.ok) status.textContent = result.message;
+    return result;
+  }
+
+  function bind() {
+    const goWorld = (e) => {
+      if (e) e.preventDefault();
+      document.body.classList.remove("ld-no-scroll");
+      window.location.href = CFG.WORLD_URL;
+    };
+    document.querySelectorAll('a[href="' + CFG.WORLD_URL + '"]').forEach((a) => {
+      a.addEventListener("click", goWorld);
+    });
+
+    const checkin = document.getElementById("ldw_checkin_section");
+    const scrollCheckin = () => checkin && checkin.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("ldw_scroll_checkin")?.addEventListener("click", scrollCheckin);
+    document.getElementById("ldw_hero_checkin")?.addEventListener("click", scrollCheckin);
+
+    const txt = document.getElementById("ldw_checkin_text");
+    const saved = document.getElementById("ldw_saved_checkin");
+    function showSaved() {
+      try {
+        const item = JSON.parse(localStorage.getItem(CFG.STORAGE_KEY) || "null");
+        if (item && item.text) saved.textContent = `Last check-in (${item.date}):\n${item.text}`;
+      } catch (e) {}
+    }
+    showSaved();
+
+    document.getElementById("ldw_save_checkin")?.addEventListener("click", async () => {
+      const value = (txt.value || "").trim();
+      const btn = document.getElementById("ldw_save_checkin");
+      const aiReply = document.getElementById("ldw_ai_reply");
+
+      if (!value) {
+        saved.textContent = "Write at least one honest line first. The void accepts nonsense, but this box does not.";
+        if (aiReply) aiReply.textContent = "Write how you feel first, then Ria can answer properly.";
+        return;
+      }
+
+      const cooldown = await getDailyCheckinCooldownInfo();
+      if (!cooldown.allowed) {
+        const waitText = `Daily Check-In already claimed. Next check-in unlocks in ${formatDuration(cooldown.remainingMs)}.`;
+        saved.textContent = waitText;
+        if (aiReply) aiReply.textContent = "24h timer is active. No second XP farm today, you sneaky little goblin. Come back when the timer resets.";
+        return;
+      }
+
+      const originalBtnText = btn ? btn.textContent : "";
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Ria is decoding...";
+      }
+
+      if (aiReply) aiReply.textContent = "Ria is reading your check-in and preparing advice...";
+      saved.textContent = "Saving Check-In + trying to award XP...";
+
+      const item = { text: value, date: new Date().toLocaleString() };
+      try { localStorage.setItem(CFG.STORAGE_KEY, JSON.stringify(item)); } catch (e) {}
+
+      try {
+        const aiTask = requestDailyCheckinAI(value);
+        const xpTask = awardDailyCheckinXP(value);
+        const [aiResult, xpResult] = await Promise.allSettled([aiTask, xpTask]);
+
+        const finalAI = aiResult.status === "fulfilled" && aiResult.value && aiResult.value.reply
+          ? aiResult.value.reply
+          : buildLocalCheckinAdvice(value);
+
+        const finalXP = xpResult.status === "fulfilled" && xpResult.value
+          ? xpResult.value
+          : { message: "Check-In saved locally, but XP write failed before completion." };
+
+        if (aiReply) aiReply.textContent = finalAI;
+        showSaved();
+        saved.textContent += "\n\n" + (finalXP.message || "");
+        txt.value = "";
+      } catch (err) {
+        console.error("[LD] Daily Check-In save flow failed:", err);
+        if (aiReply) aiReply.textContent = buildLocalCheckinAdvice(value);
+        showSaved();
+        saved.textContent += "\n\nCheck-In saved locally, but the full save flow hit an error.";
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalBtnText || "Save Check-In + Claim XP";
+        }
+        updateAuthUI();
+      }
+    });
+
+    const modal = document.getElementById("ldw_auth_modal");
+    const status = document.getElementById("ldw_auth_status");
+    let authMode = "login";
+
+    function setAuthMode(nextMode) {
+      authMode = nextMode === "register" ? "register" : "login";
+      const title = document.getElementById("ldw_auth_title");
+      const sub = document.getElementById("ldw_auth_sub");
+      const tabLogin = document.getElementById("ldw_tab_login");
+      const tabRegister = document.getElementById("ldw_tab_register");
+      const loginBtn = document.getElementById("ldw_email_login");
+      const signupBtn = document.getElementById("ldw_email_signup");
+      const forgotBtn = document.getElementById("ldw_forgot_password");
+      const resendBtn = document.getElementById("ldw_resend_verify");
+      const password = document.getElementById("ldw_password");
+
+      const authTabs = document.querySelector(".ldw_auth_tabs");
+      const email = document.getElementById("ldw_email");
+      const googleBtn = document.getElementById("ldw_google_login");
+      const appleBtn = document.getElementById("ldw_apple_login");
+      const guestBtn = document.getElementById("ldw_guest_continue");
+      if (authTabs) authTabs.classList.remove("ldw_auth_hidden");
+      [email, password, googleBtn, appleBtn, guestBtn].forEach((el) => { if (el) el.classList.remove("ldw_auth_hidden"); });
+      if (tabLogin) tabLogin.classList.toggle("active", authMode === "login");
+      if (tabRegister) tabRegister.classList.toggle("active", authMode === "register");
+      if (loginBtn) loginBtn.classList.toggle("ldw_auth_hidden", authMode !== "login");
+      if (signupBtn) signupBtn.classList.toggle("ldw_auth_hidden", authMode !== "register");
+      if (forgotBtn) forgotBtn.classList.toggle("ldw_auth_hidden", authMode !== "login");
+      if (resendBtn) resendBtn.style.display = authMode === "register" ? "inline-flex" : "none";
+      if (password) password.setAttribute("autocomplete", authMode === "register" ? "new-password" : "current-password");
+      if (title) title.textContent = authMode === "register" ? "Join the adventure" : "Welcome back, adventurer";
+      if (sub) {
+        sub.textContent = authMode === "register"
+          ? "Create your account, pick a username, and your progress will follow you everywhere."
+          : "Sign in to keep your Beans, Dust, and unlocks safe — or jump in as a guest right now.";
+      }
+      if (status) status.textContent = "";
+    }
+    const openLogin = async () => {
+      if (!modal) return;
+      const { session } = await getSession();
+      if (!session || !session.user) setAuthMode("login");
+      await updateAuthUI();
+      modal.classList.add("open");
+      document.body.classList.add("ld-no-scroll");
+      modal.setAttribute("aria-hidden", "false");
+      if (!session || !session.user) setTimeout(() => document.getElementById("ldw_email")?.focus(), 60);
+    };
+    const closeLogin = () => {
+      if (!modal) return;
+      modal.classList.remove("open");
+      document.body.classList.remove("ld-no-scroll");
+      modal.setAttribute("aria-hidden", "true");
+    };
+    document.getElementById("ldw_login_btn")?.addEventListener("click", openLogin);
+    document.getElementById("ldw_close_login")?.addEventListener("click", closeLogin);
+    modal?.addEventListener("click", (e) => { if (e.target === modal) closeLogin(); });
+    document.getElementById("ldw_tab_login")?.addEventListener("click", () => setAuthMode("login"));
+    document.getElementById("ldw_tab_register")?.addEventListener("click", () => setAuthMode("register"));
+    document.getElementById("ldw_guest_continue")?.addEventListener("click", closeLogin);
+
+    document.getElementById("ldw_email_login")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase script could not load."; return; }
+      const email = document.getElementById("ldw_email").value.trim();
+      const password = document.getElementById("ldw_password").value;
+      if (!email || !password) { status.textContent = "Email and password first, boss."; return; }
+      status.textContent = "Logging in...";
+      const loginRes = await client.auth.signInWithPassword({ email, password });
+      const data = loginRes && loginRes.data ? loginRes.data : null;
+      const error = loginRes ? loginRes.error : null;
+
+      if (!error && data && data.user && data.user.email_confirmed_at === null) {
+        await client.auth.signOut();
+        status.textContent = "Please verify your email before logging in.";
+        return;
+      }
+
+      status.textContent = error ? error.message : "Logged in. You can enter the World now.";
+      updateAuthUI();
+      if (!error) flushPendingCheckinXP();
+    });
+
+    document.getElementById("ldw_email_signup")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase script could not load."; return; }
+      const email = document.getElementById("ldw_email").value.trim();
+      const password = document.getElementById("ldw_password").value;
+      if (!email || !password) { status.textContent = "Email and password first, boss."; return; }
+      if (password.length < 8) { status.textContent = "Password must be at least 8 characters."; return; }
+      status.textContent = "Creating account...";
+      const { error } = await client.auth.signUp({ email, password, options: { emailRedirectTo: CFG.AUTH_REDIRECT_URL } });
+      status.textContent = error ? error.message : "Account created. If email confirmation is enabled, confirm email first, then login.";
+      updateAuthUI();
+    });
+
+    document.getElementById("ldw_logout")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase script could not load."; return; }
+      await client.auth.signOut();
+      status.textContent = "Logged out.";
+      setAuthMode("login");
+      updateAuthUI();
+    });
+
+    document.getElementById("ldw_google_login")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase script could not load."; return; }
+      status.textContent = "Opening Google login...";
+      const { error } = await client.auth.signInWithOAuth({ provider: "google", options: { redirectTo: CFG.AUTH_REDIRECT_URL } });
+      if (error) status.textContent = error.message;
+    });
+
+    // Same Supabase OAuth architecture as Google above, just a different
+    // provider string. If Apple OAuth isn't enabled on the Supabase project
+    // yet, signInWithOAuth() returns a normal error (no crash) — shown here
+    // as a friendly message instead of a raw Supabase error string.
+    document.getElementById("ldw_apple_login")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase script could not load."; return; }
+      status.textContent = "Opening Apple login...";
+      const { error } = await client.auth.signInWithOAuth({ provider: "apple", options: { redirectTo: CFG.AUTH_REDIRECT_URL } });
+      if (error) {
+        console.warn("[LD] Apple login error:", error);
+        status.textContent = "Apple sign-in isn't available yet — please use Google or Email for now.";
+      }
+    });
+
+    
+    document.getElementById("ldw_forgot_password")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase unavailable."; return; }
+
+      const email = document.getElementById("ldw_email").value.trim();
+      if (!email) { status.textContent = "Enter your email first."; return; }
+
+      const { error } = await client.auth.resetPasswordForEmail(email, {
+        redirectTo: CFG.AUTH_REDIRECT_URL
+      });
+
+      status.textContent = error ? error.message : "Password reset email sent.";
+    });
+
+    document.getElementById("ldw_resend_verify")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase unavailable."; return; }
+
+      const email = document.getElementById("ldw_email").value.trim();
+      if (!email) { status.textContent = "Enter your email first."; return; }
+
+      const { error } = await client.auth.resend({
+        type: "signup",
+        email
+      });
+
+      status.textContent = error ? error.message : "Verification email sent.";
+    });
+
+    getSupabase().then((client) => {
+      if (client && client.auth && client.auth.onAuthStateChange && !window.__LDW_AUTH_LISTENER__) {
+        window.__LDW_AUTH_LISTENER__ = true;
+        client.auth.onAuthStateChange(() => { updateAuthUI(); flushPendingCheckinXP(); });
+      }
+    });
+    updateAuthUI();
+  }
+
+  function stars() {
+    const canvas = document.getElementById("ldw_stars");
+    if (!canvas) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let w = 0, h = 0, dpr = 1, points = [];
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      points = Array.from({ length: Math.min(90, Math.floor(w / 14)) }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.7 + .4,
+        a: Math.random() * .7 + .2,
+        s: Math.random() * .35 + .08
+      }));
+    }
+    function tick() {
+      ctx.clearRect(0, 0, w, h);
+      points.forEach(p => {
+        p.y += p.s;
+        if (p.y > h + 8) { p.y = -8; p.x = Math.random() * w; }
+        ctx.globalAlpha = p.a;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+      });
+      requestAnimationFrame(tick);
+    }
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+    tick();
+  }
+
+  window.addEventListener("error", (event) => {
+    try {
+      const app = document.getElementById("ldw_app");
+      if (app) {
+        app.style.display = "block";
+        app.style.visibility = "visible";
+        app.style.opacity = "1";
+      }
+      console.warn("[LD] Landing runtime warning:", event && event.message ? event.message : event);
+    } catch (err) {}
+  });
+
+  ready(() => {
+    try {
+      // EMERGENCY BOOT FIX:
+      // Render the page first. Do NOT wait for wallpaper/CDN image preloads, because
+      // a hanging image request can leave the whole Webflow page white/blank.
+      injectFonts();
+      injectCSS();
+      render();
+      bind();
+      stars();
+      preloadIconicWallpaper().catch((err) => {
+        console.warn("[LD] iconic preload skipped:", err);
+      });
+      console.log("[LD] World landing loaded:", CFG.VERSION);
+    } catch (err) {
+      console.error("[LD] World landing failed:", err);
+      document.body.innerHTML = '<div style="min-height:100vh;background:#03020a;color:#fff;padding:24px;font-family:Arial,sans-serif"><h1>LifeDecode World</h1><p>Landing failed to load. Check console.</p></div>';
+    }
+  });
+})();
