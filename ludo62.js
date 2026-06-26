@@ -83,7 +83,7 @@ body.ld-no-scroll{overflow:hidden;}
 .ldw_title span{background:linear-gradient(92deg,#fff 0%,#b8eaff 22%,#a66cff 48%,#ff61df 76%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .ldw_sub{max-width:830px;margin:0 auto;color:rgba(250,245,255,.88);font-size:clamp(15px,1.6vw,21px);line-height:1.48;text-shadow:0 4px 18px rgba(0,0,0,.80);}
 .ldw_actions{width:min(760px,100%);margin:26px auto 0;display:grid;gap:14px;justify-items:center;}
-.ldw_enter{width:100%;max-width:720px;min-height:92px;border-radius:30px;font-size:clamp(14px,1.6vw,20px);flex-direction:column;line-height:1.2;}
+.ldw_enter{width:100%;max-width:720px;min-height:92px;border-radius:30px;font-size:clamp(14px,1.6vw,20px);flex-direction:column;line-height:1.2;box-shadow:0 18px 46px rgba(160,70,255,.32),0 0 54px rgba(255,71,225,.16),0 0 64px rgba(255,196,107,.16);}
 .ldw_enter small{font-size:clamp(10px,1vw,13px);opacity:.78;letter-spacing:.08em;}
 .ldw_micro{margin:14px auto 0;color:rgba(255,255,255,.70);font-size:12px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;}
 .ldw_grid{margin-top:18px;display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start;}
@@ -108,31 +108,39 @@ body.ld-no-scroll{overflow:hidden;}
 .ldw_footer{padding:22px 0 4px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
 .ldw_footer a{color:rgba(245,239,255,.76);text-decoration:none;font-size:11px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;border:1px solid rgba(214,164,255,.14);background:rgba(255,255,255,.035);padding:10px 13px;border-radius:999px;}
 .ldw_footer a:hover{color:#fff;border-color:rgba(230,190,255,.30);background:rgba(255,255,255,.07);}
-.ldw_auth_modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(900px 520px at 20% 10%,rgba(155,92,255,.24),transparent 60%),radial-gradient(700px 520px at 80% 20%,rgba(67,216,255,.14),transparent 56%),rgba(2,3,10,.76);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.ldw_auth_modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;overflow:hidden;background:radial-gradient(900px 560px at 18% 8%,rgba(255,176,107,.22),transparent 58%),radial-gradient(760px 560px at 84% 14%,rgba(155,92,255,.20),transparent 58%),radial-gradient(640px 480px at 50% 100%,rgba(255,140,190,.12),transparent 60%),rgba(2,3,10,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 .ldw_auth_modal.open{display:flex;}
-.ldw_modal_box{width:min(760px,calc(100vw - 28px));border:1px solid rgba(225,158,255,.20);border-radius:34px;background:linear-gradient(180deg,rgba(12,15,32,.96),rgba(4,6,16,.96));box-shadow:0 34px 110px rgba(0,0,0,.68),0 0 70px rgba(155,92,255,.14);overflow:hidden;}
-.ldw_modal_head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:28px 30px 8px;border-bottom:0;}
-.ldw_modal_head h3{margin:0;font-size:clamp(28px,3vw,40px);line-height:1.04;letter-spacing:-.055em;font-weight:1000;color:#fff;}
-.ldw_modal_head .ldw_auth_kicker{margin-bottom:12px;font-size:13px;line-height:1;text-transform:uppercase;letter-spacing:.22em;color:#9ee9ff;font-weight:1000;}
-.ldw_modal_head .ldw_auth_sub{margin-top:12px;max-width:610px;color:rgba(255,247,255,.74);font-size:16px;line-height:1.5;font-weight:500;}
-.ldw_modal_body{padding:12px 30px 30px;display:grid;gap:14px;}
-.ldw_auth_tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:24px;background:rgba(255,255,255,.055);box-shadow:inset 0 0 22px rgba(0,0,0,.18);}
-.ldw_auth_tab{border:0;border-radius:17px;min-height:56px;background:transparent;color:rgba(255,247,255,.62);font:inherit;font-size:15px;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:transform .15s ease,filter .15s ease,color .15s ease,background .15s ease;}
-.ldw_auth_tab.active{color:#09111f;background:linear-gradient(135deg,#f5fdff 0%,#b6f0ff 44%,#a785ff 100%);box-shadow:0 15px 34px rgba(155,92,255,.25);}
+.ldw_auth_ambient{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;border-radius:34px;}
+.ldw_auth_mote{position:absolute;bottom:-10px;border-radius:50%;opacity:0;animation-name:ldwAuthFloat;animation-timing-function:ease-in;animation-iteration-count:infinite;filter:blur(.2px);}
+@keyframes ldwAuthFloat{0%{transform:translateY(0) scale(.6);opacity:0;}12%{opacity:.9;}88%{opacity:.22;}100%{transform:translateY(-360px) scale(1.15);opacity:0;}}
+.ldw_modal_box{position:relative;width:min(460px,calc(100vw - 28px));max-height:min(92vh,820px);overflow-y:auto;border:1px solid rgba(255,221,170,.26);border-radius:34px;background:linear-gradient(165deg,rgba(24,17,34,.90),rgba(7,7,15,.95));box-shadow:0 34px 110px rgba(0,0,0,.62),0 0 60px rgba(255,196,107,.14),0 0 80px rgba(155,92,255,.14);scrollbar-width:thin;scrollbar-color:rgba(255,196,107,.4) transparent;}
+.ldw_modal_head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:26px 26px 6px;border-bottom:0;}
+.ldw_modal_head h3{margin:0;font-size:clamp(22px,3vw,28px);line-height:1.1;letter-spacing:-.03em;font-weight:950;background:linear-gradient(90deg,#fff,#ffe6c2);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ldw_modal_head .ldw_auth_kicker{margin-bottom:10px;font-size:11px;line-height:1;text-transform:uppercase;letter-spacing:.20em;color:#ffd68a;font-weight:1000;}
+.ldw_modal_head .ldw_auth_sub{margin-top:10px;max-width:610px;color:rgba(255,247,255,.74);font-size:13.5px;line-height:1.5;font-weight:500;}
+.ldw_modal_body{position:relative;z-index:1;padding:10px 26px 26px;display:grid;gap:12px;}
+.ldw_auth_tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.055);box-shadow:inset 0 0 22px rgba(0,0,0,.18);}
+.ldw_auth_tab{border:0;border-radius:14px;min-height:42px;background:transparent;color:rgba(255,247,255,.62);font:inherit;font-size:12px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:transform .15s ease,filter .15s ease,color .15s ease,background .15s ease;}
+.ldw_auth_tab.active{color:#1a0f00;background:linear-gradient(90deg,#ffe6b3,#ffd68a,#d8c4ff);box-shadow:0 8px 20px rgba(255,196,107,.22);}
 .ldw_auth_tab:hover{filter:brightness(1.06);}
-.ldw_input{width:100%;min-height:66px;border:1px solid rgba(255,255,255,.16);border-radius:22px;background:rgba(255,255,255,.075);color:var(--ld-text);padding:0 20px;outline:none;font:inherit;font-size:18px;font-weight:750;}
-.ldw_input:focus{border-color:rgba(67,216,255,.68);box-shadow:0 0 0 5px rgba(67,216,255,.12),0 0 34px rgba(67,216,255,.18);}
-.ldw_auth_primary{min-height:70px!important;border-radius:24px!important;font-size:16px!important;letter-spacing:.04em!important;text-transform:none!important;background:linear-gradient(135deg,#f6fdff 0%,#b4f0ff 48%,#a987ff 100%)!important;color:#07111f!important;border-color:rgba(255,255,255,.42)!important;box-shadow:0 18px 44px rgba(155,92,255,.28)!important;}
-.ldw_auth_google{min-height:62px!important;border-radius:22px!important;background:#fff!important;color:#151827!important;border-color:rgba(255,255,255,.8)!important;text-transform:none!important;font-size:16px!important;letter-spacing:.02em!important;gap:12px!important;}
-.ldw_auth_google_icon{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#4285f4;color:#fff;font-weight:1000;font-size:18px;line-height:1;}
-.ldw_auth_ghost{min-height:58px!important;border-radius:22px!important;background:rgba(255,255,255,.07)!important;text-transform:none!important;font-size:15px!important;letter-spacing:.02em!important;}
-.ldw_auth_link{border:0!important;background:transparent!important;min-height:auto!important;padding:2px 6px!important;color:#9ee9ff!important;text-transform:none!important;font-size:15px!important;letter-spacing:.01em!important;font-weight:1000!important;box-shadow:none!important;justify-self:center;}
+.ldw_input{width:100%;min-height:50px;border:1px solid rgba(255,221,170,.20);border-radius:18px;background:rgba(255,255,255,.06);color:var(--ld-text);padding:0 16px;outline:none;font:inherit;font-size:15px;font-weight:750;transition:border-color .15s ease,box-shadow .15s ease;}
+.ldw_input:focus{border-color:rgba(255,196,107,.65);box-shadow:0 0 0 4px rgba(255,196,107,.12);}
+.ldw_auth_actions{display:grid;gap:10px;}
+.ldw_auth_primary{min-height:50px!important;border-radius:999px!important;font-size:14px!important;font-weight:950!important;letter-spacing:0!important;text-transform:none!important;background:linear-gradient(90deg,#ffe6b3,#ffd68a,#d8c4ff)!important;color:#1a0f00!important;border-color:rgba(255,255,255,.30)!important;box-shadow:0 14px 32px rgba(255,196,107,.24)!important;}
+.ldw_auth_google{min-height:50px!important;border-radius:999px!important;background:#fff!important;color:#3c4043!important;border-color:#dadce0!important;text-transform:none!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;gap:10px!important;box-shadow:0 10px 26px rgba(0,0,0,.18)!important;}
+.ldw_auth_google_icon{width:18px;height:18px;flex-shrink:0;}
+.ldw_auth_apple{min-height:50px!important;border-radius:999px!important;background:#000!important;color:#fff!important;border-color:rgba(255,255,255,.14)!important;text-transform:none!important;font-size:14px!important;font-weight:700!important;letter-spacing:0!important;gap:10px!important;box-shadow:0 10px 26px rgba(0,0,0,.30)!important;}
+.ldw_auth_apple_icon{width:14px;height:17px;flex-shrink:0;}
+.ldw_auth_ghost{min-height:50px!important;border-radius:999px!important;background:rgba(255,255,255,.075)!important;text-transform:none!important;font-size:14px!important;font-weight:800!important;letter-spacing:0!important;}
+.ldw_auth_link{border:0!important;background:transparent!important;min-height:auto!important;padding:4px 6px!important;color:#ffd68a!important;text-transform:none!important;font-size:13px!important;letter-spacing:.01em!important;font-weight:900!important;box-shadow:none!important;justify-self:center;}
 .ldw_auth_link:hover{text-decoration:underline;transform:none!important;filter:none!important;}
+.ldw_auth_divider{display:flex;align-items:center;gap:10px;margin:6px 0 2px;color:rgba(255,255,255,.42);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+.ldw_auth_divider:before,.ldw_auth_divider:after{content:"";flex:1;height:1px;background:rgba(255,255,255,.14);}
 .ldw_auth_resend{display:none;}
-.ldw_status{min-height:22px;color:rgba(255,247,255,.72);font-size:14px;line-height:1.45;text-align:center;font-weight:650;}
-.ldw_auth_actions{display:grid;gap:13px;}
+.ldw_status{min-height:20px;color:rgba(255,247,255,.74);font-size:13px;line-height:1.45;text-align:center;font-weight:650;}
 .ldw_auth_hidden{display:none!important;}
-@media(max-width:560px){.ldw_auth_modal{align-items:flex-start;overflow:auto;padding:12px}.ldw_modal_box{width:100%;border-radius:26px;margin:8px 0}.ldw_modal_head{padding:22px 20px 8px}.ldw_modal_body{padding:10px 20px 22px}.ldw_modal_head h3{font-size:30px}.ldw_modal_head .ldw_auth_sub{font-size:14px}.ldw_input{min-height:58px;font-size:16px;border-radius:19px}.ldw_auth_primary{min-height:62px!important}.ldw_auth_tab{min-height:48px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){.ldw_auth_mote{animation:none;display:none;}}
+@media(max-width:560px){.ldw_auth_modal{align-items:flex-start;padding:12px}.ldw_modal_box{width:100%;border-radius:26px;margin:8px 0;max-height:96vh}.ldw_modal_head{padding:22px 20px 6px}.ldw_modal_body{padding:8px 20px 20px}.ldw_modal_head h3{font-size:22px}.ldw_modal_head .ldw_auth_sub{font-size:12.5px}}
 @media(max-width:900px){.ldw_top{align-items:flex-start;flex-direction:column}.ldw_nav{justify-content:flex-start}.ldw_grid{grid-template-columns:1fr}.ldw_features{grid-template-columns:1fr}}
 @media(max-width:560px){.ldw_shell{width:min(100% - 16px,1360px);padding-top:8px}.ldw_top{border-radius:20px;padding:12px}.ldw_nav{width:100%;display:grid;grid-template-columns:.9fr 1.22fr .9fr;gap:7px}.ldw_btn,.ldw_linkbtn{font-size:9.5px;padding:9px 7px;min-height:42px;letter-spacing:.055em;text-align:center;line-height:1.12;white-space:normal}.ldw_nav #ldw_scroll_checkin{font-size:8.8px;letter-spacing:.015em;white-space:nowrap;padding-left:5px;padding-right:5px}.ldw_hero{min-height:610px;border-radius:24px;padding:92px 12px 22px}.ldw_hero_inner{padding-top:78px}.ldw_hero:before{background-size:auto 66%;background-repeat:no-repeat;background-position:center 64px}.ldw_hero:after{top:15px;font-size:8px;letter-spacing:.11em;padding:8px 10px;width:calc(100% - 30px);line-height:1.25}.ldw_badge{font-size:9px;letter-spacing:.09em;padding:8px 10px;margin-top:0}.ldw_title{font-size:clamp(35px,12vw,56px)}.ldw_sub{font-size:14px}.ldw_enter{min-height:82px;border-radius:24px}.ldw_micro{font-size:10px;line-height:1.45}.ldw_card{border-radius:22px}.ldw_card_body,.ldw_card_head{padding:14px}.ldw_footer a{font-size:10px;padding:9px 11px}}
 `;
@@ -150,7 +158,7 @@ body.ld-no-scroll{overflow:hidden;}
     <nav class="ldw_nav" aria-label="Main navigation">
       <a class="ldw_linkbtn ldw_btn_primary" href="${CFG.WORLD_URL}">Enter World</a>
       <button class="ldw_btn" id="ldw_scroll_checkin" type="button">Daily Check-In</button>
-      <a class="ldw_linkbtn" id="ldw_premium_nav" href="${CFG.PREMIUM_URL}">Premium</a>
+      <a class="ldw_linkbtn" id="ldw_premium_nav" href="${CFG.WORLD_URL}">Shop</a>
       <button class="ldw_btn" id="ldw_login_btn" type="button">Login</button>
     </nav>
   </header>
@@ -167,7 +175,7 @@ body.ld-no-scroll{overflow:hidden;}
             <small>Play, explore, meet NPCs, collect Dust & cause emotional damage</small>
           </a>
           <button class="ldw_btn" id="ldw_hero_checkin" type="button">Do Daily Check-In first</button>
-          <a class="ldw_btn ldw_btn_primary" id="ldw_premium_hero" href="${CFG.PREMIUM_URL}">Unlock Premium with Stripe</a>
+          <a class="ldw_btn ldw_btn_primary" id="ldw_premium_hero" href="${CFG.WORLD_URL}">Purchases are available inside LifeDecode World</a>
         </div>
         <div class="ldw_micro">No login wall before landing • Privacy & terms stay available • Daily Check-In stays alive</div>
       </div>
@@ -223,11 +231,12 @@ body.ld-no-scroll{overflow:hidden;}
 
 <div class="ldw_auth_modal" id="ldw_auth_modal" aria-hidden="true">
   <div class="ldw_modal_box" role="dialog" aria-modal="true" aria-label="LifeDecode account">
+    <div class="ldw_auth_ambient" id="ldw_auth_ambient"></div>
     <div class="ldw_modal_head">
       <div>
-        <div class="ldw_auth_kicker">LifeDecode World</div>
-        <h3 id="ldw_auth_title">Login to save your progress</h3>
-        <div class="ldw_auth_sub" id="ldw_auth_sub">Play as guest or connect your LifeDecode account so Beans, Dust, perks and unlocks stay saved.</div>
+        <div class="ldw_auth_kicker">&#10024; LifeDecode World</div>
+        <h3 id="ldw_auth_title">Welcome back, adventurer</h3>
+        <div class="ldw_auth_sub" id="ldw_auth_sub">Sign in to keep your Beans, Dust, and unlocks safe &mdash; or jump in as a guest right now.</div>
       </div>
       <button class="ldw_btn" id="ldw_close_login" type="button">Close</button>
     </div>
@@ -242,10 +251,28 @@ body.ld-no-scroll{overflow:hidden;}
         <button class="ldw_btn ldw_btn_primary ldw_auth_primary" id="ldw_email_login" type="button">Login</button>
         <button class="ldw_btn ldw_btn_primary ldw_auth_primary ldw_auth_hidden" id="ldw_email_signup" type="button">Create account</button>
         <button class="ldw_btn ldw_auth_link" id="ldw_forgot_password" type="button">Forgot password?</button>
-        <button class="ldw_btn ldw_auth_google" id="ldw_google_login" type="button"><span class="ldw_auth_google_icon">G</span> Continue with Google</button>
-        <button class="ldw_btn ldw_auth_ghost" id="ldw_guest_continue" type="button">Continue as Guest</button>
+
+        <div class="ldw_auth_divider"><span>or continue with</span></div>
+
+        <button class="ldw_btn ldw_auth_google" id="ldw_google_login" type="button">
+          <svg class="ldw_auth_google_icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </button>
+        <button class="ldw_btn ldw_auth_apple" id="ldw_apple_login" type="button">
+          <svg class="ldw_auth_apple_icon" viewBox="0 0 814 1000" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="#ffffff" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-89.6 123.1-159.5 123.1s-94-44.9-180.4-44.9c-91.1 0-119.7 44.9-191.2 44.9-71.5 0-122.6-65.6-167.4-128.3-58.4-81.5-105.2-208.6-105.2-329.1 0-192.3 124.4-294.2 246.9-294.2 75.4 0 138 41.7 184.5 41.7 41.7 0 110.3-44.9 192.1-44.9 31.6 0 145.4 2.9 222.6 113.1zM560.3 144.4c20.4-22.2 35.4-53.8 35.4-85.4 0-4.5-.4-9.1-1.2-12.8-29.9 1.2-65.2 19.8-87 44.9-19.5 22-37.1 53.4-37.1 84.6 0 5.1.8 10.1 1.2 11.7 2.5.6 6.7 1.2 11.1 1.2 26.9 0 60.7-17.9 77.6-44.2z"/>
+          </svg>
+          <span>Sign in with Apple</span>
+        </button>
+
+        <button class="ldw_btn ldw_auth_ghost" id="ldw_guest_continue" type="button">&#127881; Continue as Guest</button>
         <button class="ldw_btn ldw_auth_link ldw_auth_resend" id="ldw_resend_verify" type="button">Resend verification email</button>
-        <a class="ldw_btn ldw_btn_primary ldw_auth_primary" id="ldw_buy_premium" href="${CFG.PREMIUM_URL}">Unlock Premium with Stripe</a>
+        <a class="ldw_btn ldw_btn_primary ldw_auth_primary" id="ldw_buy_premium" href="${CFG.WORLD_URL}">Open LifeDecode World</a>
         <button class="ldw_btn ldw_auth_ghost" id="ldw_logout" type="button" style="display:none">Logout</button>
       </div>
       <div class="ldw_status" id="ldw_auth_status"></div>
@@ -315,6 +342,23 @@ body.ld-no-scroll{overflow:hidden;}
     document.head.appendChild(style);
   }
 
+  // Lightweight ambient sparkles for the login modal — pure CSS keyframes,
+  // no animation loop/timer. Mirrors the same technique used on the
+  // LifeDecode World login panel for visual consistency.
+  function buildAuthMotesHtml() {
+    const colors = ["#ffd68a", "#ff9ecb", "#b99cff", "#9ee9ff"];
+    let html = "";
+    for (let i = 0; i < 14; i++) {
+      const left = Math.round(Math.random() * 100);
+      const delay = (Math.random() * 10).toFixed(2);
+      const dur = (8 + Math.random() * 7).toFixed(2);
+      const size = (2 + Math.random() * 3).toFixed(1);
+      const color = colors[i % colors.length];
+      html += '<span class="ldw_auth_mote" style="left:' + left + '%;width:' + size + 'px;height:' + size + 'px;background:' + color + ';animation-delay:' + delay + 's;animation-duration:' + dur + 's;"></span>';
+    }
+    return html;
+  }
+
   function render() {
     // WHITE-SCREEN RESCUE v8:
     // Always create a top-level app directly under body and make it visually independent
@@ -341,6 +385,9 @@ body.ld-no-scroll{overflow:hidden;}
     });
 
     app.innerHTML = HTML;
+
+    const authAmbient = document.getElementById("ldw_auth_ambient");
+    if (authAmbient) authAmbient.innerHTML = buildAuthMotesHtml();
 
     // Hide Webflow default visible sections only after our app exists and has content.
     Array.from(document.body.children).forEach((el) => {
@@ -705,6 +752,7 @@ body.ld-no-scroll{overflow:hidden;}
       document.getElementById("ldw_email_signup"),
       document.getElementById("ldw_forgot_password"),
       document.getElementById("ldw_google_login"),
+      document.getElementById("ldw_apple_login"),
       document.getElementById("ldw_guest_continue"),
       document.getElementById("ldw_resend_verify")
     ];
@@ -717,7 +765,7 @@ body.ld-no-scroll{overflow:hidden;}
         btn.title = session.user.email || "Logged in";
       }
       if (title) title.textContent = "Your LifeDecode account";
-      if (sub) sub.textContent = "Logged in as " + (session.user.email || "LifeDecode user") + ". You can buy Premium or logout here.";
+      if (sub) sub.textContent = "Logged in as " + (session.user.email || "LifeDecode user") + ". Enter the World to continue your progress.";
       if (authTabs) authTabs.classList.add("ldw_auth_hidden");
       authFields.forEach((el) => { if (el) el.classList.add("ldw_auth_hidden"); });
       if (premiumBtn) premiumBtn.classList.remove("ldw_auth_hidden");
@@ -731,8 +779,8 @@ body.ld-no-scroll{overflow:hidden;}
         btn.textContent = "Login";
         btn.title = "";
       }
-      if (title) title.textContent = "Login to save your progress";
-      if (sub) sub.textContent = "Play as guest or connect your LifeDecode account so Beans, Dust, perks and unlocks stay saved.";
+      if (title) title.textContent = "Welcome back, adventurer";
+      if (sub) sub.textContent = "Sign in to keep your Beans, Dust, and unlocks safe — or jump in as a guest right now.";
       if (authTabs) authTabs.classList.remove("ldw_auth_hidden");
       if (premiumBtn) premiumBtn.classList.remove("ldw_auth_hidden");
       if (logoutBtn) logoutBtn.style.display = "none";
@@ -858,9 +906,10 @@ body.ld-no-scroll{overflow:hidden;}
       const authTabs = document.querySelector(".ldw_auth_tabs");
       const email = document.getElementById("ldw_email");
       const googleBtn = document.getElementById("ldw_google_login");
+      const appleBtn = document.getElementById("ldw_apple_login");
       const guestBtn = document.getElementById("ldw_guest_continue");
       if (authTabs) authTabs.classList.remove("ldw_auth_hidden");
-      [email, password, googleBtn, guestBtn].forEach((el) => { if (el) el.classList.remove("ldw_auth_hidden"); });
+      [email, password, googleBtn, appleBtn, guestBtn].forEach((el) => { if (el) el.classList.remove("ldw_auth_hidden"); });
       if (tabLogin) tabLogin.classList.toggle("active", authMode === "login");
       if (tabRegister) tabRegister.classList.toggle("active", authMode === "register");
       if (loginBtn) loginBtn.classList.toggle("ldw_auth_hidden", authMode !== "login");
@@ -868,11 +917,11 @@ body.ld-no-scroll{overflow:hidden;}
       if (forgotBtn) forgotBtn.classList.toggle("ldw_auth_hidden", authMode !== "login");
       if (resendBtn) resendBtn.style.display = authMode === "register" ? "inline-flex" : "none";
       if (password) password.setAttribute("autocomplete", authMode === "register" ? "new-password" : "current-password");
-      if (title) title.textContent = authMode === "register" ? "Create your LifeDecode account" : "Login to save your progress";
+      if (title) title.textContent = authMode === "register" ? "Join the adventure" : "Welcome back, adventurer";
       if (sub) {
         sub.textContent = authMode === "register"
-          ? "Create one account for LifeDecode and the World. Confirm your email, then your progress can sync safely."
-          : "Play as guest or connect your LifeDecode account so Beans, Dust, perks and unlocks stay saved.";
+          ? "Create your account, pick a username, and your progress will follow you everywhere."
+          : "Sign in to keep your Beans, Dust, and unlocks safe — or jump in as a guest right now.";
       }
       if (status) status.textContent = "";
     }
@@ -951,6 +1000,21 @@ body.ld-no-scroll{overflow:hidden;}
       if (error) status.textContent = error.message;
     });
 
+    // Same Supabase OAuth architecture as Google above, just a different
+    // provider string. If Apple OAuth isn't enabled on the Supabase project
+    // yet, signInWithOAuth() returns a normal error (no crash) — shown here
+    // as a friendly message instead of a raw Supabase error string.
+    document.getElementById("ldw_apple_login")?.addEventListener("click", async () => {
+      const client = await getSupabase();
+      if (!client) { status.textContent = "Supabase script could not load."; return; }
+      status.textContent = "Opening Apple login...";
+      const { error } = await client.auth.signInWithOAuth({ provider: "apple", options: { redirectTo: CFG.AUTH_REDIRECT_URL } });
+      if (error) {
+        console.warn("[LD] Apple login error:", error);
+        status.textContent = "Apple sign-in isn't available yet — please use Google or Email for now.";
+      }
+    });
+
     
     document.getElementById("ldw_forgot_password")?.addEventListener("click", async () => {
       const client = await getSupabase();
@@ -993,6 +1057,7 @@ body.ld-no-scroll{overflow:hidden;}
   function stars() {
     const canvas = document.getElementById("ldw_stars");
     if (!canvas) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let w = 0, h = 0, dpr = 1, points = [];
