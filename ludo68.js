@@ -76,7 +76,8 @@
   --ld-gold:#ffd36a;
   --ld-flame:#ff6a4d;
   --ldw-iconic-image:url("${CFG.ICONIC_URL}");
-  --ldw-container:min(1320px, calc(100% - 40px));
+  --ldw-container:min(1200px, calc(100% - 40px));
+  --ldw-hero-container:min(1580px, calc(100% - 32px));
   --ldw-radius-lg:26px;
   --ldw-radius-md:18px;
   --ldw-radius-sm:12px;
@@ -122,8 +123,9 @@ body.ld-no-scroll{overflow:hidden;}
 }
 @media(prefers-reduced-motion:reduce){.ldw_header,.ldw_nav_secondary{transition:none;}}
 
-/* Hero */
-.ldw_hero{position:relative;margin-top:clamp(14px,2.4vw,22px);border-radius:var(--ldw-radius-lg);overflow:hidden;min-height:clamp(440px,72vh,760px);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:clamp(22px,4vw,52px) clamp(18px,4vw,44px);border:1px solid rgba(225,158,255,.16);box-shadow:0 30px 90px rgba(0,0,0,.45);}
+/* Hero — deliberately wider than the ordinary content container so the
+   artwork reads as a cinematic banner rather than a card matching the nav. */
+.ldw_hero{position:relative;width:var(--ldw-hero-container);margin:clamp(14px,2.4vw,22px) auto 0;border-radius:var(--ldw-radius-lg);overflow:hidden;min-height:clamp(480px,80vh,880px);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:clamp(22px,4vw,52px) clamp(18px,4vw,44px);border:1px solid rgba(225,158,255,.16);box-shadow:0 30px 90px rgba(0,0,0,.45);}
 .ldw_hero:before{content:"";position:absolute;inset:0;background-image:var(--ldw-iconic-image);background-size:cover;background-position:center 18%;z-index:0;filter:saturate(1.1) contrast(1.02);}
 .ldw_hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,2,10,0) 0%,rgba(3,2,10,.02) 40%,rgba(3,2,10,.60) 78%,rgba(3,2,10,.90) 100%);z-index:0;}
 .ldw_hero_inner{position:relative;z-index:1;width:min(680px,100%);}
@@ -150,11 +152,13 @@ body.ld-no-scroll{overflow:hidden;}
    A symmetric top+bottom pair doubles up at every section boundary (previous
    section's bottom padding + next section's top padding stack together),
    which is what produced the huge empty gaps between sections. One section
-   worth of top-padding is enough breathing room on its own. */
-.ldw_section{padding:clamp(40px,4.5vw,88px) 0 clamp(16px,2vw,32px);border-top:1px solid rgba(255,255,255,.05);}
-.ldw_section_legal{padding-top:clamp(28px,3vw,48px);padding-bottom:clamp(16px,2vw,28px);}
-.ldw_section_cta{padding-top:clamp(16px,2vw,32px);}
-.ldw_section_head{max-width:600px;margin:0 auto clamp(26px,4vw,38px);text-align:center;}
+   worth of top-padding is enough breathing room on its own. Values are tuned
+   so the visible gap between sections (this padding + the previous section's
+   trailing padding) lands around 48-80px at desktop widths. */
+.ldw_section{padding:clamp(28px,2.6vw,56px) 0 clamp(12px,1.2vw,20px);border-top:1px solid rgba(255,255,255,.05);}
+.ldw_section_legal{padding-top:clamp(20px,2vw,36px);padding-bottom:clamp(12px,1.2vw,18px);}
+.ldw_section_cta{padding-top:clamp(12px,1.5vw,24px);}
+.ldw_section_head{max-width:600px;margin:0 auto clamp(18px,2.4vw,28px);text-align:center;}
 .ldw_kicker{font-size:11px;font-weight:900;letter-spacing:.20em;text-transform:uppercase;color:rgba(255,236,255,.50);}
 .ldw_section_head h2{margin:9px 0 0;font-family:Orbitron,Inter,system-ui,sans-serif;font-size:clamp(23px,3.1vw,38px);font-weight:850;line-height:1.08;letter-spacing:-.02em;}
 .ldw_section_head p{margin:12px 0 0;color:var(--ld-muted);font-size:14px;line-height:1.6;}
@@ -222,12 +226,12 @@ body.ld-no-scroll{overflow:hidden;}
 .ldw_accordion div{padding:12px 0 4px;color:var(--ld-muted);line-height:1.6;font-size:13px;}
 
 /* Final CTA */
-.ldw_final_cta{position:relative;text-align:center;padding:clamp(40px,6vw,64px) clamp(20px,4vw,40px);border-radius:var(--ldw-radius-lg);border:1px solid rgba(225,158,255,.18);background:radial-gradient(120% 160% at 50% 0%,rgba(124,60,255,.16),transparent 60%),linear-gradient(180deg,rgba(10,6,26,.7),rgba(6,4,16,.6));overflow:hidden;}
+.ldw_final_cta{position:relative;text-align:center;padding:clamp(28px,4vw,48px) clamp(20px,4vw,40px);border-radius:var(--ldw-radius-lg);border:1px solid rgba(225,158,255,.18);background:radial-gradient(120% 160% at 50% 0%,rgba(124,60,255,.16),transparent 60%),linear-gradient(180deg,rgba(10,6,26,.7),rgba(6,4,16,.6));overflow:hidden;}
 .ldw_final_cta h2{margin:0 auto 10px;max-width:520px;font-family:Orbitron,Inter,system-ui,sans-serif;font-size:clamp(22px,3vw,36px);font-weight:900;letter-spacing:-.02em;line-height:1.12;}
 .ldw_final_cta p{margin:0 auto 22px;max-width:440px;color:var(--ld-muted);font-size:14px;line-height:1.55;}
 
 /* Footer */
-.ldw_footer{padding:26px 0 34px;text-align:center;}
+.ldw_footer{padding:32px 0 34px;text-align:center;}
 .ldw_footer_tag{margin:0 0 16px;color:var(--ld-soft);font-size:12px;}
 .ldw_footer_links{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
 .ldw_footer_links a{color:rgba(245,239,255,.72);text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;border:1px solid rgba(214,164,255,.14);background:rgba(255,255,255,.03);padding:9px 13px;border-radius:999px;}
@@ -339,7 +343,7 @@ body.ld-no-scroll{overflow:hidden;}
 
 <div class="ldw_shell">
   <main>
-    <section class="ldw_hero ldw_container" aria-label="LifeDecode World intro">
+    <section class="ldw_hero" aria-label="LifeDecode World intro">
       <div class="ldw_hero_inner">
         <div class="ldw_badge">Silly Squad is assembling</div>
         <h1 class="ldw_title"><span>ENTER THE WORLD</span></h1>
