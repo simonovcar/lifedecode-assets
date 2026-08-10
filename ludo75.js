@@ -3,9 +3,13 @@
 
   const path = (window.location.pathname || "").toLowerCase();
 
-  // Never touch legal pages. Keeps Google/Supabase verification + policy pages clean.
-  if (path.includes("/terms") || path.includes("/policy") || path.includes("/privacy")) {
-    console.log("[LD] Legal page detected — LifeDecode landing script skipped.");
+  // Never touch legal/support pages. Keeps Google/Supabase verification, policy
+  // pages, and the App Store Connect Support URL (/support) clean - render()
+  // injects a top-level #ldw_app directly under body (see WHITE-SCREEN RESCUE
+  // v8), independent of any Webflow wrapper, which otherwise covers whatever
+  // Webflow already rendered on these routes shortly after DOMContentLoaded.
+  if (path.includes("/terms") || path.includes("/policy") || path.includes("/privacy") || path.includes("/support")) {
+    console.log("[LD] Legal/support page detected — LifeDecode landing script skipped.");
     return;
   }
 
