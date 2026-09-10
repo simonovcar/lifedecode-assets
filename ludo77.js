@@ -150,23 +150,13 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
 .ldw_brand_main{font-family:Orbitron,Inter,system-ui,sans-serif;font-weight:900;letter-spacing:.07em;font-size:clamp(13px,1.3vw,17px);line-height:1;background:linear-gradient(92deg,#fff,#b9eaff 24%,#a56cff 52%,#ff67e1 82%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap;}
 .ldw_brand_sub{font-family:Orbitron,Inter,system-ui,sans-serif;font-weight:800;letter-spacing:.36em;font-size:clamp(7px,.7vw,8.5px);color:rgba(255,235,255,.60);text-transform:uppercase;}
 .ldw_nav{display:flex;align-items:center;gap:8px;}
-.ldw_nav_secondary{display:flex;align-items:center;gap:6px;}
 .ldw_btn,.ldw_linkbtn{border:1px solid rgba(225,158,255,.16);background:rgba(255,255,255,.03);color:var(--ld-text);border-radius:999px;min-height:36px;padding:0 14px;font-weight:800;letter-spacing:.03em;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease,filter .15s ease;white-space:nowrap;}
 .ldw_btn:hover,.ldw_linkbtn:hover{transform:translateY(-1px);border-color:rgba(245,205,255,.32);background:rgba(255,255,255,.07);}
 .ldw_btn:focus-visible,.ldw_linkbtn:focus-visible{outline:2px solid rgba(255,255,255,.75);outline-offset:2px;}
 .ldw_btn_primary{border-color:rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(124,60,255,.98),rgba(255,62,222,.80) 55%,rgba(42,214,255,.80));box-shadow:0 10px 26px rgba(160,70,255,.22);font-weight:900;}
 .ldw_btn_primary:hover{filter:brightness(1.08);}
 .ldw_btn_ghost_sm{min-height:34px;padding:0 12px;font-size:11.5px;background:transparent;}
-.ldw_menu_toggle{display:none;width:38px;height:38px;border-radius:11px;border:1px solid rgba(225,158,255,.16);background:rgba(255,255,255,.03);align-items:center;justify-content:center;cursor:pointer;color:var(--ld-text);flex-shrink:0;}
-.ldw_menu_toggle svg{width:17px;height:17px;}
-.ldw_menu_toggle:focus-visible{outline:2px solid rgba(255,255,255,.75);outline-offset:2px;}
-@media(max-width:820px){
-  .ldw_menu_toggle{display:inline-flex;}
-  .ldw_nav_secondary{position:fixed;top:var(--ldw-header-h);left:0;right:0;flex-direction:column;align-items:stretch;gap:8px;padding:12px 16px 18px;background:rgba(6,4,16,.97);backdrop-filter:blur(18px);border-bottom:1px solid rgba(225,158,255,.14);box-shadow:0 20px 40px rgba(0,0,0,.35);transform:translateY(-6px);opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;}
-  .ldw_nav_secondary.open{opacity:1;transform:translateY(0);pointer-events:auto;}
-  .ldw_nav_secondary .ldw_btn,.ldw_nav_secondary .ldw_linkbtn{width:100%;min-height:46px;font-size:13px;}
-}
-@media(prefers-reduced-motion:reduce){.ldw_header,.ldw_nav_secondary{transition:none;}}
+@media(prefers-reduced-motion:reduce){.ldw_header{transition:none;}}
 
 /* Hero */
 .ldw_hero{position:relative;width:var(--ldw-hero-container);margin:clamp(14px,2.4vw,22px) auto 0;border-radius:var(--ldw-radius-lg);overflow:hidden;min-height:clamp(460px,76vh,820px);display:flex;align-items:flex-end;justify-content:center;text-align:center;padding:clamp(22px,4vw,52px) clamp(18px,4vw,44px);border:1px solid rgba(225,158,255,.16);box-shadow:0 30px 90px rgba(0,0,0,.45);}
@@ -200,8 +190,8 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
 /* Sections — single source of truth for inter-section spacing: a flex gap
    on <main> (below). Per-section top/bottom padding is intentionally zero,
    because that padding was stacking with the OWN internal padding of inner
-   card wrappers (.ldw_checkin_card, .ldw_final_cta, .ldw_feature cells,
-   .ldw_room/.ldw_npc cards) — previous section's card-padding + this
+   card wrappers (.ldw_feature cells, .ldw_room/.ldw_npc cards) —
+   previous section's card-padding + this
    section's own padding + next section's own padding was three layers
    deep at some boundaries (measured up to ~100px), which is what kept
    producing large gaps no matter how much the section padding alone was
@@ -214,8 +204,8 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
    header + a very tall document) even though layout/computed styles were
    completely normal (opacity 1, correct size and position). Elements that
    already established their own stacking context by some other means -
-   .ldw_hero (position:relative), .ldw_room/.ldw_npc/.ldw_final_cta
-   (position:relative), .ldw_checkin_card/.ldw_header/modals (backdrop-
+   .ldw_hero (position:relative), .ldw_room/.ldw_npc
+   (position:relative), .ldw_header/modals (backdrop-
    filter) - were never affected, which is why cards rendered fine while
    every section heading/description above and between them silently
    failed to paint. Reproduced identically in headless Chrome (both the
@@ -281,11 +271,6 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
 .ldw_accordion[open] summary:before{content:"–";}
 .ldw_accordion div{padding:12px 0 4px;color:var(--ld-muted);line-height:1.6;font-size:13px;}
 
-/* Final CTA */
-.ldw_final_cta{position:relative;text-align:center;padding:clamp(28px,4vw,48px) clamp(20px,4vw,40px) clamp(18px,2.4vw,28px);border-radius:var(--ldw-radius-lg);border:1px solid rgba(225,158,255,.18);background:radial-gradient(120% 160% at 50% 0%,rgba(124,60,255,.16),transparent 60%),linear-gradient(180deg,rgba(10,6,26,.7),rgba(6,4,16,.6));overflow:hidden;}
-.ldw_final_cta h2{margin:0 auto 10px;max-width:520px;font-family:Orbitron,Inter,system-ui,sans-serif;font-size:clamp(22px,3vw,36px);font-weight:900;letter-spacing:-.02em;line-height:1.12;}
-.ldw_final_cta p{margin:0 auto 22px;max-width:440px;color:var(--ld-muted);font-size:14px;line-height:1.55;}
-
 /* Footer */
 .ldw_footer{position:relative;padding:clamp(12px,1.5vw,20px) 0 34px;text-align:center;}
 .ldw_footer_tag{margin:0 0 16px;color:var(--ld-soft);font-size:12px;}
@@ -296,25 +281,26 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
 .ldw_footer_copyright{margin:16px 0 0;color:rgba(255,247,255,.36);font-size:11px;}
 
 /* Auth modal (functionality untouched — visual refresh only) */
-.ldw_auth_modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;overflow:hidden;background:radial-gradient(900px 560px at 18% 8%,rgba(255,176,107,.16),transparent 58%),radial-gradient(760px 560px at 84% 14%,rgba(155,92,255,.16),transparent 58%),rgba(2,3,10,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.ldw_auth_modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;overflow:hidden;background:radial-gradient(900px 560px at 18% 8%,rgba(255,85,223,.14),transparent 58%),radial-gradient(760px 560px at 84% 14%,rgba(155,92,255,.18),transparent 58%),rgba(2,3,10,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 .ldw_auth_modal.open{display:flex;}
 .ldw_auth_ambient{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;border-radius:30px;}
 .ldw_auth_mote{position:absolute;bottom:-10px;border-radius:50%;opacity:0;animation-name:ldwAuthFloat;animation-timing-function:ease-in;animation-iteration-count:infinite;filter:blur(.2px);}
 @keyframes ldwAuthFloat{0%{transform:translateY(0) scale(.6);opacity:0;}12%{opacity:.9;}88%{opacity:.22;}100%{transform:translateY(-360px) scale(1.15);opacity:0;}}
-.ldw_modal_box{position:relative;width:min(420px,calc(100vw - 28px));max-height:min(92vh,780px);overflow-y:auto;border:1px solid rgba(255,221,170,.22);border-radius:28px;background:linear-gradient(165deg,rgba(24,17,34,.92),rgba(7,7,15,.96));box-shadow:0 30px 90px rgba(0,0,0,.58);scrollbar-width:thin;scrollbar-color:rgba(255,196,107,.4) transparent;}
+.ldw_modal_box{position:relative;width:min(420px,calc(100vw - 28px));max-height:min(92vh,780px);overflow-y:auto;border:1px solid rgba(225,158,255,.24);border-radius:var(--ldw-radius-lg);background:linear-gradient(165deg,rgba(24,17,34,.92),rgba(7,7,15,.96));box-shadow:0 30px 90px rgba(0,0,0,.58);scrollbar-width:thin;scrollbar-color:rgba(225,158,255,.4) transparent;}
 .ldw_modal_head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 24px 4px;}
-.ldw_modal_head h3{margin:0;font-size:clamp(19px,2.6vw,24px);line-height:1.1;letter-spacing:-.02em;font-weight:900;background:linear-gradient(90deg,#fff,#ffe6c2);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.ldw_modal_head .ldw_auth_kicker{margin-bottom:9px;font-size:10.5px;line-height:1;text-transform:uppercase;letter-spacing:.18em;color:#ffd68a;font-weight:900;}
+.ldw_modal_head h3{margin:0;font-size:clamp(19px,2.6vw,24px);line-height:1.1;letter-spacing:-.02em;font-weight:900;background:linear-gradient(92deg,#fff,#b9eaff 24%,#a56cff 52%,#ff67e1 82%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ldw_modal_head .ldw_auth_kicker{margin-bottom:9px;font-size:10.5px;line-height:1;text-transform:uppercase;letter-spacing:.18em;color:#ff9ecb;font-weight:900;}
 .ldw_modal_head .ldw_auth_sub{margin-top:9px;max-width:600px;color:rgba(255,247,255,.72);font-size:13px;line-height:1.5;font-weight:500;}
 .ldw_modal_body{position:relative;z-index:1;padding:8px 24px 24px;display:grid;gap:11px;}
 .ldw_auth_tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.05);}
 .ldw_auth_tab{border:0;border-radius:12px;min-height:40px;background:transparent;color:rgba(255,247,255,.62);font:inherit;font-size:11.5px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:filter .15s ease,color .15s ease,background .15s ease;}
-.ldw_auth_tab.active{color:#1a0f00;background:linear-gradient(90deg,#ffe6b3,#ffd68a,#d8c4ff);}
+.ldw_auth_tab.active{color:#fff;background:linear-gradient(90deg,rgba(124,60,255,.95),rgba(255,62,222,.85) 55%,rgba(42,214,255,.85));}
 .ldw_auth_tab:hover{filter:brightness(1.06);}
-.ldw_input{width:100%;min-height:46px;border:1px solid rgba(255,221,170,.18);border-radius:16px;background:rgba(255,255,255,.06);color:var(--ld-text);padding:0 15px;outline:none;font:inherit;font-size:14px;font-weight:700;transition:border-color .15s ease,box-shadow .15s ease;}
-.ldw_input:focus-visible{border-color:rgba(255,196,107,.65);box-shadow:0 0 0 4px rgba(255,196,107,.12);}
+.ldw_input{width:100%;min-height:46px;border:1px solid rgba(225,158,255,.20);border-radius:16px;background:rgba(255,255,255,.08);color:var(--ld-text);padding:0 15px;outline:none;font:inherit;font-size:14px;font-weight:700;transition:border-color .15s ease,box-shadow .15s ease;}
+.ldw_input:focus-visible{border-color:rgba(255,107,227,.6);box-shadow:0 0 0 4px rgba(155,92,255,.16);}
 .ldw_auth_actions{display:grid;gap:9px;}
-.ldw_auth_primary{min-height:46px!important;border-radius:999px!important;font-size:13.5px!important;font-weight:900!important;letter-spacing:0!important;text-transform:none!important;background:linear-gradient(90deg,#ffe6b3,#ffd68a,#d8c4ff)!important;color:#1a0f00!important;border-color:rgba(255,255,255,.28)!important;}
+.ldw_auth_primary{min-height:46px!important;border-radius:999px!important;font-size:13.5px!important;font-weight:900!important;letter-spacing:0!important;text-transform:none!important;background:linear-gradient(135deg,rgba(124,60,255,.98),rgba(255,62,222,.85) 55%,rgba(42,214,255,.85))!important;box-shadow:0 10px 26px rgba(160,70,255,.28)!important;color:#fff!important;border-color:rgba(255,255,255,.28)!important;}
+.ldw_auth_primary:hover{filter:brightness(1.08);}
 .ldw_auth_google{min-height:46px!important;border-radius:999px!important;background:#fff!important;color:#3c4043!important;border-color:#dadce0!important;text-transform:none!important;font-size:13.5px!important;font-weight:700!important;letter-spacing:0!important;gap:10px!important;}
 .ldw_auth_google_icon{width:17px;height:17px;flex-shrink:0;}
 .ldw_auth_apple{min-height:46px!important;border-radius:999px!important;background:#000!important;color:#fff!important;border-color:rgba(255,255,255,.14)!important;text-transform:none!important;font-size:13.5px!important;font-weight:700!important;letter-spacing:0!important;gap:10px!important;}
@@ -325,7 +311,7 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
 .ldw_auth_danger:hover{background:rgba(255,107,107,.18)!important;border-color:rgba(255,138,138,.6)!important;color:#ffc7c7!important;}
 .ldw_auth_danger:focus-visible{outline:2px solid #ff9e9e;outline-offset:2px;}
 .ldw_danger_zone_text{margin:0;color:rgba(255,196,196,.68);font-size:11.5px;line-height:1.4;font-weight:600;text-align:center;}
-.ldw_auth_link{border:0!important;background:transparent!important;min-height:auto!important;padding:4px 6px!important;color:#ffd68a!important;text-transform:none!important;font-size:12.5px!important;letter-spacing:.01em!important;font-weight:900!important;box-shadow:none!important;justify-self:center;}
+.ldw_auth_link{border:0!important;background:transparent!important;min-height:auto!important;padding:4px 6px!important;color:#8be9ff!important;text-transform:none!important;font-size:12.5px!important;letter-spacing:.01em!important;font-weight:900!important;box-shadow:none!important;justify-self:center;}
 .ldw_auth_link:hover{text-decoration:underline;transform:none!important;filter:none!important;}
 .ldw_auth_divider{display:flex;align-items:center;gap:10px;margin:5px 0 1px;color:rgba(255,255,255,.4);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;}
 .ldw_auth_divider:before,.ldw_auth_divider:after{content:"";flex:1;height:1px;background:rgba(255,255,255,.13);}
@@ -399,13 +385,7 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
       <div class="ldw_brand_sub">WORLD</div>
     </div>
     <nav class="ldw_nav" aria-label="Main navigation">
-      <div class="ldw_nav_secondary" id="ldw_nav_secondary">
-        <a class="ldw_linkbtn ldw_btn_ghost_sm" id="ldw_premium_nav" href="${CFG.WORLD_URL}">Shop</a>
-        <button class="ldw_btn ldw_btn_ghost_sm" id="ldw_login_btn" type="button">Login</button>
-      </div>
-      <button class="ldw_menu_toggle" id="ldw_menu_toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ldw_nav_secondary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
-      </button>
+      <button class="ldw_btn ldw_btn_ghost_sm" id="ldw_login_btn" type="button">Login</button>
     </nav>
   </div>
 </header>
@@ -496,14 +476,6 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
           LifeDecode World keeps the landing open before login, while Privacy Policy and Terms stay directly accessible. This page is focused on the World, but the important legal links remain visible for visitors, app verification, and general sanity.
         </div>
       </details>
-    </section>
-
-    <section class="ldw_section ldw_container">
-      <div class="ldw_final_cta">
-        <h2>Your spirit is waiting. Kind of impatiently.</h2>
-        <p>No pressure. Just a mysterious world, a suspicious number of opinionated NPCs, and a princess who is unimpressed by your life choices.</p>
-        <a class="ldw_btn ldw_btn_primary ldw_enter" href="${CFG.WORLD_URL}">Enter LifeDecode World</a>
-      </div>
     </section>
   </main>
 
@@ -697,7 +669,7 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
   // no animation loop/timer. Mirrors the same technique used on the
   // LifeDecode World login panel for visual consistency.
   function buildAuthMotesHtml() {
-    const colors = ["#ffd68a", "#ff9ecb", "#b99cff", "#9ee9ff"];
+    const colors = ["#ff6fe0", "#ff9ecb", "#b99cff", "#9ee9ff"];
     let html = "";
     for (let i = 0; i < 14; i++) {
       const left = Math.round(Math.random() * 100);
@@ -1339,37 +1311,6 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
     updateAuthUI();
   }
 
-  function bindMobileNav() {
-    const toggle = document.getElementById("ldw_menu_toggle");
-    const nav = document.getElementById("ldw_nav_secondary");
-    if (!toggle || !nav) return;
-
-    function close() {
-      nav.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
-    }
-    function open() {
-      nav.classList.add("open");
-      toggle.setAttribute("aria-expanded", "true");
-    }
-    toggle.addEventListener("click", () => {
-      nav.classList.contains("open") ? close() : open();
-    });
-    nav.addEventListener("click", (e) => {
-      if (e.target.closest("a,button")) close();
-    });
-    document.addEventListener("click", (e) => {
-      if (!nav.classList.contains("open")) return;
-      if (!nav.contains(e.target) && !toggle.contains(e.target)) close();
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && nav.classList.contains("open")) close();
-    });
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 820) close();
-    }, { passive: true });
-  }
-
   // Support request delivery — server.js on the existing Railway backend has
   // no email-sending route yet. This POSTs to CFG.SUPPORT_API_URL, which
   // must be added there (see the handler documented right below this
@@ -1751,7 +1692,6 @@ main{display:flex;flex-direction:column;gap:clamp(28px,2.8vw,44px);}
       render();
       applyPlatformEntry();
       bind();
-      bindMobileNav();
       bindSupportWidget();
       bindHeaderScrollState();
       stars();
