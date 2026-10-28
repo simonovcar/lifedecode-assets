@@ -4,7 +4,13 @@ Source: `simonovcar/lifedecode-game` `main` @ `ecef049` (2026-10-19). This was a
 
 **Important caveat:** this audit shows what exists in `main`. I couldn't confirm that `main` is exactly what is deployed at `world.lifedecode.app`. Your local, uncommitted Movie Creator Phase 4 work is **not** in this repo.
 
-Status: recommendations only. Website V2 (`ludo78.js` @ `35233e6`) has **not** been changed.
+Status: these recommendations were implemented in the second polish pass. Claim-by-claim live checks are in [`LIVE_VERIFICATION.md`](LIVE_VERIFICATION.md).
+
+> **Corrections found during the polish pass:**
+> * The Dojo has **11** belts (White → Mythic), not 12.
+> * Accept / Challenge / Ignore belongs to the **Dojo trials** (The Doubter, The Urge, The Shame).
+> * The **Shadow Arena** is a wave battle against **The Doubter** only: you dodge projectiles and pick grounded responses. The other demon images in `public/assets/` aren't wired into the game.
+> * **Ria** in the World is an AI companion chat in the Plaza, not the daily check-in.
 
 ---
 
@@ -52,8 +58,8 @@ Each map has a real background in `public/assets/` (1–4 MB PNGs). A contact sh
   * Typing Race, Memory.
 
   Optional Dust wagers, plus a ranked Arena with an Elo leaderboard.
-* **Dojo with Master Kaien**: a turn-based "Shadow Duel" (block, dodge, wait, counter) and a 12-belt ladder from White to **Mythic**, with trials and a leaderboard.
-* **Shadow Arena**: confront inner demons (The Doubter, The Urge, The Shame and others) by choosing **Accept / Challenge / Ignore**. Each demon has a different right answer. This is the clearest concrete example of the "grow through play" idea.
+* **Dojo with Master Kaien**: a turn-based "Shadow Duel" (block, dodge, wait, counter) and an 11-belt ladder from White to **Mythic**. Its trials against The Doubter, The Urge and The Shame use Accept / Challenge / Ignore choices. There's also a leaderboard.
+* **Shadow Arena**: a wave battle against **The Doubter**. You dodge its projectiles and answer its whispers with the most grounded response (best / okay / trap). This is the clearest concrete example of the "grow through play" idea.
 * **Brew Haven coffee minigame**, which earns Beans.
 * **Daily Reward Chest** on a 30-day cycle.
 

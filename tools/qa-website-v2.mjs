@@ -73,7 +73,7 @@ for (const vp of VIEWPORTS) {
       if (!r.width) return false;
       // Elements inside a horizontal scroller (mobile room carousel) or a
       // clipping frame are allowed to extend past the viewport.
-      if (el.closest(".v2_locations, .v2_portrait, .v2_finale_art, .v2_hero_art, .v2_atmos, .ldw_hp_field")) return false;
+      if (el.closest(".v2_locations, .v2_portrait, .v2_finale_art, .v2_hero_art, .v2_atmos, .ldw_hp_field, .v2_locals, .v2_rail, .v2_life")) return false;
       return r.right > window.innerWidth + 1 || r.left < -1;
     }).slice(0, 5).map((el) => el.className || el.tagName);
     return {
@@ -119,6 +119,22 @@ for (const vp of VIEWPORTS) {
   await page.focus("#ldv2_tab_pirate");
   await page.keyboard.press("ArrowRight");
   c.squadAfterArrow = await page.evaluate(() => ({ selected: document.querySelector('.v2_tab[aria-selected="true"]').id, focused: document.activeElement.id }));
+
+  // World gallery: next button + thumbnail selection update the stage.
+  await page.click("#ldv2_stage_next");
+  await page.waitForTimeout(900);
+  c.galleryAfterNext = await page.evaluate(() => ({ name: document.getElementById("ldv2_stage_name").textContent, count: document.getElementById("ldv2_stage_count").textContent, selected: document.querySelector('.v2_thumb[aria-selected="true"]').id, stageImgs: document.querySelectorAll(".v2_stage_media img").length }));
+  await page.click("#ldv2_loc_tab_shadow-arena");
+  await page.waitForTimeout(900);
+  c.galleryAfterThumb = await page.evaluate(() => ({ name: document.getElementById("ldv2_stage_name").textContent, img: (document.querySelector(".v2_stage_media img:not(.is-hidden)") || {}).currentSrc }));
+  await page.focus("#ldv2_loc_tab_shadow-arena");
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(300);
+  c.galleryAfterArrow = await page.evaluate(() => ({ name: document.getElementById("ldv2_stage_name").textContent, focused: document.activeElement.id }));
+
+  // Shadow Arena teaser: choosing the best answer reveals the result.
+  await page.click('.v2_choice[data-effect="best"]');
+  c.arenaResult = await page.evaluate(() => document.getElementById("ldv2_arena_result").textContent);
 
   // Auth modal: header Login opens, Escape closes, footer trigger opens too.
   const modalOpen = () => document.getElementById("ldw_auth_modal").classList.contains("open");

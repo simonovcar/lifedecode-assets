@@ -13,7 +13,10 @@ See [`AUDIT_AND_PLAN.md`](AUDIT_AND_PLAN.md) for the repository audit and design
 | `tools/build-website-v2.mjs` | Splices the functional core of `ludo77.js` into the source **verbatim** and writes `ludo78.js`. `--check` re-verifies the build. |
 | `tools/qa-website-v2.mjs` | Headless QA: screenshots, overflow, links, auth/support/squad interactions, reduced motion and the `/support` guard. |
 | `assets/v2/keyart-{640,1024,1536}.webp`, `keyart-1536.jpg` | Optimized key art: 61–243 KB, down from the 2.5 MB PNG. |
-| `assets/v2/og-1200x630.jpg` | Open Graph / social share image, for Webflow page settings. |
+| `assets/v2/og-1200x630.jpg` | Open Graph / social share image (for the Cloudflare Pages shell's `<head>`). |
+| `assets/v2/world/*.webp` + `manifest.json` | Polish pass 2: real game art (12 location backgrounds at 320/640/1280w, NPC/pet/outfit/demon/object sprites), built from `lifedecode-game` by `tools/build-world-assets.py`. The manifest records each file's source path and the game commit. |
+| `tools/build-world-assets.py` | Rebuilds `assets/v2/world/` from a read-only `lifedecode-game` checkout (`python3 tools/build-world-assets.py ../lifedecode-game`). |
+| `docs/website-v2/LIVE_VERIFICATION.md` | Every feature claim on the page, its source evidence, and a checkbox for live verification before deploy. |
 | `preview/` | Webflow-like preview harness (see below). Note: production is actually a Cloudflare Pages shell, not Webflow; see Integration. |
 | `docs/website-v2/screenshots/` | QA screenshots. |
 
@@ -43,16 +46,20 @@ It covers:
 
 ## What's new (presentation only)
 
-The page sections, in order:
+The page sections, in order (polish pass 2):
 
-1. Hero with the key art.
-2. Prologue / manifesto.
-3. Explore: four rooms.
-4. Meet the Silly Squad: an interactive viewer built from crops of the real key art.
-5. Your spirit, your story: six pillars.
-6. News & updates, each with an honest status label.
-7. Final CTA.
-8. Footer.
+1. **Hero** with the key art (left-aligned copy on desktop).
+2. **Prologue / manifesto**: "Not soulless. Not a lecture." The absolute "Not pay-to-win" claim is gone; the page says "Free to play · Optional in-game purchases" instead.
+3. **Explore the World**: a cinematic stage plus a 12-thumbnail tablist of **real location art**, and the other 8 locations as chips.
+4. **Dress your spirit**: the key-art viewer, reframed as **outfit sets from Astra's Vault**, showing the real hat and body pieces, plus the Tree and Void Emperor sets.
+5. **Adventures**:
+   * a Dojo spread (Master Kaien sprite, real belt colours);
+   * a Shadow Arena spread (The Doubter, with the real round-1 choices you can try);
+   * a duels panel with the 9 duel types.
+6. **Make it your life**: art cards for pets, homes (Soul Furnace), work and business (Main Street Pizza) and daily rituals (Daily Chest). On phones they're a swipeable row.
+7. **A world you share**: multiplayer and social points, plus a carousel of **8 real NPCs** (in-world sprites, quoted quest lines).
+8. **News & updates**, with honest status labels.
+9. **Final CTA** and **footer**.
 
 Visual and technical changes:
 
@@ -154,12 +161,12 @@ This changes the integration in three ways:
 
 ## Known limitations / follow-ups
 
-* **No gameplay screenshots exist** in this repo. Room cards use stylised CSS sigils and are labelled as such. Set `CONTENT.locations[i].image` to a real screenshot URL to replace them.
-* **Feature verification is pending.** Grant this workflow read access to `lifedecode-game` (or confirm the features yourself) before enabling anything in `pendingVerification`.
+* **Real location and character art, but no gameplay screenshots yet.** The scene backgrounds contain no players or UI, and the page labels them "Location artwork from the game". Gameplay screenshots still need capturing on the live game with test accounts only (see `GAME_AUDIT_AND_RECOMMENDATIONS.md` §4.6).
+* **Source-confirmed is not live-verified.** Every claim was checked against `lifedecode-game` `main` @ `ecef049`. Tick [`LIVE_VERIFICATION.md`](LIVE_VERIFICATION.md) on the live game before deploying.
 * **`/premium` isn't in the route guard.** That's inherited from v77. If `lifedecode.app/premium` is a real Webflow page, the landing script replaces it. Confirm the intent before changing the guard.
 * **Inherited from v77, intentionally untouched (it's in the verbatim core):**
   * If the supabase-js CDN request fails, `openLogin()` waits for a 4.5 s fallback timeout before the modal appears.
   * The "or continue with" divider stays visible in the logged-in Account view.
 * **Removed from the page:** the legal accordion text from v77. The footer keeps all legal and support links, plus a "Privacy Policy and Terms are always available" line.
 * **Restored:** v77 intentionally had one Play CTA. V2 restores a final CTA because this brief requested one.
-* **Script size:** `ludo78.js` is ~130 KB unminified, about 30 KB gzipped via jsDelivr. jsDelivr can also serve `ludo78.min.js` automatically.
+* **Weight:** `ludo78.js` is ~160 KB unminified (roughly 35–40 KB gzipped via jsDelivr). Measured locally, first load is ~780–830 KB, against 2,644 KB for ludo77.js; a full scroll is ~1.95 MB, because all world art lazy-loads. jsDelivr can also serve `ludo78.min.js` automatically.

@@ -1,0 +1,550 @@
+{
+  "sourceRepo": "simonovcar/lifedecode-game",
+  "sourceCommit": "ecef049313b01b1acd0c7bd5d414cae9e0a15c63",
+  "files": {
+    "loc-plaza-320.webp": {
+      "source": "public/assets/plaza.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 15434
+    },
+    "loc-plaza-640.webp": {
+      "source": "public/assets/plaza.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 64784
+    },
+    "loc-plaza-1280.webp": {
+      "source": "public/assets/plaza.png",
+      "size": [
+        903,
+        602
+      ],
+      "bytes": 111552
+    },
+    "loc-brew-haven-320.webp": {
+      "source": "public/assets/brew_interior.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 10668
+    },
+    "loc-brew-haven-640.webp": {
+      "source": "public/assets/brew_interior.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 31760
+    },
+    "loc-brew-haven-1280.webp": {
+      "source": "public/assets/brew_interior.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 86216
+    },
+    "loc-soulcore-320.webp": {
+      "source": "public/assets/soulcore2.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 13972
+    },
+    "loc-soulcore-640.webp": {
+      "source": "public/assets/soulcore2.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 64068
+    },
+    "loc-soulcore-1280.webp": {
+      "source": "public/assets/soulcore2.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 241394
+    },
+    "loc-mind-zone-320.webp": {
+      "source": "public/assets/mindzonev2.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 15848
+    },
+    "loc-mind-zone-640.webp": {
+      "source": "public/assets/mindzonev2.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 73548
+    },
+    "loc-mind-zone-1280.webp": {
+      "source": "public/assets/mindzonev2.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 276740
+    },
+    "loc-path-of-ascension-320.webp": {
+      "source": "public/assets/poa5.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 10124
+    },
+    "loc-path-of-ascension-640.webp": {
+      "source": "public/assets/poa5.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 46824
+    },
+    "loc-path-of-ascension-1280.webp": {
+      "source": "public/assets/poa5.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 182062
+    },
+    "loc-shadow-arena-320.webp": {
+      "source": "public/assets/shadowarena.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 6902
+    },
+    "loc-shadow-arena-640.webp": {
+      "source": "public/assets/shadowarena.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 27102
+    },
+    "loc-shadow-arena-1280.webp": {
+      "source": "public/assets/shadowarena.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 78192
+    },
+    "loc-astravault-320.webp": {
+      "source": "public/assets/astravault.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 13496
+    },
+    "loc-astravault-640.webp": {
+      "source": "public/assets/astravault.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 49686
+    },
+    "loc-astravault-1280.webp": {
+      "source": "public/assets/astravault.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 177692
+    },
+    "loc-pet-shop-320.webp": {
+      "source": "public/assets/petshop.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 11580
+    },
+    "loc-pet-shop-640.webp": {
+      "source": "public/assets/petshop.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 38200
+    },
+    "loc-pet-shop-1280.webp": {
+      "source": "public/assets/petshop.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 128704
+    },
+    "loc-wonder-of-homes-320.webp": {
+      "source": "public/assets/wonderofhomes3.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 14956
+    },
+    "loc-wonder-of-homes-640.webp": {
+      "source": "public/assets/wonderofhomes3.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 65066
+    },
+    "loc-wonder-of-homes-1280.webp": {
+      "source": "public/assets/wonderofhomes3.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 241930
+    },
+    "loc-main-street-pizza-320.webp": {
+      "source": "public/assets/pizza_interior_main.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 12448
+    },
+    "loc-main-street-pizza-640.webp": {
+      "source": "public/assets/pizza_interior_main.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 56064
+    },
+    "loc-main-street-pizza-1280.webp": {
+      "source": "public/assets/pizza_interior_main.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 197038
+    },
+    "loc-bloom-gate-320.webp": {
+      "source": "public/assets/bloomgate.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 16542
+    },
+    "loc-bloom-gate-640.webp": {
+      "source": "public/assets/bloomgate.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 59284
+    },
+    "loc-bloom-gate-1280.webp": {
+      "source": "public/assets/bloomgate.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 181996
+    },
+    "loc-chill-zone-320.webp": {
+      "source": "public/assets/chillzone.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 11540
+    },
+    "loc-chill-zone-640.webp": {
+      "source": "public/assets/chillzone.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 33228
+    },
+    "loc-chill-zone-1280.webp": {
+      "source": "public/assets/chillzone.png",
+      "size": [
+        1280,
+        853
+      ],
+      "bytes": 83690
+    },
+    "npc-ria.webp": {
+      "source": "public/assets/ria.png",
+      "size": [
+        360,
+        520
+      ],
+      "bytes": 64276
+    },
+    "npc-velvyria.webp": {
+      "source": "public/assets/velvyria2.png",
+      "size": [
+        356,
+        520
+      ],
+      "bytes": 70114
+    },
+    "npc-drunk-dave.webp": {
+      "source": "public/assets/drunkdave2.png",
+      "size": [
+        369,
+        520
+      ],
+      "bytes": 79910
+    },
+    "npc-kaien.webp": {
+      "source": "public/assets/kaien2.png",
+      "size": [
+        287,
+        520
+      ],
+      "bytes": 59334
+    },
+    "npc-nyas.webp": {
+      "source": "public/assets/nyas2.png",
+      "size": [
+        306,
+        520
+      ],
+      "bytes": 65064
+    },
+    "npc-astra.webp": {
+      "source": "public/assets/astra2.png",
+      "size": [
+        380,
+        520
+      ],
+      "bytes": 73636
+    },
+    "npc-sylene.webp": {
+      "source": "public/assets/sylene2.png",
+      "size": [
+        249,
+        520
+      ],
+      "bytes": 57752
+    },
+    "npc-wanderer.webp": {
+      "source": "public/assets/thewanderer2.png",
+      "size": [
+        286,
+        520
+      ],
+      "bytes": 55438
+    },
+    "npc-pizza-worker.webp": {
+      "source": "public/assets/pizza_worker.png",
+      "size": [
+        284,
+        420
+      ],
+      "bytes": 47428
+    },
+    "demon-doubter.webp": {
+      "source": "public/assets/thedoubter.png",
+      "size": [
+        319,
+        560
+      ],
+      "bytes": 81680
+    },
+    "soul-furnace.webp": {
+      "source": "public/assets/soulfurnace.png",
+      "size": [
+        240,
+        360
+      ],
+      "bytes": 31374
+    },
+    "daily-chest.webp": {
+      "source": "public/assets/chest.png",
+      "size": [
+        298,
+        300
+      ],
+      "bytes": 44244
+    },
+    "pet-leonardo.webp": {
+      "source": "public/assets/leonardo.png",
+      "size": [
+        195,
+        260
+      ],
+      "bytes": 25988
+    },
+    "pet-kiwi.webp": {
+      "source": "public/assets/kiwi.png",
+      "size": [
+        189,
+        260
+      ],
+      "bytes": 27648
+    },
+    "pet-joylee.webp": {
+      "source": "public/assets/joylee.png",
+      "size": [
+        189,
+        260
+      ],
+      "bytes": 24400
+    },
+    "pet-riko.webp": {
+      "source": "public/assets/riko.png",
+      "size": [
+        194,
+        260
+      ],
+      "bytes": 20994
+    },
+    "pet-lunyx.webp": {
+      "source": "public/assets/lunyx.png",
+      "size": [
+        215,
+        300
+      ],
+      "bytes": 45280
+    },
+    "pet-helion.webp": {
+      "source": "public/assets/helion.png",
+      "size": [
+        204,
+        300
+      ],
+      "bytes": 42924
+    },
+    "pet-madius.webp": {
+      "source": "public/assets/madius.png",
+      "size": [
+        192,
+        300
+      ],
+      "bytes": 45396
+    },
+    "pet-aqua.webp": {
+      "source": "public/assets/aqua.png",
+      "size": [
+        161,
+        300
+      ],
+      "bytes": 35696
+    },
+    "outfit-cowboy-hat.webp": {
+      "source": "public/assets/cowboyhat2.png",
+      "size": [
+        427,
+        200
+      ],
+      "bytes": 25986
+    },
+    "outfit-cowboy-body.webp": {
+      "source": "public/assets/cowboybody10.png",
+      "size": [
+        165,
+        260
+      ],
+      "bytes": 18164
+    },
+    "outfit-ninja-hat.webp": {
+      "source": "public/assets/ninjahat3.png",
+      "size": [
+        149,
+        200
+      ],
+      "bytes": 13380
+    },
+    "outfit-ninja-body.webp": {
+      "source": "public/assets/ninjabody7.png",
+      "size": [
+        177,
+        260
+      ],
+      "bytes": 20970
+    },
+    "outfit-pirate-hat.webp": {
+      "source": "public/assets/piratehat3.png",
+      "size": [
+        177,
+        200
+      ],
+      "bytes": 10146
+    },
+    "outfit-pirate-body.webp": {
+      "source": "public/assets/piratebody7.png",
+      "size": [
+        145,
+        260
+      ],
+      "bytes": 16688
+    },
+    "outfit-princess-hat.webp": {
+      "source": "public/assets/princesshat3.png",
+      "size": [
+        197,
+        200
+      ],
+      "bytes": 18150
+    },
+    "outfit-princess-body.webp": {
+      "source": "public/assets/princessbody2.png",
+      "size": [
+        200,
+        260
+      ],
+      "bytes": 22162
+    },
+    "outfit-tree-hat.webp": {
+      "source": "public/assets/treeemperorhat2.png",
+      "size": [
+        164,
+        200
+      ],
+      "bytes": 16874
+    },
+    "outfit-tree-body.webp": {
+      "source": "public/assets/treeemperor2.png",
+      "size": [
+        154,
+        260
+      ],
+      "bytes": 20526
+    },
+    "outfit-void-hat.webp": {
+      "source": "public/assets/voidemperorhat5.png",
+      "size": [
+        136,
+        200
+      ],
+      "bytes": 13348
+    },
+    "outfit-void-body.webp": {
+      "source": "public/assets/voidemperor.png",
+      "size": [
+        156,
+        260
+      ],
+      "bytes": 19016
+    }
+  }
+}

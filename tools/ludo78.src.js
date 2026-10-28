@@ -119,68 +119,143 @@
   // CONTENT — everything a visitor reads lives here, so copy can be edited
   // without touching layout code.
   //
-  // Accuracy rule: only advertise what is live. Every claim below comes
-  // from the owner-approved production homepage (ludo77.js) or from the
-  // owner directly. lifedecode-game could not be inspected when V2 was
-  // written, so anything unconfirmed sits in `pendingVerification` and is
-  // NOT rendered. Move an item into `pillars` only once it is live in the
-  // game for real players.
+  // Accuracy rule: only advertise what exists. Every system below was
+  // confirmed in lifedecode-game source (main @ ecef049, read-only audit,
+  // see docs/website-v2/GAME_AUDIT_AND_RECOMMENDATIONS.md) — `src` names
+  // the file it was checked against. Source code is not proof of what is
+  // deployed: tick each item off on world.lifedecode.app before going live
+  // (docs/website-v2/LIVE_VERIFICATION.md). Hidden or unfinished systems
+  // (Cards, Cinema, Movie Creator, Organizations) are deliberately absent.
   // ---------------------------------------------------------------------
+  const ART = function (name) { return ASSET_BASE + "assets/v2/world/" + name; };
+
   const CONTENT = {
     hero: {
-      eyebrow: ["A social online world", "Play in your browser"],
+      eyebrow: ["Free to play", "A social world in your browser"],
       tagline: "Your life. Your story. Your world.",
-      lede: "Explore strange, cozy rooms, meet ridiculous NPCs and other players, and level up your spirit just by showing up.",
-      micro: "No download · No login wall · Sign in to keep your progress"
+      lede: "Explore twenty hand-painted places, meet ridiculous locals and real players, and level up your spirit just by showing up.",
+      micro: "Free to play · No download · Optional in-game purchases"
     },
     prologue: {
       kicker: "Why this world exists",
-      quote: "Not pay-to-win. Not soulless. Just weird, cozy, iconic progression.",
-      body: "LifeDecode World is a small, strange corner of the internet where your daily choices actually do something. No lecture energy, no forced positivity — just rooms to explore, NPCs with opinions, other players to run into, and a spirit that slowly levels up because you showed up.",
+      quote: "Not soulless. Not a lecture. Just a weird, cozy world that grows with you.",
+      body: "LifeDecode World is a small, strange corner of the internet where your daily choices actually do something. Rooms to explore, NPCs with opinions, other players to run into — and a spirit that slowly levels up because you showed up.",
       facts: [
-        { title: "Browser-based", text: "Play on desktop or mobile. Nothing to install." },
-        { title: "Multiplayer", text: "The rooms are shared with other players." },
-        { title: "Grows with you", text: "XP, levels and unlocks that stay with your account." }
+        { title: "Free to play", text: "Jump in from any browser. Optional extras can be unlocked with LifeCoins." },
+        { title: "Multiplayer", text: "Shared rooms, chat, emotes and friends." },
+        { title: "Grows with you", text: "XP, levels, belts and achievements saved to your account." }
       ]
     },
-    // `image` is reserved for a real in-game screenshot of the room (an
-    // absolute URL, ideally ~1200px wide WebP). While it is null the card
-    // shows stylised CSS artwork instead — never a fake screenshot.
-    locations: [
-      { id: "plaza", name: "Plaza", accent: "#5fe3ff", glow: "rgba(95,227,255,.38)", tag: "The first stop", text: "Loud, welcoming, mildly suspicious. Where most adventures begin.", image: null, imageAlt: "" },
-      { id: "brew", name: "Brew Haven", accent: "#f4c76b", glow: "rgba(255,150,120,.36)", tag: "Pull up a chair", text: "Sit down, order something imaginary, regret a decision out loud.", image: null, imageAlt: "" },
-      { id: "soulcore", name: "Soulcore", accent: "#b48cff", glow: "rgba(150,100,255,.42)", tag: "The quiet heart", text: "Where the actual character growth quietly happens.", image: null, imageAlt: "" },
-      { id: "mind", name: "Mind Zone", accent: "#86ff9e", glow: "rgba(110,255,170,.30)", tag: "Different kind of chaos", text: "For when your brain needs a different kind of chaos.", image: null, imageAlt: "" }
-    ],
-    locationsNote: "More rooms keep getting added to the map. Room artwork on this page is stylised — not in-game screenshots.",
-    // Crop regions are in source pixels of the 1536x1024 key art. Each crop
-    // is 4:5 (h = w * 1.25) to match the portrait frame.
-    squad: [
-      { id: "cowboy", name: "The Cowboy", phrase: "Yee-Haw!", color: "#4aa8ff", crop: { x: 0, y: 40, w: 600 }, alt: "The Cowboy: a glowing blue spirit in a black cowboy hat with a gold sheriff's star, grinning and pointing finger-guns.", text: "Rolls in with pure chaotic confidence. Says \"Yee-Haw,\" means nothing by it, ropes you into a quest anyway." },
-      { id: "ninja", name: "The Ninja", phrase: "Hmph.", color: "#ff5a4a", crop: { x: 490, y: 0, w: 540 }, alt: "The Ninja: a masked spirit wreathed in red flame, glaring with glowing orange eyes, a sword hilt over one shoulder.", text: "Says \"Hmph\" and radiates devastating main-character energy for someone who talks the least." },
-      { id: "pirate", name: "The Pirate", phrase: "Arrr! Treasure!", color: "#7dff5a", crop: { x: 900, y: 10, w: 620 }, alt: "The Pirate: a cackling green spirit in a skull-and-crossbones hat, tongue out, giving a thumbs-up as gold coins fly past.", text: "Yells \"Arrr! Treasure!\" at inappropriate volumes. Financially motivated. Emotionally unavailable." },
-      { id: "princess", name: "The Princess", phrase: "Really?", color: "#c77dff", crop: { x: 560, y: 380, w: 430 }, alt: "The Princess: a violet spirit in a jewelled tiara, chin resting on one hand, looking thoroughly unimpressed.", text: "Unimpressed by literally everything. \"Really?\" is both a greeting and a review of your life choices." }
-    ],
-    pillars: [
-      { icon: "spirit", title: "Build your spirit", text: "Cosmetics, sets, identity and style. Unlock pieces as you play — no shortcuts that quietly ruin the game for everyone else." },
-      { icon: "level", title: "Level up by showing up", text: "Earn XP and climb levels through play and daily check-ins. Progress comes from showing up, not from paying to win." },
-      { icon: "coin", title: "Beans, Dust & unlocks", text: "Your Beans, Dust and unlocks are tied to your account, so signing in keeps them safe." },
-      { icon: "sprout", title: "Grow through play", text: "Daily check-ins, symbolic systems, choices and NPC moments that quietly teach real-life skills." },
-      { icon: "people", title: "A shared world", text: "Rooms are shared with other players. Explore together, run into familiar faces, and get dragged into the same chaos." },
-      { icon: "device", title: "Play your way", text: "Jump in as a guest in seconds, or create an account with email or Google so your progress follows you across devices." }
-    ],
-    // NOT RENDERED. Mentioned by the owner, not yet verified against the
-    // live game. Confirm each one, then move it into `pillars` (live) or
-    // `news` (with an honest status) — never both guessed.
-    pendingVerification: [
-      "Pets / pet collecting",
-      "Player homes and home customization",
-      "Minigames and activities",
-      "Cinema (screenings / cinema business)",
-      "Friends / friendship system",
-      "Organizations",
-      "Additional careers"
-    ],
+    // Location art = the real scene backgrounds from public/content/maps.js.
+    // No players or UI are drawn on them — they are not screenshots.
+    world: {
+      kicker: "Explore LifeDecode World",
+      title: "Twenty places. One very strange world.",
+      lead: "Every place has its own mood, its own regulars and its own kind of trouble. Some open straight away — others you'll have to earn.",
+      featured: [
+        { id: "plaza", name: "Plaza", tag: "The heart of the world", text: "Every road starts here. Brew Haven, Soulcore, Astra's Vault and the path to the Mind Zone are all a short walk away." },
+        { id: "brew-haven", name: "Brew Haven", tag: "Fireside café", text: "Drunk Dave holds court by the fire. Brew coffee at the machine to earn Beans — he'll drink it either way." },
+        { id: "soulcore", name: "Soulcore", tag: "Starlit sanctum", text: "Nyas waits under the stars, happy to turn your Beans into Soul Dust." },
+        { id: "mind-zone", name: "Mind Zone", tag: "Unlocks as you progress", text: "A sunset forest path that opens up as you progress — and it leads somewhere deeper." },
+        { id: "path-of-ascension", name: "Path of Ascension", tag: "The Dojo", text: "Master Kaien's training hall. Take trials, fight Shadow Duels and climb the belts." },
+        { id: "shadow-arena", name: "Shadow Arena", tag: "Unlocks as you progress", text: "A broken plain beneath a black sun, where The Doubter is waiting for you." },
+        { id: "astravault", name: "AstraVault", tag: "Outfits & style", text: "Astra's vault of outfits. She will size you up in about half a second." },
+        { id: "pet-shop", name: "Pet Shop", tag: "Adopt a companion", text: "Sixteen pets, from Rare to Ancient, waiting to follow you around the world." },
+        { id: "wonder-of-homes", name: "Wonder of Homes", tag: "The housing district", text: "Mushroom Home, Wizzard Tower and Cloud Nest — pick one and make it yours." },
+        { id: "main-street-pizza", name: "Main Street Pizza", tag: "Player-owned business", text: "Order a slice to keep Hunger at bay — or buy the whole restaurant and run it." },
+        { id: "bloom-gate", name: "Bloom Gate", tag: "On the edge of the world", text: "A blossom-lined portal under falling petals. Step through and see." },
+        { id: "chill-zone", name: "Chill Zone", tag: "Fairy lights & sofas", text: "A fireplace, string lights and somewhere soft to sit. Exactly what it sounds like." }
+      ],
+      more: ["Inside the Mind Zone", "Ascension Peaks", "Wonder House", "LifeMart", "LifeFactory", "Cloud Nest", "Mushroom Home", "Wizzard Tower"],
+      note: "Location artwork from the game. Some places unlock as you progress."
+    },
+    // Outfit sets sold at AstraVault (public/content/cosmetics.js). The key
+    // art shows spirits wearing them — they are outfits, not NPCs.
+    // Crop regions are in source pixels of the 1536x1024 key art, 4:5.
+    outfits: {
+      kicker: "Character customization",
+      title: "Dress your spirit",
+      lead: "Outfits are collected at Astra's Vault — a hat and a body piece in every set. Earn some with Soul Dust, unlock others with LifeCoins, and wear them anywhere in the world.",
+      sets: [
+        { id: "cowboy", name: "Soul Cowboy", rarity: "Rare set", color: "#4aa8ff", crop: { x: 0, y: 40, w: 600 }, hat: "Soul Cowboy Hat", body: "Soul Cowboy Outfit", alt: "A glowing blue spirit wearing the Soul Cowboy set: a black hat with a gold sheriff's star and a long dark coat, pointing finger-guns.", text: "For spirits who arrive with pure chaotic confidence and let the hat do most of the talking. Yee-haw optional, but encouraged." },
+        { id: "ninja", name: "Shadow Ninja", rarity: "Epic set", color: "#ff5a4a", crop: { x: 490, y: 0, w: 540 }, hat: "Shadow Ninja Hood", body: "Shadow Ninja Robe", alt: "A red, flame-wreathed spirit wearing the Shadow Ninja set: a masked hood and a crimson robe, with a sword hilt over one shoulder.", text: "Says very little. Looks devastating doing it. Main-character energy for spirits who would rather just say \"Hmph.\"" },
+        { id: "pirate", name: "Astral Pirate", rarity: "Epic set", color: "#7dff5a", crop: { x: 900, y: 10, w: 620 }, hat: "Astral Pirate Hat", body: "Astral Pirate Coat", alt: "A cackling green spirit wearing the Astral Pirate set: a skull-and-crossbones hat and a buckled coat, giving a thumbs-up as gold coins fly past.", text: "Financially motivated. Emotionally unavailable. Excellent coat. Yelling \"Arrr! Treasure!\" is not included, but nobody will stop you." },
+        { id: "princess", name: "Dark Princess", rarity: "Epic set", color: "#c77dff", crop: { x: 560, y: 380, w: 430 }, hat: "Dark Princess Crown Hair", body: "Dark Princess Dress", alt: "A violet spirit wearing the Dark Princess set: flowing hair with a jewelled tiara and a gown, chin on one hand, thoroughly unimpressed.", text: "Unimpressed by literally everything, in the best-dressed way possible. \"Really?\" works as a greeting and a review." }
+      ],
+      alsoTitle: "Also at Astra's Vault",
+      also: [
+        { id: "tree", name: "Tree Emperor", rarity: "Mythic robes" },
+        { id: "void", name: "Void Emperor", rarity: "Mythic robes" }
+      ]
+    },
+    adventures: {
+      kicker: "Adventures",
+      title: "Train hard. Face yourself. Challenge anyone.",
+      // Belt names + colours from LD_DOJO_ASCENSION_CONFIG.belts (config.js).
+      belts: [
+        { name: "White", color: "#f4f4f8" }, { name: "Yellow", color: "#ffe066" }, { name: "Orange", color: "#ffad4d" },
+        { name: "Green", color: "#75f0a2" }, { name: "Blue", color: "#8ed1ff" }, { name: "Purple", color: "#c084fc" },
+        { name: "Brown", color: "#d6a36a" }, { name: "Red", color: "#ff6b7a" }, { name: "Black", color: "#3a3a4a" },
+        { name: "Ascended Black", color: "#d8c4ff" }, { name: "Mythic", color: "#9ee9ff" }
+      ],
+      dojo: {
+        tag: "The Dojo",
+        title: "Train with Master Kaien",
+        text: "Read his attacks — block, dodge, wait or counter — then strike back in turn-based Shadow Duels. Take on trials against The Doubter, The Urge and The Shame, and climb eleven belts from White to Mythic.",
+        quote: "Master Kaien's feedback ranges from ‘acceptable’ to silence. Both are progress."
+      },
+      // Round 1 of SHADOW_DEMON_WAVES[0] (config.js), verbatim.
+      arena: {
+        tag: "Shadow Arena",
+        title: "Face The Doubter",
+        text: "Dodge what it throws at you, and answer its whispers with the response that actually weakens it. A boss fight against the voice in your own head.",
+        whisper: "You will never be good enough.",
+        prompt: "What actually weakens this voice?",
+        options: [
+          { text: "Maybe it's right. I should shrink before I fail.", effect: "trap", result: "Trap — that feeds the voice." },
+          { text: "I feel the doubt, but I do not need to obey it.", effect: "best", result: "Best answer — The Doubter weakens." },
+          { text: "Shut up. You're wrong.", effect: "okay", result: "Okay — it holds the line, barely." }
+        ]
+      },
+      // LD_DUEL_TYPE_META (config.js).
+      duels: {
+        tag: "Duels & the Arena",
+        title: "Challenge anyone",
+        text: "Pick a game, send a challenge, and see who's faster. Play for fun, put Soul Dust on the line, or climb the ranked Arena.",
+        types: [
+          { icon: "🧠", name: "Speed Math" }, { icon: "🌍", name: "Geography" }, { icon: "🐶", name: "Animals" },
+          { icon: "🍕", name: "Food" }, { icon: "🎬", name: "Movies" }, { icon: "🎵", name: "Music" },
+          { icon: "🔤", name: "Word Duel" }, { icon: "⌨️", name: "Typing Race" }, { icon: "🧩", name: "Memory" }
+        ]
+      }
+    },
+    life: {
+      kicker: "Make it your life",
+      title: "Pets, homes, work — and a pizza place you can own",
+      cards: [
+        { id: "pets", bg: "pet-shop", title: "Adopt a pet", text: "Sixteen companions from Rare to Ancient. Unlock them as you level up and they follow you everywhere.", sprites: ["pet-helion", "pet-lunyx", "pet-aqua"], alt: "Three LifeDecode pets: Helion, Lunyx and Aqua." },
+        { id: "homes", bg: "wonder-of-homes", title: "Own a home", text: "Mushroom Home, Wizzard Tower or Cloud Nest. Each has a Soul Furnace that slowly fills with Soul Dust — and friends can drop by.", sprites: ["soul-furnace"], alt: "The Soul Furnace: a stone furnace glowing with violet crystals." },
+        { id: "work", bg: "main-street-pizza", title: "Work & run a business", text: "Clock in at LifeFactory for Soul Dust and XP — or buy Main Street Pizza outright, set the menu prices and collect the takings.", sprites: ["npc-pizza-worker"], alt: "The Main Street Pizza cook, a fiery spirit in a chef's hat holding a pizza." },
+        { id: "daily", bg: "soulcore", title: "Daily rituals", text: "Open the Daily Chest on its 30-day reward cycle, grab a snack at LifeMart, and keep your Hunger and Thirst topped up.", sprites: ["daily-chest"], alt: "The LifeDecode Daily Chest, glowing purple." }
+      ]
+    },
+    community: {
+      kicker: "A world you share",
+      title: "Real players. Ridiculous locals.",
+      lead: "Every room is shared. Chat, emote, send friend requests, see who's online and visit each other's homes — while the locals drag everyone into dozens of quests.",
+      points: ["Real-time multiplayer rooms", "Chat & emotes", "Friends & online status", "Visit friends' homes", "Dozens of NPC quests", "Day & night secrets"],
+      // In-world sprites + lines quoted from quest text in config.js.
+      locals: [
+        { id: "ria", name: "Ria", place: "The Plaza", color: "#a9c4ff", line: "\u2018Hey, I'm Ria. What's on your mind?\u2019 An AI companion you can actually talk to." },
+        { id: "velvyria", name: "Velvyria", place: "The Plaza", color: "#b98cff", line: "Velvyria notes the arrival. She notes everything." },
+        { id: "drunk-dave", name: "Drunk Dave", place: "Brew Haven", color: "#7dff5a", line: "‘I said water,’ Dave says, drinking the coffee anyway. ‘I meant coffee. I always mean coffee.’" },
+        { id: "kaien", name: "Master Kaien", place: "The Dojo", color: "#c9b8ff", line: "Two words. From Kaien, that's a parade." },
+        { id: "nyas", name: "Nyas", place: "Soulcore", color: "#ff9a3d", line: "‘They hum. Bring beans anyway.’" },
+        { id: "astra", name: "Astra", place: "AstraVault", color: "#d6b8ff", line: "‘Dave who?’ — Astra, definitively." },
+        { id: "sylene", name: "Sylene", place: "Wonder House", color: "#b6d65a", line: "‘I'm pretending to sleep,’ Sylene says, eyes fully open the entire time." },
+        { id: "wanderer", name: "The Wanderer", place: "Out in the world", color: "#ff7a5a", line: "The Wanderer heard something. They always hear something." }
+      ]
+    },
     // Updates feed. status: "live" | "soon" | "dev" | "ongoing".
     // `date` is optional ISO (YYYY-MM or YYYY-MM-DD) — only set it for things
     // that really happened on that date. Never add player counts or events
@@ -188,13 +263,13 @@
     news: [
       { status: "dev", label: "In development", date: "", title: "Movie Creator", text: "A creative tool for making your own scenes and films inside LifeDecode World is being built. It isn't available in the game yet — we'll post here when it is." },
       { status: "soon", label: "Coming soon", date: "", title: "iPhone app", text: "A native iPhone app is in preparation. Until it lands, LifeDecode World plays right in Safari — no download needed." },
-      { status: "ongoing", label: "Ongoing", date: "", title: "New rooms on the map", text: "Plaza, Brew Haven, Soulcore and Mind Zone are open today, and more rooms keep getting added." },
+      { status: "ongoing", label: "Ongoing", date: "", title: "The world keeps growing", text: "Twenty places to explore today, from the Plaza to the Shadow Arena — and new corners keep opening up." },
       { status: "live", label: "Live", date: "2026-07", title: "Account controls", text: "Signed-in players can find Delete account in the Account menu. It opens the official LifeDecode World account deletion page, which explains the whole process." }
     ],
     finale: {
       kicker: "Your spirit is waiting",
       title: "Step into LifeDecode World",
-      text: "No download, no login wall. Open the world, find the Plaza, and start your story."
+      text: "Free to play, no download, no login wall. Open the world, find the Plaza, and start your story."
     },
     footerTag: "LifeDecode World — enter at your own emotional risk."
   };
@@ -215,24 +290,61 @@
     return (m[3] ? Number(m[3]) + " " : "") + month + " " + m[1];
   }
 
-  const ICONS = {
-    spirit: '<path d="M12 3c3.9 0 7 3.1 7 7v9.2c0 .6-.7 1-1.2.6l-1.6-1.2-1.6 1.2c-.4.3-.9.3-1.2 0L12 18.6l-1.4 1.2c-.4.3-.9.3-1.2 0l-1.6-1.2-1.6 1.2c-.5.4-1.2 0-1.2-.6V10c0-3.9 3.1-7 7-7z"/><circle cx="9.5" cy="10.5" r="1.2"/><circle cx="14.5" cy="10.5" r="1.2"/>',
-    level: '<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4l-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/><path d="M12 8.5v4.5"/>',
-    coin: '<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7"/><path d="M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/>',
-    sprout: '<path d="M12 21v-8"/><path d="M12 13c0-4 2.5-6.5 7-7 0 4.5-2.5 7-7 7z"/><path d="M12 15c0-3-2-5-6-5.5 0 3.5 2 5.5 6 5.5z"/>',
-    people: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M15.6 14.2c2.4-.3 4.4 1.2 4.9 4.3"/>',
-    device: '<rect x="3" y="4.5" width="13" height="10" rx="1.6"/><path d="M7 18.5h5"/><rect x="16.5" y="9" width="4.5" height="10.5" rx="1.2"/>'
+  const ICON_ARROW_L = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ICON_ARROW_R = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // Intrinsic sizes of assets/v2/world sprites (from manifest.json, written
+  // by tools/build-world-assets.py) so every <img> reserves its box and the
+  // page never shifts while art streams in.
+  const SPRITE_SIZES = {
+    "daily-chest": [298, 300],
+    "demon-doubter": [319, 560],
+    "npc-astra": [380, 520],
+    "npc-drunk-dave": [369, 520],
+    "npc-kaien": [287, 520],
+    "npc-nyas": [306, 520],
+    "npc-pizza-worker": [284, 420],
+    "npc-ria": [360, 520],
+    "npc-sylene": [249, 520],
+    "npc-velvyria": [356, 520],
+    "npc-wanderer": [286, 520],
+    "outfit-cowboy-body": [165, 260],
+    "outfit-cowboy-hat": [427, 200],
+    "outfit-ninja-body": [177, 260],
+    "outfit-ninja-hat": [149, 200],
+    "outfit-pirate-body": [145, 260],
+    "outfit-pirate-hat": [177, 200],
+    "outfit-princess-body": [200, 260],
+    "outfit-princess-hat": [197, 200],
+    "outfit-tree-body": [154, 260],
+    "outfit-tree-hat": [164, 200],
+    "outfit-void-body": [156, 260],
+    "outfit-void-hat": [136, 200],
+    "pet-aqua": [161, 300],
+    "pet-helion": [204, 300],
+    "pet-joylee": [189, 260],
+    "pet-kiwi": [189, 260],
+    "pet-leonardo": [195, 260],
+    "pet-lunyx": [215, 300],
+    "pet-madius": [192, 300],
+    "pet-riko": [194, 260],
+    "soul-furnace": [240, 360]
   };
 
-  const SIGILS = {
-    plaza: '<circle cx="60" cy="60" r="40"/><circle cx="60" cy="60" r="26"/><path d="M60 14v18M60 88v18M14 60h18M88 60h18"/><path d="M44 60c0-9 7-16 16-16s16 7 16 16"/><path d="M52 60v10M68 60v10M48 70h24"/>',
-    brew: '<path d="M34 50h44v22c0 13-10 22-22 22s-22-9-22-22z"/><path d="M78 56h6c6 0 10 4 10 9s-4 9-10 9h-7"/><path d="M48 40c-4-5 4-8 0-14M60 40c-4-5 4-8 0-14M72 40c-4-5 4-8 0-14"/><path d="M30 102h56"/>',
-    soulcore: '<circle cx="60" cy="60" r="14"/><ellipse cx="60" cy="60" rx="44" ry="16"/><ellipse cx="60" cy="60" rx="44" ry="16" transform="rotate(60 60 60)"/><ellipse cx="60" cy="60" rx="44" ry="16" transform="rotate(-60 60 60)"/>',
-    mind: '<path d="M60 16l40 44-40 44-40-44z"/><path d="M60 34l22 26-22 26-22-26z"/><path d="M20 60h80M60 16v88"/><circle cx="60" cy="60" r="5"/>'
-  };
+  // Location art: 3:2 WebP at 320/640/1280w. The Plaza source is narrower
+  // than 1280, so its "1280" file is 903x602.
+  function worldPicture(id, opts) {
+    const o = opts || {};
+    return '<img class="' + esc(o.cls || "") + '" src="' + ART("loc-" + id + "-640.webp") + '"' +
+      ' srcset="' + ART("loc-" + id + "-320.webp") + ' 320w, ' + ART("loc-" + id + "-640.webp") + ' 640w, ' + ART("loc-" + id + "-1280.webp") + ' 1280w"' +
+      ' sizes="' + esc(o.sizes || "100vw") + '" width="1280" height="853" alt="' + esc(o.alt || "") + '"' +
+      (o.eager ? ' loading="eager"' : ' loading="lazy"') + ' decoding="async">';
+  }
 
-  function iconSvg(name) {
-    return '<svg class="v2_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (ICONS[name] || "") + "</svg>";
+  function spriteImg(name, opts) {
+    const o = opts || {};
+    const size = SPRITE_SIZES[name] || [400, 400];
+    return '<img class="' + esc(o.cls || "") + '" src="' + ART(name + ".webp") + '" width="' + size[0] + '" height="' + size[1] + '" alt="' + esc(o.alt || "") + '" loading="lazy" decoding="async"' + (o.style ? ' style="' + o.style + '"' : '') + '>';
   }
 
   // One <picture> markup for every use of the key art. All copies share the
@@ -436,15 +548,11 @@ body.ld-no-scroll{overflow:hidden;}
    gives static content its own stacking context, which avoids the Chromium
    paint-drop bug this page hit with fixed background layers. */
 #ldw_app .v2_section{position:relative;padding:var(--v-section-pad) 0;}
-#ldw_app .v2_head{max-width:720px;margin:0 auto clamp(32px,4vw,56px);text-align:center;}
+#ldw_app .v2_head{max-width:880px;margin:0 auto clamp(32px,4vw,56px);text-align:center;}
 #ldw_app .v2_kicker{display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--v-gold);}
 #ldw_app .v2_kicker::before{content:"";width:7px;height:7px;transform:rotate(45deg);border:1px solid currentColor;}
 #ldw_app .v2_h2{margin-top:14px;font-family:var(--v-display);font-weight:600;font-size:clamp(30px,4.2vw,54px);line-height:1.08;letter-spacing:.01em;color:#fff;}
 #ldw_app .v2_lead{margin-top:16px;color:var(--v-muted);font-size:clamp(15.5px,1.3vw,17.5px);line-height:1.65;}
-#ldw_app .v2_rule{display:flex;align-items:center;justify-content:center;gap:14px;width:min(520px,70%);margin:0 auto;color:var(--v-gold);opacity:.7;}
-#ldw_app .v2_rule::before,#ldw_app .v2_rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(244,199,107,.55));}
-#ldw_app .v2_rule::after{transform:scaleX(-1);}
-#ldw_app .v2_rule i{width:8px;height:8px;transform:rotate(45deg);border:1px solid currentColor;box-shadow:0 0 12px rgba(244,199,107,.6);}
 
 /* Prologue */
 #ldw_app .v2_prologue{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,6vw,96px);align-items:center;}
@@ -457,36 +565,54 @@ body.ld-no-scroll{overflow:hidden;}
 #ldw_app .v2_fact span{color:var(--v-muted);font-size:15px;}
 @media(max-width:880px){#ldw_app .v2_prologue{grid-template-columns:1fr;}#ldw_app .v2_fact{grid-template-columns:1fr;gap:4px;}}
 
-/* Locations */
-#ldw_app .v2_locations{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.6vw,22px);}
-#ldw_app .v2_loc{--accent:#5fe3ff;--glow:rgba(95,227,255,.35);position:relative;display:flex;flex-direction:column;border-radius:var(--v-radius);overflow:hidden;background:#090a24;border:1px solid var(--v-line);box-shadow:0 24px 60px rgba(0,0,0,.35);transition:transform .45s var(--v-ease),border-color .3s ease,box-shadow .45s var(--v-ease);}
-#ldw_app .v2_loc:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent) 45%,transparent);box-shadow:0 34px 80px rgba(0,0,0,.45),0 0 60px -10px var(--glow);}
-#ldw_app .v2_loc_art{position:relative;flex:0 0 260px;overflow:hidden;
-  background:
-    radial-gradient(60% 55% at 50% 48%,var(--glow),transparent 70%),
-    radial-gradient(120% 80% at 50% 120%,rgba(5,6,22,1),transparent 60%),
-    linear-gradient(160deg,color-mix(in srgb,var(--accent) 16%,#0b0c2c),#07081e 70%);}
-#ldw_app .v2_loc_art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.025) 46px 47px),repeating-linear-gradient(0deg,transparent 0 46px,rgba(255,255,255,.02) 46px 47px);mask-image:radial-gradient(70% 60% at 50% 55%,#000,transparent);-webkit-mask-image:radial-gradient(70% 60% at 50% 55%,#000,transparent);}
-#ldw_app .v2_loc_art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-#ldw_app .v2_sigil{position:absolute;left:50%;top:48%;width:46%;max-width:150px;transform:translate(-50%,-50%);color:var(--accent);filter:drop-shadow(0 0 14px var(--glow)) drop-shadow(0 0 2px var(--accent));opacity:.92;transition:transform .6s var(--v-ease);}
-#ldw_app .v2_loc:hover .v2_sigil{transform:translate(-50%,-54%) scale(1.04);}
-#ldw_app .v2_loc_num{position:absolute;top:18px;left:20px;font-family:var(--v-display);font-size:13px;letter-spacing:.2em;color:color-mix(in srgb,var(--accent) 80%,#fff);}
-#ldw_app .v2_loc_body{position:relative;flex:1;padding:22px 22px 26px;border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(8,9,30,.9),rgba(6,7,24,.98));}
-#ldw_app .v2_loc_body::before{content:"";position:absolute;left:22px;right:22px;top:-1px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);}
-#ldw_app .v2_loc_tag{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);}
-#ldw_app .v2_loc h3{margin-top:8px;font-family:var(--v-display);font-weight:600;font-size:clamp(22px,1.9vw,27px);letter-spacing:.03em;color:#fff;}
-#ldw_app .v2_loc p{margin-top:8px;color:var(--v-muted);font-size:15px;line-height:1.55;}
-#ldw_app .v2_note{margin:28px auto 0;max-width:620px;text-align:center;color:var(--v-soft);font-size:13.5px;}
-@media(max-width:1080px){#ldw_app .v2_locations{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:620px){
-  #ldw_app .v2_locations{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -20px;padding:4px 20px 18px;scrollbar-width:none;}
-  #ldw_app .v2_locations::-webkit-scrollbar{display:none;}
-  #ldw_app .v2_loc{flex:0 0 80%;scroll-snap-align:center;}
-  #ldw_app .v2_loc_art{flex-basis:220px;}
-  #ldw_app .v2_loc:hover{transform:none;}
+/* Shared art helpers */
+#ldw_app .v2_note{margin:18px auto 0;max-width:640px;text-align:center;color:var(--v-soft);font-size:13.5px;}
+#ldw_app .v2_bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#ldw_app .v2_tag{font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--v-gold);}
+#ldw_app .v2_h3{margin-top:10px;font-family:var(--v-display);font-weight:600;font-size:clamp(26px,3vw,40px);line-height:1.1;color:#fff;}
+#ldw_app .v2_body{margin-top:14px;color:var(--v-muted);font-size:16px;line-height:1.7;}
+#ldw_app .v2_iconbtn{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1px solid rgba(220,210,255,.28);background:rgba(8,8,30,.55);color:#fff;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:border-color .2s ease,background-color .2s ease,transform .2s var(--v-ease);}
+#ldw_app .v2_iconbtn:hover{border-color:var(--v-gold);background:rgba(20,18,60,.7);transform:translateY(-1px);}
+#ldw_app .v2_iconbtn svg{width:18px;height:18px;}
+
+/* Explore the World — cinematic stage + thumbnail rail */
+#ldw_app .v2_gallery{width:var(--v-wide);margin:0 auto;display:grid;gap:16px;}
+#ldw_app .v2_stage{position:relative;aspect-ratio:21/10;border-radius:30px;overflow:hidden;background:#07081e;border:1px solid var(--v-line-2);box-shadow:0 40px 110px rgba(0,0,0,.5);}
+#ldw_app .v2_stage_media{position:absolute;inset:0;}
+#ldw_app .v2_stage_media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s ease;}
+#ldw_app .v2_stage_media img.is-hidden{opacity:0;}
+#ldw_app .v2_stage_media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,22,.88) 0%,rgba(5,6,22,.55) 32%,rgba(5,6,22,0) 62%),linear-gradient(0deg,rgba(5,6,22,.75),rgba(5,6,22,0) 45%);pointer-events:none;}
+#ldw_app .v2_stage_caption{position:absolute;left:clamp(24px,3.6vw,56px);bottom:clamp(24px,3.6vw,52px);max-width:min(480px,46%);z-index:1;}
+#ldw_app .v2_stage_caption .v2_h3{font-size:clamp(30px,3.6vw,52px);}
+#ldw_app .v2_stage_caption p{margin-top:12px;color:rgba(240,236,255,.86);font-size:16.5px;line-height:1.65;text-shadow:0 2px 12px rgba(0,0,0,.6);}
+#ldw_app .v2_stage_nav{position:absolute;right:clamp(18px,2.4vw,32px);bottom:clamp(18px,2.4vw,32px);z-index:1;display:flex;align-items:center;gap:10px;}
+#ldw_app .v2_stage_count{min-width:64px;text-align:center;font-family:var(--v-display);font-size:14px;letter-spacing:.14em;color:rgba(255,255,255,.8);}
+#ldw_app .v2_rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;}
+#ldw_app .v2_thumb{position:relative;display:block;aspect-ratio:3/2;padding:0;border-radius:14px;overflow:hidden;border:1px solid var(--v-line);background:#0a0b26;cursor:pointer;transition:border-color .25s ease,box-shadow .25s ease,transform .25s var(--v-ease);}
+#ldw_app .v2_thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.75) brightness(.62);transition:filter .3s ease,transform .6s var(--v-ease);}
+#ldw_app .v2_thumb span{position:absolute;left:10px;right:10px;bottom:8px;text-align:left;font:600 12.5px/1.25 var(--v-sans);color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.9);}
+#ldw_app .v2_thumb:hover{transform:translateY(-2px);}
+#ldw_app .v2_thumb:hover img{filter:saturate(1) brightness(.85);}
+#ldw_app .v2_thumb[aria-selected="true"]{border-color:var(--v-gold);box-shadow:0 0 0 1px var(--v-gold),0 12px 30px rgba(244,199,107,.16);}
+#ldw_app .v2_thumb[aria-selected="true"] img{filter:none;}
+#ldw_app .v2_more{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;margin-top:10px;color:var(--v-soft);font-size:13.5px;}
+#ldw_app .v2_more b{font-weight:600;color:var(--v-muted);margin-right:4px;}
+#ldw_app .v2_more span{padding:5px 12px;border-radius:999px;border:1px solid var(--v-line);background:rgba(255,255,255,.02);}
+@media(max-width:1080px){#ldw_app .v2_rail{grid-template-columns:repeat(4,minmax(0,1fr));}#ldw_app .v2_stage{aspect-ratio:16/9;}}
+@media(max-width:700px){
+  #ldw_app .v2_gallery{width:calc(100% - 24px);}
+  #ldw_app .v2_stage{aspect-ratio:auto;display:flex;flex-direction:column;border-radius:22px;}
+  #ldw_app .v2_stage_media{position:relative;inset:auto;aspect-ratio:3/2;}
+  #ldw_app .v2_stage_media::after{background:linear-gradient(0deg,rgba(7,8,30,1),rgba(7,8,30,0) 40%);}
+  #ldw_app .v2_stage_caption{position:relative;left:auto;bottom:auto;max-width:none;padding:0 20px 8px;margin-top:-28px;}
+  #ldw_app .v2_stage_caption p{font-size:15.5px;}
+  #ldw_app .v2_stage_nav{position:relative;right:auto;bottom:auto;justify-content:space-between;padding:12px 20px 20px;}
+  #ldw_app .v2_rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:2px 2px 8px;scrollbar-width:none;}
+  #ldw_app .v2_rail::-webkit-scrollbar{display:none;}
+  #ldw_app .v2_thumb{flex:0 0 38%;scroll-snap-align:start;}
 }
 
-/* Squad showcase */
+/* Dress your spirit — key-art outfit viewer */
 #ldw_app .v2_squad_wrap{position:relative;}
 #ldw_app .v2_squad_wrap::before{content:"";position:absolute;inset:-10% -20%;background:radial-gradient(50% 50% at 30% 50%,var(--squad-glow,rgba(74,168,255,.18)),transparent 70%);transition:background .6s ease;pointer-events:none;}
 #ldw_app .v2_squad{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,6vw,88px);align-items:center;}
@@ -496,40 +622,118 @@ body.ld-no-scroll{overflow:hidden;}
 #ldw_app .v2_portrait_frame.is-active{opacity:1;transform:scale(1);}
 #ldw_app .v2_portrait img{position:absolute;max-width:none!important;height:auto;width:calc(1536 / var(--w) * 100%);left:calc(var(--x) / var(--w) * -100%);top:calc(var(--y) / (var(--w) * 1.25) * -100%);}
 #ldw_app .v2_portrait_caption{position:absolute;left:24px;right:24px;bottom:20px;z-index:1;display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--v-soft);}
-#ldw_app .v2_tabs{margin-top:30px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
-#ldw_app .v2_tab{--c:#4aa8ff;position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;border-radius:var(--v-radius-sm);border:1px solid var(--v-line);background:rgba(255,255,255,.025);color:var(--v-ink);text-align:left;cursor:pointer;transition:border-color .25s ease,background-color .25s ease,transform .25s var(--v-ease);}
+#ldw_app .v2_tabs{margin-top:28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#ldw_app .v2_tab{--c:#4aa8ff;position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:15px 18px;border-radius:var(--v-radius-sm);border:1px solid var(--v-line);background:rgba(255,255,255,.025);color:var(--v-ink);text-align:left;cursor:pointer;transition:border-color .25s ease,background-color .25s ease,transform .25s var(--v-ease);}
 #ldw_app .v2_tab:hover{background:rgba(255,255,255,.05);transform:translateY(-2px);}
 #ldw_app .v2_tab b{font-family:var(--v-display);font-weight:600;font-size:17px;letter-spacing:.03em;}
-#ldw_app .v2_tab span{font-size:13px;color:var(--v-soft);letter-spacing:.04em;}
+#ldw_app .v2_tab span{font-size:12.5px;color:var(--v-soft);letter-spacing:.08em;text-transform:uppercase;}
 #ldw_app .v2_tab::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:2px;border-radius:2px;background:var(--c);opacity:0;transition:opacity .25s ease;}
 #ldw_app .v2_tab[aria-selected="true"]{border-color:color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 9%,transparent);}
 #ldw_app .v2_tab[aria-selected="true"]::before{opacity:1;}
 #ldw_app .v2_tab[aria-selected="true"] span{color:var(--c);}
-#ldw_app .v2_squad_panel{margin-top:26px;min-height:120px;}
+#ldw_app .v2_squad_panel{margin-top:24px;}
 #ldw_app .v2_squad_panel[hidden]{display:none;}
-#ldw_app .v2_squad_panel .v2_phrase{font-family:var(--v-display);font-size:clamp(24px,2.6vw,34px);font-weight:600;line-height:1.1;}
-#ldw_app .v2_squad_panel p{margin-top:12px;color:var(--v-muted);font-size:16.5px;line-height:1.7;max-width:520px;}
+#ldw_app .v2_squad_panel p{color:var(--v-muted);font-size:16px;line-height:1.7;max-width:540px;}
+#ldw_app .v2_pieces{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
+#ldw_app .v2_piece{display:flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;border-radius:16px;border:1px solid var(--v-line);background:rgba(255,255,255,.03);}
+#ldw_app .v2_piece_img{display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:12px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--c,#7b4dff) 30%,transparent),rgba(10,10,36,.9) 70%);}
+#ldw_app .v2_piece_img img{max-width:54px;max-height:54px;width:auto;height:auto;}
+#ldw_app .v2_piece small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--v-soft);}
+#ldw_app .v2_piece b{display:block;margin-top:2px;font-size:14px;font-weight:600;color:#fff;}
+#ldw_app .v2_also{margin-top:28px;padding-top:20px;border-top:1px solid var(--v-line);display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;}
+#ldw_app .v2_also > span{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--v-gold);}
+#ldw_app .v2_also_item{display:flex;align-items:center;gap:10px;}
+#ldw_app .v2_also_item img{width:auto;height:48px;}
+#ldw_app .v2_also_item b{display:block;font-family:var(--v-display);font-weight:600;font-size:15px;color:#fff;}
+#ldw_app .v2_also_item small{display:block;font-size:12px;color:var(--v-soft);}
 #ldw_app .v2_squad_copy .v2_h2,#ldw_app .v2_squad_copy .v2_lead{text-align:left;}
 @media(max-width:880px){
   #ldw_app .v2_squad{grid-template-columns:1fr;}
   #ldw_app .v2_portrait{max-width:440px;width:100%;margin:0 auto;}
-  #ldw_app .v2_squad_copy{text-align:center;}
-  #ldw_app .v2_squad_copy .v2_h2,#ldw_app .v2_squad_copy .v2_lead{text-align:center;}
+  #ldw_app .v2_squad_copy,#ldw_app .v2_squad_copy .v2_h2,#ldw_app .v2_squad_copy .v2_lead{text-align:center;}
   #ldw_app .v2_squad_panel{text-align:center;}
   #ldw_app .v2_squad_panel p{margin-left:auto;margin-right:auto;}
+  #ldw_app .v2_pieces,#ldw_app .v2_also{justify-content:center;}
 }
-@media(max-width:420px){#ldw_app .v2_tab{padding:13px 14px;}#ldw_app .v2_tab b{font-size:15px;}}
+@media(max-width:420px){#ldw_app .v2_tab{padding:13px 14px;}#ldw_app .v2_tab b{font-size:15px;}#ldw_app .v2_piece{padding-right:12px;}}
 
-/* Pillars */
-#ldw_app .v2_pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--v-line);border:1px solid var(--v-line);border-radius:var(--v-radius);overflow:hidden;}
-#ldw_app .v2_pillar{position:relative;padding:clamp(26px,2.6vw,38px);background:linear-gradient(180deg,rgba(10,11,38,.96),rgba(7,8,28,.98));transition:background .35s ease;}
-#ldw_app .v2_pillar:hover{background:linear-gradient(180deg,rgba(18,16,56,.98),rgba(9,9,34,.98));}
-#ldw_app .v2_pillar_icon{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;color:var(--v-gold);background:radial-gradient(circle at 30% 25%,rgba(244,199,107,.16),rgba(123,77,255,.10));border:1px solid rgba(244,199,107,.25);}
-#ldw_app .v2_icon{width:26px;height:26px;}
-#ldw_app .v2_pillar h3{margin-top:20px;font-family:var(--v-display);font-weight:600;font-size:20px;letter-spacing:.02em;color:#fff;}
-#ldw_app .v2_pillar p{margin-top:10px;color:var(--v-muted);font-size:15px;line-height:1.65;}
-@media(max-width:980px){#ldw_app .v2_pillars{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:600px){#ldw_app .v2_pillars{grid-template-columns:1fr;}}
+/* Adventures — cinematic spreads */
+#ldw_app .v2_adv{display:grid;gap:clamp(18px,2.2vw,28px);width:var(--v-wide);margin:0 auto;}
+#ldw_app .v2_spread{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);min-height:clamp(460px,44vw,600px);border-radius:30px;overflow:hidden;isolation:isolate;border:1px solid var(--v-line-2);box-shadow:0 34px 100px rgba(0,0,0,.45);background:#07081e;}
+#ldw_app .v2_spread_bg{position:absolute;inset:0;z-index:-2;}
+#ldw_app .v2_spread_bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,22,.94) 0%,rgba(5,6,22,.78) 38%,rgba(5,6,22,.25) 70%,rgba(5,6,22,.45) 100%);}
+#ldw_app .v2_spread--flip{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);}
+#ldw_app .v2_spread--flip .v2_spread_bg::after{background:linear-gradient(270deg,rgba(5,6,22,.94) 0%,rgba(5,6,22,.78) 38%,rgba(5,6,22,.25) 70%,rgba(5,6,22,.45) 100%);}
+#ldw_app .v2_spread--flip .v2_spread_figure{order:-1;}
+#ldw_app .v2_spread_copy{align-self:center;padding:clamp(30px,4.4vw,72px);max-width:620px;}
+#ldw_app .v2_spread_figure{position:relative;display:flex;align-items:flex-end;justify-content:center;padding-top:40px;}
+#ldw_app .v2_spread_figure img{position:relative;width:auto;height:min(92%,520px);max-width:90%;object-fit:contain;filter:drop-shadow(0 0 40px var(--glow,rgba(170,120,255,.5)));}
+#ldw_app .v2_spread_figure::before{content:"";position:absolute;left:50%;bottom:8%;width:70%;height:22%;transform:translateX(-50%);background:radial-gradient(closest-side,var(--glow,rgba(170,120,255,.45)),transparent);filter:blur(10px);}
+#ldw_app .v2_quoteline{margin-top:22px;padding-left:16px;border-left:2px solid var(--v-gold);color:rgba(240,236,255,.78);font-style:italic;font-size:15px;}
+#ldw_app .v2_belts{margin-top:26px;}
+#ldw_app .v2_belts ol{display:flex;gap:5px;margin:0;padding:0;list-style:none;}
+#ldw_app .v2_belts li{flex:1;height:10px;border-radius:3px;background:var(--c);box-shadow:0 0 12px color-mix(in srgb,var(--c) 45%,transparent);}
+#ldw_app .v2_belts div{display:flex;justify-content:space-between;margin-top:9px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--v-soft);}
+#ldw_app .v2_whisper{margin-top:24px;font-family:var(--v-display);font-size:clamp(20px,2vw,26px);line-height:1.3;color:#e9dcff;text-shadow:0 0 24px rgba(160,90,255,.6);}
+#ldw_app .v2_whisper_prompt{margin-top:8px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--v-soft);}
+#ldw_app .v2_choices{margin-top:14px;display:grid;gap:8px;}
+#ldw_app .v2_choice{display:block;width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(190,160,255,.24);background:rgba(20,12,48,.55);color:var(--v-ink);font:500 14.5px/1.45 var(--v-sans);text-align:left;cursor:pointer;transition:border-color .2s ease,background-color .2s ease;}
+#ldw_app .v2_choice:hover{border-color:rgba(220,200,255,.55);background:rgba(36,22,80,.65);}
+#ldw_app .v2_choice[aria-pressed="true"][data-effect="best"]{border-color:#86ff9e;background:rgba(40,90,60,.35);}
+#ldw_app .v2_choice[aria-pressed="true"][data-effect="okay"]{border-color:#f4c76b;background:rgba(90,70,20,.35);}
+#ldw_app .v2_choice[aria-pressed="true"][data-effect="trap"]{border-color:#ff7a8a;background:rgba(100,20,40,.35);}
+#ldw_app .v2_choice_result{min-height:22px;margin-top:10px;font-size:14px;font-weight:600;color:var(--v-muted);}
+#ldw_app .v2_duel_panel{position:relative;border-radius:30px;overflow:hidden;border:1px solid var(--v-line-2);background:radial-gradient(80% 120% at 85% 20%,rgba(95,227,255,.12),transparent 60%),radial-gradient(80% 120% at 10% 90%,rgba(123,77,255,.18),transparent 60%),linear-gradient(180deg,#0b0c2c,#07081e);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(30px,4.4vw,72px);}
+#ldw_app .v2_duel_types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+#ldw_app .v2_duel_type{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;aspect-ratio:1.5/1;border-radius:16px;border:1px solid var(--v-line);background:rgba(255,255,255,.03);font-size:13.5px;font-weight:600;color:#fff;text-align:center;transition:border-color .25s ease,transform .25s var(--v-ease);}
+#ldw_app .v2_duel_type:hover{border-color:rgba(95,227,255,.5);transform:translateY(-2px);}
+#ldw_app .v2_duel_type i{font-style:normal;font-size:28px;line-height:1;}
+@media(max-width:880px){
+  #ldw_app .v2_adv{width:calc(100% - 24px);}
+  #ldw_app .v2_spread,#ldw_app .v2_spread--flip{grid-template-columns:1fr;min-height:0;border-radius:24px;}
+  #ldw_app .v2_spread_figure,#ldw_app .v2_spread--flip .v2_spread_figure{order:-1;height:300px;padding-top:24px;}
+  #ldw_app .v2_spread_figure img{height:100%;}
+  #ldw_app .v2_spread_bg::after,#ldw_app .v2_spread--flip .v2_spread_bg::after{background:linear-gradient(180deg,rgba(5,6,22,.2) 0%,rgba(5,6,22,.55) 34%,rgba(5,6,22,.94) 52%,#07081e 100%);}
+  #ldw_app .v2_spread_copy{padding:8px 22px 30px;}
+  #ldw_app .v2_duel_panel{grid-template-columns:1fr;border-radius:24px;padding:30px 22px;}
+}
+
+/* Make it your life — art cards */
+#ldw_app .v2_life{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+#ldw_app .v2_life_card{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:480px;border-radius:24px;overflow:hidden;isolation:isolate;border:1px solid var(--v-line);background:#07081e;transition:transform .45s var(--v-ease),border-color .3s ease,box-shadow .45s var(--v-ease);}
+#ldw_app .v2_life_card:hover{transform:translateY(-6px);border-color:rgba(244,199,107,.35);box-shadow:0 30px 70px rgba(0,0,0,.45);}
+#ldw_app .v2_life_card .v2_bgimg{z-index:-2;filter:brightness(.62) saturate(1.05);transition:transform 1.2s var(--v-ease);}
+#ldw_app .v2_life_card:hover .v2_bgimg{transform:scale(1.04);}
+#ldw_app .v2_life_card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,6,22,.1) 0%,rgba(5,6,22,.2) 38%,rgba(5,6,22,.9) 64%,#06071c 100%);}
+#ldw_app .v2_life_art{position:absolute;left:0;right:0;top:24px;height:52%;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;}
+#ldw_app .v2_life_art img{width:auto;height:88%;max-width:86%;object-fit:contain;filter:drop-shadow(0 10px 26px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(200,160,255,.35));}
+#ldw_app .v2_life_art--row{gap:0;padding:0 6px;}
+#ldw_app .v2_life_art--row img{width:30%;height:auto;max-width:none;margin:0 -2.5%;}
+#ldw_app .v2_life_art--row img:nth-child(2){width:34%;position:relative;z-index:1;}
+#ldw_app .v2_life_copy{position:relative;padding:22px 24px 26px;}
+#ldw_app .v2_life_copy h3{font-family:var(--v-display);font-weight:600;font-size:22px;color:#fff;}
+#ldw_app .v2_life_copy p{margin-top:10px;color:var(--v-muted);font-size:14.5px;line-height:1.6;}
+@media(max-width:1080px){#ldw_app .v2_life{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:600px){#ldw_app .v2_life{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -20px;padding:4px 20px 16px;scrollbar-width:none;}#ldw_app .v2_life::-webkit-scrollbar{display:none;}#ldw_app .v2_life_card{flex:0 0 82%;scroll-snap-align:center;min-height:440px;}#ldw_app .v2_life_card:hover{transform:none;}}
+
+/* Community + locals */
+#ldw_app .v2_comm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:end;margin-bottom:clamp(28px,3.4vw,44px);}
+#ldw_app .v2_comm .v2_h2,#ldw_app .v2_comm .v2_lead{text-align:left;}
+#ldw_app .v2_points{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 22px;}
+#ldw_app .v2_points li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--v-line);color:#fff;font-size:15px;}
+#ldw_app .v2_points li::before{content:"";flex:0 0 8px;height:8px;transform:rotate(45deg);border:1px solid var(--v-gold);box-shadow:0 0 10px rgba(244,199,107,.5);}
+#ldw_app .v2_locals_wrap{position:relative;}
+#ldw_app .v2_locals{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;padding:6px 2px 18px;scrollbar-width:thin;scrollbar-color:rgba(244,199,107,.35) transparent;}
+#ldw_app .v2_local{--c:#b98cff;flex:0 0 clamp(220px,22vw,260px);scroll-snap-align:start;display:flex;flex-direction:column;border-radius:22px;border:1px solid var(--v-line);background:radial-gradient(90% 60% at 50% 28%,color-mix(in srgb,var(--c) 24%,transparent),transparent 70%),linear-gradient(180deg,rgba(14,14,46,.9),rgba(7,8,26,.96));overflow:hidden;}
+#ldw_app .v2_local_img{height:230px;display:flex;align-items:flex-end;justify-content:center;padding-top:16px;}
+#ldw_app .v2_local_img img{width:auto;height:100%;max-width:90%;object-fit:contain;filter:drop-shadow(0 0 22px color-mix(in srgb,var(--c) 60%,transparent));}
+#ldw_app .v2_local_body{padding:16px 20px 22px;border-top:1px solid rgba(255,255,255,.06);}
+#ldw_app .v2_local small{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--c);}
+#ldw_app .v2_local h3{margin-top:6px;font-family:var(--v-display);font-weight:600;font-size:20px;color:#fff;}
+#ldw_app .v2_local p{margin-top:8px;color:var(--v-muted);font-size:14px;line-height:1.55;font-style:italic;}
+#ldw_app .v2_locals_nav{display:flex;justify-content:flex-end;gap:10px;margin-top:6px;}
+@media(max-width:880px){#ldw_app .v2_comm{grid-template-columns:1fr;align-items:start;}#ldw_app .v2_comm .v2_h2,#ldw_app .v2_comm .v2_lead{text-align:center;}#ldw_app .v2_comm .v2_kicker{display:flex;justify-content:center;}#ldw_app .v2_locals{margin:0 -20px;padding-left:20px;padding-right:20px;}#ldw_app .v2_local{flex-basis:72%;}#ldw_app .v2_locals_nav{display:none;}}
+@media(max-width:520px){#ldw_app .v2_points{grid-template-columns:1fr;gap:0;}}
 
 /* News */
 #ldw_app .v2_news{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
@@ -606,47 +810,72 @@ body.ld-no-scroll{overflow:hidden;}
   function buildHTML() {
     const C = CONTENT;
     const W = esc(CFG.WORLD_URL);
+    const F = C.world.featured;
+    const O = C.outfits;
+    const A = C.adventures;
 
-    const locations = C.locations.map((l, i) => (
-      '<li class="v2_loc" style="--accent:' + esc(l.accent) + ';--glow:' + esc(l.glow) + '">' +
-        '<div class="v2_loc_art">' +
-          (l.image
-            ? '<img src="' + esc(l.image) + '" alt="' + esc(l.imageAlt) + '" loading="lazy" decoding="async">'
-            : '<svg class="v2_sigil" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (SIGILS[l.id] || "") + '</svg>') +
-          '<span class="v2_loc_num" aria-hidden="true">' + String(i + 1).padStart(2, "0") + '</span>' +
-        '</div>' +
-        '<div class="v2_loc_body">' +
-          '<div class="v2_loc_tag">' + esc(l.tag) + '</div>' +
-          '<h3>' + esc(l.name) + '</h3>' +
-          '<p>' + esc(l.text) + '</p>' +
-        '</div>' +
-      '</li>'
+    const thumbs = F.map((l, i) => (
+      '<button class="v2_thumb" type="button" role="tab" id="ldv2_loc_tab_' + esc(l.id) + '" aria-controls="ldv2_stage" aria-selected="' + (i === 0 ? "true" : "false") + '" tabindex="' + (i === 0 ? "0" : "-1") + '" data-loc="' + i + '">' +
+        worldPicture(l.id, { sizes: "(max-width:700px) 40vw, 220px", alt: "" }) +
+        '<span>' + esc(l.name) + '</span>' +
+      '</button>'
     )).join("");
 
-    const frames = C.squad.map((s, i) => (
+    const frames = O.sets.map((s, i) => (
       '<div class="v2_portrait_frame' + (i === 0 ? ' is-active' : '') + '" data-squad-frame="' + esc(s.id) + '"' + (i === 0 ? '' : ' aria-hidden="true"') + '>' +
         keyArtPicture({ alt: i === 0 ? s.alt : "", style: cropStyle(s.crop) }) +
       '</div>'
     )).join("");
 
-    const tabs = C.squad.map((s, i) => (
+    const tabs = O.sets.map((s, i) => (
       '<button class="v2_tab" type="button" role="tab" id="ldv2_tab_' + esc(s.id) + '" aria-controls="ldv2_panel_' + esc(s.id) + '" aria-selected="' + (i === 0 ? "true" : "false") + '" tabindex="' + (i === 0 ? "0" : "-1") + '" data-squad="' + esc(s.id) + '" style="--c:' + esc(s.color) + '">' +
-        '<b>' + esc(s.name) + '</b><span>' + esc(s.phrase) + '</span>' +
+        '<b>' + esc(s.name) + '</b><span>' + esc(s.rarity) + '</span>' +
       '</button>'
     )).join("");
 
-    const panels = C.squad.map((s, i) => (
+    const piece = (id, label, name, color) => (
+      '<div class="v2_piece" style="--c:' + esc(color) + '">' +
+        '<span class="v2_piece_img">' + spriteImg("outfit-" + id, { alt: "" }) + '</span>' +
+        '<span><small>' + esc(label) + '</small><b>' + esc(name) + '</b></span>' +
+      '</div>'
+    );
+
+    const panels = O.sets.map((s, i) => (
       '<div class="v2_squad_panel" role="tabpanel" id="ldv2_panel_' + esc(s.id) + '" aria-labelledby="ldv2_tab_' + esc(s.id) + '"' + (i === 0 ? '' : ' hidden') + '>' +
-        '<div class="v2_phrase" style="color:' + esc(s.color) + '">&ldquo;' + esc(s.phrase) + '&rdquo;</div>' +
         '<p>' + esc(s.text) + '</p>' +
+        '<div class="v2_pieces" aria-label="Pieces in the ' + esc(s.name) + ' set">' + piece(s.id + "-hat", "Hat", s.hat, s.color) + piece(s.id + "-body", "Body", s.body, s.color) + '</div>' +
       '</div>'
     )).join("");
 
-    const pillars = C.pillars.map((p) => (
-      '<li class="v2_pillar">' +
-        '<span class="v2_pillar_icon">' + iconSvg(p.icon) + '</span>' +
-        '<h3>' + esc(p.title) + '</h3>' +
-        '<p>' + esc(p.text) + '</p>' +
+    const also = O.also.map((a) => (
+      '<div class="v2_also_item">' + spriteImg("outfit-" + a.id + "-body", { alt: a.name + " robes" }) +
+        '<span><b>' + esc(a.name) + '</b><small>' + esc(a.rarity) + '</small></span></div>'
+    )).join("");
+
+    const belts = A.belts.map((b) => '<li style="--c:' + esc(b.color) + '" title="' + esc(b.name) + '"></li>').join("");
+
+    const choices = A.arena.options.map((o, i) => (
+      '<button class="v2_choice" type="button" aria-pressed="false" data-effect="' + esc(o.effect) + '" data-result="' + esc(o.result) + '">' + esc(o.text) + '</button>'
+    )).join("");
+
+    const duelTypes = A.duels.types.map((t) => '<li class="v2_duel_type"><i aria-hidden="true">' + t.icon + '</i>' + esc(t.name) + '</li>').join("");
+
+    const life = C.life.cards.map((c) => (
+      '<li class="v2_life_card">' +
+        worldPicture(c.bg, { cls: "v2_bgimg", sizes: "(max-width:600px) 100vw, (max-width:1080px) 50vw, 25vw", alt: "" }) +
+        '<div class="v2_life_art' + (c.sprites.length > 1 ? ' v2_life_art--row' : '') + '" role="img" aria-label="' + esc(c.alt) + '">' +
+          c.sprites.map((s) => spriteImg(s, { alt: "" })).join("") +
+        '</div>' +
+        '<div class="v2_life_copy"><h3>' + esc(c.title) + '</h3><p>' + esc(c.text) + '</p></div>' +
+      '</li>'
+    )).join("");
+
+    const points = C.community.points.map((p) => '<li>' + esc(p) + '</li>').join("");
+
+    const locals = C.community.locals.map((n) => (
+      '<li class="v2_local" style="--c:' + esc(n.color) + '">' +
+        '<div class="v2_local_img">' + spriteImg("npc-" + n.id, { alt: n.name }) + '</div>' +
+        '<div class="v2_local_body"><small>' + esc(n.place) + '</small><h3>' + esc(n.name) + '</h3><p>' + esc(n.line) + '</p></div>' +
       '</li>'
     )).join("");
 
@@ -663,7 +892,7 @@ body.ld-no-scroll{overflow:hidden;}
 
     const facts = C.prologue.facts.map((f) => '<li class="v2_fact"><b>' + esc(f.title) + '</b><span>' + esc(f.text) + '</span></li>').join("");
 
-    const quote = esc(C.prologue.quote).replace("Just weird, cozy, iconic progression.", "<em>Just weird, cozy, iconic progression.</em>");
+    const quote = esc(C.prologue.quote).replace("Just a weird, cozy world that grows with you.", "<em>Just a weird, cozy world that grows with you.</em>");
 
     return `
 <a class="v2_skip" href="#ldv2_main">Skip to content</a>
@@ -677,8 +906,9 @@ body.ld-no-scroll{overflow:hidden;}
     </a>
     <nav class="v2_nav" aria-label="Main navigation">
       <a href="#ldv2_world">The World</a>
-      <a href="#ldv2_squad">Silly Squad</a>
-      <a href="#ldv2_spirit">Your Story</a>
+      <a href="#ldv2_spirit">Your Spirit</a>
+      <a href="#ldv2_adventures">Adventures</a>
+      <a href="#ldv2_community">Community</a>
       <a href="#ldv2_news">Updates</a>
     </nav>
     <div class="v2_header_actions">
@@ -691,7 +921,7 @@ body.ld-no-scroll{overflow:hidden;}
 <div class="v2_page">
   <main id="ldv2_main" tabindex="-1">
     <section class="v2_hero" id="ldv2_top" aria-labelledby="ldv2_title">
-      <div class="v2_hero_art">${keyArtPicture({ eager: true, alt: "LifeDecode World key art: the Silly Squad — a blue cowboy, a red ninja, a green pirate and a purple princess — glowing in neon against a dark, starry sky." })}</div>
+      <div class="v2_hero_art">${keyArtPicture({ eager: true, alt: "LifeDecode World key art: four glowing spirits wearing the Soul Cowboy, Shadow Ninja, Astral Pirate and Dark Princess outfits against a dark, starry sky." })}</div>
       <div class="v2_hero_shade" aria-hidden="true"></div>
       <div class="v2_hero_content">
         <p class="v2_eyebrow"><span>${esc(C.hero.eyebrow[0])}<span class="v2_eyebrow_more"> &middot; ${esc(C.hero.eyebrow[1])}</span></span></p>
@@ -705,7 +935,6 @@ body.ld-no-scroll{overflow:hidden;}
         <span class="ldw_app_badge ldw_auth_hidden" id="ldw_ios_badge" role="status">iPhone app &mdash; coming soon</span>
         <p class="v2_hero_micro">${esc(C.hero.micro)}</p>
       </div>
-      <a class="v2_scroll" href="#ldv2_prologue" aria-label="Scroll to learn more">Discover<i aria-hidden="true"></i></a>
     </section>
 
     <section class="v2_section" id="ldv2_prologue" aria-labelledby="ldv2_prologue_title">
@@ -721,44 +950,123 @@ body.ld-no-scroll{overflow:hidden;}
       </div>
     </section>
 
-    <div class="v2_rule" aria-hidden="true"><i></i></div>
-
     <section class="v2_section" id="ldv2_world" aria-labelledby="ldv2_world_title">
       <div class="v2_container">
         <div class="v2_head v2_reveal">
-          <div class="v2_kicker">Explore LifeDecode World</div>
-          <h2 class="v2_h2" id="ldv2_world_title">Four rooms. Infinite chaos.</h2>
-          <p class="v2_lead">Every room has its own mood, its own regulars and its own kind of trouble. Wander between them, see who's around, and find your favourite corner.</p>
+          <div class="v2_kicker">${esc(C.world.kicker)}</div>
+          <h2 class="v2_h2" id="ldv2_world_title">${esc(C.world.title)}</h2>
+          <p class="v2_lead">${esc(C.world.lead)}</p>
         </div>
-        <ul class="v2_locations v2_stagger" tabindex="0" aria-label="Rooms in LifeDecode World">${locations}</ul>
-        <p class="v2_note">${esc(C.locationsNote)}</p>
+      </div>
+      <div class="v2_gallery v2_reveal">
+        <div class="v2_stage" id="ldv2_stage" role="tabpanel" aria-labelledby="ldv2_loc_tab_${esc(F[0].id)}">
+          <div class="v2_stage_media">${worldPicture(F[0].id, { sizes: "(max-width:1480px) 100vw, 1480px", alt: F[0].name + " — in-game location art" })}</div>
+          <div class="v2_stage_caption" aria-live="polite">
+            <div class="v2_tag" id="ldv2_stage_tag">${esc(F[0].tag)}</div>
+            <h3 class="v2_h3" id="ldv2_stage_name">${esc(F[0].name)}</h3>
+            <p id="ldv2_stage_text">${esc(F[0].text)}</p>
+          </div>
+          <div class="v2_stage_nav">
+            <button class="v2_iconbtn" type="button" id="ldv2_stage_prev" aria-label="Previous location">${ICON_ARROW_L}</button>
+            <span class="v2_stage_count" id="ldv2_stage_count" aria-hidden="true">01 / ${String(F.length).padStart(2, "0")}</span>
+            <button class="v2_iconbtn" type="button" id="ldv2_stage_next" aria-label="Next location">${ICON_ARROW_R}</button>
+          </div>
+        </div>
+        <div class="v2_rail" role="tablist" aria-label="Locations in LifeDecode World">${thumbs}</div>
+        <p class="v2_more"><b>Also in the world:</b>${C.world.more.map((m) => "<span>" + esc(m) + "</span>").join("")}</p>
+        <p class="v2_note">${esc(C.world.note)}</p>
       </div>
     </section>
 
-    <section class="v2_section v2_squad_wrap" id="ldv2_squad" aria-labelledby="ldv2_squad_title">
+    <section class="v2_section v2_squad_wrap" id="ldv2_spirit" aria-labelledby="ldv2_spirit_title">
       <div class="v2_container v2_squad">
         <figure class="v2_portrait v2_reveal">
           ${frames}
-          <figcaption class="v2_portrait_caption"><span>Official key art</span><span id="ldv2_squad_name">${esc(C.squad[0].name)}</span></figcaption>
+          <figcaption class="v2_portrait_caption"><span>Official key art</span><span id="ldv2_squad_name">${esc(O.sets[0].name)}</span></figcaption>
         </figure>
         <div class="v2_squad_copy v2_reveal">
-          <div class="v2_kicker">The usual suspects</div>
-          <h2 class="v2_h2" id="ldv2_squad_title">Meet the Silly Squad</h2>
-          <p class="v2_lead">Cowboys, ninjas, pirates, princesses — the world's residents have opinions, and they are not shy about sharing them.</p>
-          <div class="v2_tabs" role="tablist" aria-label="Silly Squad characters">${tabs}</div>
+          <div class="v2_kicker">${esc(O.kicker)}</div>
+          <h2 class="v2_h2" id="ldv2_spirit_title">${esc(O.title)}</h2>
+          <p class="v2_lead">${esc(O.lead)}</p>
+          <div class="v2_tabs" role="tablist" aria-label="Outfit sets">${tabs}</div>
           ${panels}
+          <div class="v2_also"><span>${esc(O.alsoTitle)}</span>${also}</div>
         </div>
       </div>
     </section>
 
-    <section class="v2_section" id="ldv2_spirit" aria-labelledby="ldv2_spirit_title">
+    <section class="v2_section" id="ldv2_adventures" aria-labelledby="ldv2_adv_title">
       <div class="v2_container">
         <div class="v2_head v2_reveal">
-          <div class="v2_kicker">Discover your life</div>
-          <h2 class="v2_h2" id="ldv2_spirit_title">Your spirit. Your story.</h2>
-          <p class="v2_lead">Shape who you are in the world, level up at your own pace, and share the chaos with everyone else who showed up today.</p>
+          <div class="v2_kicker">${esc(A.kicker)}</div>
+          <h2 class="v2_h2" id="ldv2_adv_title">${esc(A.title)}</h2>
         </div>
-        <ul class="v2_pillars v2_stagger">${pillars}</ul>
+      </div>
+      <div class="v2_adv">
+        <article class="v2_spread v2_reveal" style="--glow:rgba(170,140,255,.5)" aria-labelledby="ldv2_dojo_title">
+          <div class="v2_spread_bg">${worldPicture("path-of-ascension", { cls: "v2_bgimg", sizes: "(max-width:1480px) 100vw, 1480px", alt: "" })}</div>
+          <div class="v2_spread_copy">
+            <div class="v2_tag">${esc(A.dojo.tag)}</div>
+            <h3 class="v2_h3" id="ldv2_dojo_title">${esc(A.dojo.title)}</h3>
+            <p class="v2_body">${esc(A.dojo.text)}</p>
+            <div class="v2_belts" role="img" aria-label="Eleven Dojo belts, from White to Mythic"><ol>${belts}</ol><div><span>White</span><span>Mythic</span></div></div>
+            <p class="v2_quoteline">${esc(A.dojo.quote)}</p>
+          </div>
+          <div class="v2_spread_figure">${spriteImg("npc-kaien", { alt: "Master Kaien, a robed dojo master wreathed in violet smoke" })}</div>
+        </article>
+
+        <article class="v2_spread v2_spread--flip v2_reveal" style="--glow:rgba(150,70,255,.55)" aria-labelledby="ldv2_arena_title">
+          <div class="v2_spread_bg">${worldPicture("shadow-arena", { cls: "v2_bgimg", sizes: "(max-width:1480px) 100vw, 1480px", alt: "" })}</div>
+          <div class="v2_spread_copy">
+            <div class="v2_tag">${esc(A.arena.tag)}</div>
+            <h3 class="v2_h3" id="ldv2_arena_title">${esc(A.arena.title)}</h3>
+            <p class="v2_body">${esc(A.arena.text)}</p>
+            <p class="v2_whisper">&ldquo;${esc(A.arena.whisper)}&rdquo;</p>
+            <p class="v2_whisper_prompt" id="ldv2_arena_prompt">${esc(A.arena.prompt)}</p>
+            <div class="v2_choices" role="group" aria-labelledby="ldv2_arena_prompt">${choices}</div>
+            <p class="v2_choice_result" id="ldv2_arena_result" aria-live="polite"></p>
+          </div>
+          <div class="v2_spread_figure">${spriteImg("demon-doubter", { alt: "The Doubter, a shadowy demon with a glowing violet core" })}</div>
+        </article>
+
+        <article class="v2_duel_panel v2_reveal" aria-labelledby="ldv2_duel_title">
+          <div>
+            <div class="v2_tag">${esc(A.duels.tag)}</div>
+            <h3 class="v2_h3" id="ldv2_duel_title">${esc(A.duels.title)}</h3>
+            <p class="v2_body">${esc(A.duels.text)}</p>
+          </div>
+          <ul class="v2_duel_types" aria-label="Duel types">${duelTypes}</ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="v2_section" id="ldv2_life" aria-labelledby="ldv2_life_title">
+      <div class="v2_container">
+        <div class="v2_head v2_reveal">
+          <div class="v2_kicker">${esc(C.life.kicker)}</div>
+          <h2 class="v2_h2" id="ldv2_life_title">${esc(C.life.title)}</h2>
+        </div>
+        <ul class="v2_life v2_stagger" tabindex="0" aria-label="Life in LifeDecode World">${life}</ul>
+      </div>
+    </section>
+
+    <section class="v2_section" id="ldv2_community" aria-labelledby="ldv2_comm_title">
+      <div class="v2_container">
+        <div class="v2_comm v2_reveal">
+          <div>
+            <div class="v2_kicker">${esc(C.community.kicker)}</div>
+            <h2 class="v2_h2" id="ldv2_comm_title">${esc(C.community.title)}</h2>
+            <p class="v2_lead">${esc(C.community.lead)}</p>
+          </div>
+          <ul class="v2_points">${points}</ul>
+        </div>
+        <div class="v2_locals_wrap v2_reveal">
+          <ul class="v2_locals" id="ldv2_locals" tabindex="0" aria-label="Locals you'll meet in LifeDecode World">${locals}</ul>
+          <div class="v2_locals_nav">
+            <button class="v2_iconbtn" type="button" data-locals="-1" aria-label="Scroll locals left">${ICON_ARROW_L}</button>
+            <button class="v2_iconbtn" type="button" data-locals="1" aria-label="Scroll locals right">${ICON_ARROW_R}</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -767,7 +1075,7 @@ body.ld-no-scroll{overflow:hidden;}
         <div class="v2_head v2_reveal">
           <div class="v2_kicker">News &amp; updates</div>
           <h2 class="v2_h2" id="ldv2_news_title">What's live. What's next.</h2>
-          <p class="v2_lead">LifeDecode World keeps growing. Here's an honest look at what you can play today and what's still being built.</p>
+          <p class="v2_lead">An honest look at what you can play today and what's still being built.</p>
         </div>
         <ul class="v2_news v2_stagger">${news}</ul>
       </div>
@@ -805,7 +1113,8 @@ body.ld-no-scroll{overflow:hidden;}
           <h3>Explore</h3>
           <ul>
             <li><a href="#ldv2_world">The World</a></li>
-            <li><a href="#ldv2_squad">Silly Squad</a></li>
+            <li><a href="#ldv2_spirit">Your Spirit</a></li>
+            <li><a href="#ldv2_adventures">Adventures</a></li>
             <li><a href="#ldv2_news">Updates</a></li>
           </ul>
         </div>
@@ -821,7 +1130,7 @@ body.ld-no-scroll{overflow:hidden;}
       </div>
       <div class="v2_footer_bottom">
         <span>&copy; 2026 LifeDecode World</span>
-        <span>Privacy Policy and Terms are always available, before and after login.</span>
+        <span>Free to play. Optional in-game purchases. Privacy Policy and Terms are always available.</span>
       </div>
     </div>
   </footer>
@@ -902,43 +1211,126 @@ body.ld-no-scroll{overflow:hidden;}
     });
   }
 
+  // Accessible tablist helper: roving tabindex, arrow/Home/End keys.
+  function bindTablist(tabs, onSelect) {
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => onSelect(i, false));
+      tab.addEventListener("keydown", (e) => {
+        let next = -1;
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % tabs.length;
+        else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === "Home") next = 0;
+        else if (e.key === "End") next = tabs.length - 1;
+        if (next >= 0) { e.preventDefault(); onSelect(next, true); }
+      });
+    });
+  }
+
+  function setSelectedTab(tabs, index, focus) {
+    tabs.forEach((t, i) => {
+      t.setAttribute("aria-selected", i === index ? "true" : "false");
+      t.tabIndex = i === index ? 0 : -1;
+    });
+    if (focus && tabs[index]) tabs[index].focus();
+  }
+
   function bindSquad() {
     const tabs = Array.from(document.querySelectorAll("#ldw_app .v2_tab[data-squad]"));
-    const wrap = document.getElementById("ldv2_squad");
+    const wrap = document.getElementById("ldv2_spirit");
     const nameEl = document.getElementById("ldv2_squad_name");
     if (!tabs.length) return;
 
-    function select(tab, focus) {
-      const id = tab.getAttribute("data-squad");
-      const data = CONTENT.squad.find((s) => s.id === id);
+    bindTablist(tabs, (index, focus) => {
+      const data = CONTENT.outfits.sets[index];
+      if (!data) return;
+      setSelectedTab(tabs, index, focus);
       tabs.forEach((t) => {
-        const on = t === tab;
-        t.setAttribute("aria-selected", on ? "true" : "false");
-        t.tabIndex = on ? 0 : -1;
         const panel = document.getElementById(t.getAttribute("aria-controls"));
-        if (panel) panel.hidden = !on;
+        if (panel) panel.hidden = t !== tabs[index];
       });
       document.querySelectorAll("#ldw_app [data-squad-frame]").forEach((frame) => {
-        const on = frame.getAttribute("data-squad-frame") === id;
+        const on = frame.getAttribute("data-squad-frame") === data.id;
         frame.classList.toggle("is-active", on);
         const img = frame.querySelector("img");
         if (on) frame.removeAttribute("aria-hidden"); else frame.setAttribute("aria-hidden", "true");
-        if (img) img.alt = on && data ? data.alt : "";
+        if (img) img.alt = on ? data.alt : "";
       });
-      if (nameEl && data) nameEl.textContent = data.name;
-      if (wrap && data) wrap.style.setProperty("--squad-glow", data.color + "2e");
-      if (focus) tab.focus();
+      if (nameEl) nameEl.textContent = data.name;
+      if (wrap) wrap.style.setProperty("--squad-glow", data.color + "2e");
+    });
+  }
+
+  // Explore the World: one stage image swapped in place (cross-faded via a
+  // second <img>), driven by the thumbnail tablist and prev/next buttons.
+  function bindWorldGallery() {
+    const featured = CONTENT.world.featured;
+    const tabs = Array.from(document.querySelectorAll("#ldw_app .v2_thumb[data-loc]"));
+    const stage = document.getElementById("ldv2_stage");
+    const media = stage && stage.querySelector(".v2_stage_media");
+    const tag = document.getElementById("ldv2_stage_tag");
+    const name = document.getElementById("ldv2_stage_name");
+    const text = document.getElementById("ldv2_stage_text");
+    const count = document.getElementById("ldv2_stage_count");
+    if (!tabs.length || !media) return;
+    let current = 0;
+
+    function show(index, focus) {
+      index = (index + featured.length) % featured.length;
+      const loc = featured[index];
+      setSelectedTab(tabs, index, focus);
+      if (index !== current) {
+        const old = media.querySelector("img:not(.is-hidden)") || media.querySelector("img");
+        const holder = document.createElement("div");
+        holder.innerHTML = worldPicture(loc.id, { sizes: "(max-width:1480px) 100vw, 1480px", alt: loc.name + " — in-game location art" });
+        const next = holder.firstChild;
+        next.loading = "eager";
+        next.classList.add("is-hidden");
+        media.insertBefore(next, media.firstChild);
+        const reveal = () => {
+          next.classList.remove("is-hidden");
+          if (old) {
+            old.classList.add("is-hidden");
+            setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 650);
+          }
+        };
+        if (next.complete && next.naturalWidth) reveal();
+        else { next.addEventListener("load", reveal, { once: true }); next.addEventListener("error", reveal, { once: true }); }
+      }
+      current = index;
+      stage.setAttribute("aria-labelledby", tabs[index].id);
+      if (tag) tag.textContent = loc.tag;
+      if (name) name.textContent = loc.name;
+      if (text) text.textContent = loc.text;
+      if (count) count.textContent = String(index + 1).padStart(2, "0") + " / " + String(featured.length).padStart(2, "0");
     }
 
-    tabs.forEach((tab, i) => {
-      tab.addEventListener("click", () => select(tab, false));
-      tab.addEventListener("keydown", (e) => {
-        let next = null;
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") next = tabs[(i + 1) % tabs.length];
-        else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = tabs[(i - 1 + tabs.length) % tabs.length];
-        else if (e.key === "Home") next = tabs[0];
-        else if (e.key === "End") next = tabs[tabs.length - 1];
-        if (next) { e.preventDefault(); select(next, true); }
+    bindTablist(tabs, show);
+    const prev = document.getElementById("ldv2_stage_prev");
+    const nextBtn = document.getElementById("ldv2_stage_next");
+    if (prev) prev.addEventListener("click", () => show(current - 1, false));
+    if (nextBtn) nextBtn.addEventListener("click", () => show(current + 1, false));
+  }
+
+  // Shadow Arena teaser: the real round-1 choices from SHADOW_DEMON_WAVES.
+  function bindArenaChoices() {
+    const buttons = Array.from(document.querySelectorAll("#ldw_app .v2_choice"));
+    const result = document.getElementById("ldv2_arena_result");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+        if (result) result.textContent = btn.getAttribute("data-result") || "";
+      });
+    });
+  }
+
+  function bindLocalsNav() {
+    const list = document.getElementById("ldv2_locals");
+    if (!list) return;
+    document.querySelectorAll("#ldw_app [data-locals]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const dir = Number(btn.getAttribute("data-locals")) || 1;
+        const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        list.scrollBy({ left: dir * Math.max(240, list.clientWidth * 0.8), behavior: reduce ? "auto" : "smooth" });
       });
     });
   }
@@ -1015,6 +1407,9 @@ body.ld-no-scroll{overflow:hidden;}
       bindHeaderScrollState();
       bindArtFallback();
       bindSquad();
+      bindWorldGallery();
+      bindArenaChoices();
+      bindLocalsNav();
       bindAuthModalExtras();
       bindMotion();
       console.log("[LD] World landing loaded:", CFG.VERSION);
