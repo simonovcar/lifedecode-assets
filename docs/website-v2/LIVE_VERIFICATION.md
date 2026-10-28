@@ -1,8 +1,15 @@
 # Website V2 — feature claims: source-confirmed vs. live-verified
 
-**Live** claims were confirmed in `lifedecode-game` source (`main` @ `ecef049`, read-only). **In development** claims come from the owner's verified local development commits, which aren't on GitHub (`2ed45e6` Cinema V2.1, `0134ece` Relationships V1, `7beff92` Mood & Needs V1, `3524bc4` Movie Creator 3.4) and the new skin system. None of it has been **verified on the live game**: the build sandbox can't reach `world.lifedecode.app`, and the repo may not match what's deployed.
+**Live** claims were confirmed in `lifedecode-game` source at `main` @ `ecef049` (read-only).
+* **Deployment evidence:** GitHub's commit statuses show `ecef049` was successfully deployed on 2026-10-19 to the Railway production server (`lifedecode-game-production`) and through Cloudflare Workers Builds (the game frontend). It was still the head of `main` on 2026-10-28.
+* **No disabling flag:** none of the claimed features is behind a flag that's off in that commit. The only one off is `LD_CARDS_FEATURE_VISIBLE = false`, and Cards aren't advertised.
+* **What that doesn't cover:** a hands-on test, or database-level overrides (store overrides, admin settings). This sandbox can't reach `world.lifedecode.app`.
 
-**Terminology:** the roadmap's *Available now* lane is still only **confirmed in GitHub `main`**, and `main` isn't necessarily what's deployed. Every *Available now* item carries `liveVerified: false`, and `node tools/build-website-v2.mjs --check` prints a `WARN LIVE_VERIFIED` line until each one is checked on world.lifedecode.app and set to `true`.
+**In development** claims come from the owner's verified local development commits, which aren't on GitHub (`2ed45e6` Cinema V2.1, `0134ece` Relationships V1, `7beff92` Mood & Needs V1, `3524bc4` Movie Creator 3.4), and from the new skin system. All of them are labelled as not yet in the live game.
+
+**Build check:**
+* Every *Available now* item carries `deployedIn: "ecef049"`, the deployment evidence. `node tools/build-website-v2.mjs --check` fails (`LIVE_DEPLOYED`) if one is missing.
+* Each item also carries `liveVerified: false` until it's been played on world.lifedecode.app. Until then the check prints `WARN LIVE_VERIFIED`.
 
 Before deployment, play through each row on `world.lifedecode.app` (a test account is fine) and tick the last column. If a row fails, edit or remove that line in `CONTENT` (`tools/ludo78.src.js`) and rebuild.
 
@@ -14,7 +21,7 @@ Before deployment, play through each row on `world.lifedecode.app` (a test accou
 | 4 | Plaza links to Brew Haven, Soulcore, Astra's Vault and the Mind Zone path | Plaza caption | Plaza art and transitions (`maps.js`) | ☐ |
 | 5 | Drunk Dave in Brew Haven; coffee machine earns Beans | Brew Haven caption, locals | Quest hints, Brew Haven minigame (`config.js`) | ☐ |
 | 6 | Nyas in Soulcore trades Beans for Soul Dust | Soulcore caption, locals | Soulcore trade (`scenes.js`), quest hints | ☐ |
-| 7 | Full character skins: a gallery of the **46 full skins in the development catalog**, in collections Wave 1 (11), Wave 2 (13) and Wave 3 (22), with catalog rarity (no prices). Labelled **In development**. Starters Base Blue / Base Rose not shown until their real art is supplied | Choose your form, Updates | Verified development catalog (`tools/skin-catalog.json`, from the owner's read-only audit): all 46 enabled, `availability: 'shop'`, level 1 *in the development build*. Owner-supplied PNGs, 1:1 with the catalog assets. **Not verified on the live game:** store overrides (`ld_store_item_overrides`) can hide or change items, and the dev build isn't necessarily deployed | ☐ |
+| 7 | Full character skins: a gallery of the **46 full skins in the development catalog**, in collections Wave 1 (11), Wave 2 (13) and Wave 3 (22), with catalog rarity (no prices). Labelled **In development · Not live yet**. Starters Base Blue / Base Rose not shown until their real art is supplied | Choose your form, Updates | Verified development catalog (`tools/skin-catalog.json`, from the owner's read-only audit): all 46 enabled, `availability: 'shop'`, level 1 *in the development build*. Owner-supplied PNGs, 1:1 with the catalog assets. **Not verified on the live game:** store overrides (`ld_store_item_overrides`) can hide or change items, and the dev build isn't necessarily deployed | ☐ |
 | 8 | Dojo with Master Kaien: turn-based Shadow Duels (block, dodge, wait, counter); trials vs The Doubter, The Urge and The Shame; 11 belts, White → Mythic | Adventures | `LD_DOJO_DUEL_CONFIG` and `LD_DOJO_ASCENSION_CONFIG` (`config.js`) | ☐ |
 | 9 | Shadow Arena vs The Doubter: dodge projectiles and pick responses; the quoted whisper and the three options are round 1 verbatim | Adventures | `SHADOW_BATTLE_CONFIG` and `SHADOW_DEMON_WAVES` (`config.js`) | ☐ |
 | 10 | Player duels in 9 types; optional Soul Dust wagers; ranked Arena | Adventures | `LD_DUEL_TYPE_META` (`config.js`), duel wager RPCs, Arena Elo | ☐ |

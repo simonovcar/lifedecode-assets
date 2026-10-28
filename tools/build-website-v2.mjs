@@ -96,10 +96,15 @@ function check() {
   console.log((missing.length ? "FAIL " : "OK   ") + "DOM_IDS (" + ids.size + " referenced" + (missing.length ? ", missing: " + missing.join(", ") : "") + ")");
   if (missing.length) ok = false;
   // Pre-deploy reminder (non-fatal): GitHub main is not proof of what is
-  // deployed, so every "Available now" roadmap claim must be checked on
-  // world.lifedecode.app and marked liveVerified: true before launch.
-  const unverified = [...built.matchAll(/\{ status: "live"(?![^\n]*liveVerified: true)[^\n]*title: "([^"]+)"/g)].map((m) => m[1]);
-  console.log((unverified.length ? "WARN " : "OK   ") + "LIVE_VERIFIED (" + (unverified.length ? unverified.length + " \"Available now\" claims not yet verified on the live game: " + unverified.join(", ") : "all verified") + ")");
+  // deployed. Every "Available now" claim needs deployedIn (a game commit
+  // GitHub reports as deployed to production) and, before launch, a
+  // hands-on check on world.lifedecode.app (liveVerified: true).
+  const live = [...built.matchAll(/\{ status: "live",[^\n]*title: "([^"]+)"[^\n]*/g)];
+  const noEvidence = live.filter((m) => !/deployedIn: "[0-9a-f]{7,40}"/.test(m[0])).map((m) => m[1]);
+  const notPlayed = live.filter((m) => !/liveVerified: true/.test(m[0])).map((m) => m[1]);
+  console.log((noEvidence.length ? "FAIL " : "OK   ") + "LIVE_DEPLOYED (" + live.length + " \"Available now\" claims" + (noEvidence.length ? "; no deployment evidence: " + noEvidence.join(", ") : ", all in a deployed game commit") + ")");
+  if (noEvidence.length) ok = false;
+  console.log((notPlayed.length ? "WARN " : "OK   ") + "LIVE_VERIFIED (" + (notPlayed.length ? notPlayed.length + " not yet checked hands-on on world.lifedecode.app: " + notPlayed.join(", ") : "all checked hands-on") + ")");
   if (!ok) process.exit(1);
 }
 

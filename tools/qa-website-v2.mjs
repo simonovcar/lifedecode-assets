@@ -15,6 +15,10 @@ import { createRequire } from "node:module";
 const { chromium } = createRequire(import.meta.url)("playwright");
 
 const BASE = process.env.QA_BASE || "http://127.0.0.1:8934";
+// QA_PAGE / QA_SUPPORT let the same checks run against a shell built by
+// tools/build-marketing-shell.mjs (dynamic loader, like production).
+const PAGE = process.env.QA_PAGE || "/preview/website-v2.html";
+const SUPPORT = process.env.QA_SUPPORT || "/preview/support/";
 const OUT = process.argv[2] || "qa-out";
 mkdirSync(OUT, { recursive: true });
 
@@ -58,7 +62,7 @@ for (const vp of VIEWPORTS) {
   page.on("requestfailed", (r) => failed.push(r.url().slice(0, 120) + " — " + (r.failure() && r.failure().errorText)));
   page.on("response", (r) => { if (r.status() >= 400) failed.push(r.url().slice(0, 120) + " — HTTP " + r.status()); });
 
-  await page.goto(BASE + "/preview/website-v2.html", { waitUntil: "load" });
+  await page.goto(BASE + PAGE, { waitUntil: "load" });
   await page.waitForTimeout(1200);
   await page.screenshot({ path: `${OUT}/${vp.name}-viewport.png` });
   await scrollThrough(page);
@@ -116,7 +120,7 @@ for (const vp of VIEWPORTS) {
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(BASE + "/preview/website-v2.html", { waitUntil: "load" });
+  await page.goto(BASE + PAGE, { waitUntil: "load" });
   await page.waitForTimeout(800);
   const c = {};
 
@@ -288,7 +292,7 @@ for (const state of ["loggedOut", "loggedIn"]) {
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(BASE + "/preview/website-v2.html", { waitUntil: "load" });
+  await page.goto(BASE + PAGE, { waitUntil: "load" });
   await page.waitForTimeout(600);
   const t0 = Date.now();
   await page.click("#ldw_login_btn");
@@ -325,7 +329,7 @@ for (const state of ["loggedOut", "loggedIn"]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto(BASE + "/preview/website-v2.html", { waitUntil: "load" });
+  await page.goto(BASE + PAGE, { waitUntil: "load" });
   await page.waitForTimeout(600);
   report.checks.reducedMotion = await page.evaluate(() => ({
     motionClass: document.getElementById("ldw_app").classList.contains("v2-motion"),
@@ -338,11 +342,12 @@ for (const state of ["loggedOut", "loggedIn"]) {
 {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto(BASE + "/preview/support/", { waitUntil: "load" });
+  await page.goto(BASE + SUPPORT, { waitUntil: "load" });
   await page.waitForTimeout(800);
   report.checks.supportGuard = await page.evaluate(() => ({
     appMounted: !!document.getElementById("ldw_app"),
-    webflowVisible: getComputedStyle(document.getElementById("webflow_support")).display !== "none"
+    webflowVisible: document.getElementById("webflow_support") ? getComputedStyle(document.getElementById("webflow_support")).display !== "none" : null,
+    pageText: document.body.innerText.trim().slice(0, 60)
   }));
   await page.screenshot({ path: `${OUT}/support-guard.png` });
   await ctx.close();

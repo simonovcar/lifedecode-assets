@@ -741,10 +741,10 @@
     skins: {
       kicker: "Full character skins",
       title: "Choose your form",
-      lead: "A skin replaces your whole spirit with one complete new form — no separate pieces, no mixing and matching. Every spirit starts as Base Blue or Base Rose, and the collection only gets stranger from there.",
-      status: "Skin collection · In development",
+      lead: "A first look at the new full-character skin system from our development build. Each skin replaces your whole spirit with one complete new form — no separate pieces, no mixing and matching. In the new system every spirit begins as Base Blue or Base Rose, and the collection only gets stranger from there.",
+      status: "In development · Not live yet",
       roster: SKIN_ROSTER,
-      note: "Original in-game artwork from the development build's skin catalog, shown with its catalog rarity. Which skins can be unlocked in the live game hasn't been announced yet — follow News & updates."
+      note: "Original artwork from the development build's skin catalog, shown with its catalog rarity. These skins aren't in the live game yet — we'll announce their release in News & updates."
     },
     adventures: {
       kicker: "Adventures",
@@ -815,10 +815,15 @@
       ]
     },
     // Updates & roadmap. Lane meanings:
-    //   live   — "Available now". Confirmed in the shared lifedecode-game
-    //            main branch, but GitHub main is NOT proof of what is
-    //            deployed: set liveVerified:true only after checking the item
-    //            on world.lifedecode.app (build --check warns until then).
+    //   live   — "Available now". deployedIn = the lifedecode-game commit
+    //            the feature was confirmed in AND that GitHub's commit
+    //            statuses report as successfully deployed to production
+    //            (Railway production + Cloudflare Workers Builds; ecef049 is
+    //            the latest main commit, deployed 2026-10-19). That is
+    //            deployment evidence, not a hands-on test: set
+    //            liveVerified:true only after playing the item on
+    //            world.lifedecode.app (build --check warns until then).
+    //            Database-level store overrides are not covered by either.
     //   recent — recently added or still rolling out (label per card)
     //   soon   — announced, not playable yet
     //   dev    — implemented or being built in the owner's development
@@ -833,18 +838,18 @@
       title: "A world that keeps growing",
       lead: "What you can play today, what's rolling out, and what's already built behind the scenes.",
       lanes: [
-        { status: "live", label: "Available now", hint: "Playable today" },
+        { status: "live", label: "Available now", hint: "In the live game" },
         { status: "recent", label: "Rolling out", hint: "Improving over time" },
         { status: "soon", label: "Coming soon", hint: "Announced" },
         { status: "dev", label: "In development", hint: "Working in our development build — not public yet" }
       ],
       items: [
-        { status: "live", liveVerified: false, title: "Duels & the ranked Arena", text: "Nine duel types, Soul Dust wagers and a ranked ladder." },
-        { status: "live", liveVerified: false, title: "Dojo & Shadow Arena", text: "Eleven belts with Master Kaien and a boss fight with The Doubter." },
-        { status: "live", liveVerified: false, title: "Homes, pets & businesses", text: "Three homes, sixteen pets and a pizza place you can own." },
-        { status: "live", liveVerified: false, title: "Friends & social", text: "Friend requests, online status, chat, emotes and home visits." },
-        { status: "live", liveVerified: false, title: "Hunger & Thirst", text: "Keep your spirit fed and watered at LifeMart and Main Street Pizza." },
-        { status: "live", liveVerified: false, date: "2026-07", title: "Account controls", text: "Delete account from the Account menu." },
+        { status: "live", deployedIn: "ecef049", liveVerified: false, title: "Duels & the ranked Arena", text: "Nine duel types, Soul Dust wagers and a ranked ladder." },
+        { status: "live", deployedIn: "ecef049", liveVerified: false, title: "Dojo & Shadow Arena", text: "Eleven belts with Master Kaien and a boss fight with The Doubter." },
+        { status: "live", deployedIn: "ecef049", liveVerified: false, title: "Homes, pets & businesses", text: "Three homes, sixteen pets and a pizza place you can own." },
+        { status: "live", deployedIn: "ecef049", liveVerified: false, title: "Friends & social", text: "Friend requests, online status, chat, emotes and home visits." },
+        { status: "live", deployedIn: "ecef049", liveVerified: false, title: "Hunger & Thirst", text: "Keep your spirit fed and watered at LifeMart and Main Street Pizza." },
+        { status: "live", deployedIn: "ecef049", liveVerified: false, date: "2026-07", title: "Account controls", text: "Delete your account at any time — from the game's settings or the Account menu here." },
         { status: "recent", label: "Rolling out", title: "A fairer economy", text: "Rewards, purchases and wagers keep moving to server-side checks, so everyone's progress stays fair." },
         { status: "recent", label: "Rolling out", title: "The world keeps growing", text: "Twenty places to explore today, and new corners keep opening up." },
         { status: "soon", label: "Coming soon", title: "iPhone app", text: "A native iPhone app is in preparation. Until then, LifeDecode World plays right in Safari." },
@@ -939,7 +944,7 @@
 
   // Skin gallery labels, shared by the markup and the binder.
   function skinKind(k) { return k.starter ? "Starter form" : "Wave " + k.wave + " · Full character skin"; }
-  function skinAlt(k) { return k.name + " — " + (k.starter ? "starter form" : (k.rarity ? k.rarity.toLowerCase() + " " : "") + "full character skin") + ", original in-game artwork"; }
+  function skinAlt(k) { return k.name + " — " + (k.starter ? "starter form" : (k.rarity ? k.rarity.toLowerCase() + " " : "") + "full character skin") + ", original game artwork from the development build"; }
   function skinCollections(roster) {
     const cols = [];
     const starters = roster.filter((k) => k.starter);

@@ -13,7 +13,9 @@ See [`AUDIT_AND_PLAN.md`](AUDIT_AND_PLAN.md) for the repository audit and design
 | `tools/build-website-v2.mjs` | Splices the functional core of `ludo77.js` into the source **verbatim** and writes `ludo78.js`. `--check` re-verifies the build. |
 | `tools/qa-website-v2.mjs` | Headless QA: screenshots, overflow, links, auth/support/squad interactions, reduced motion and the `/support` guard. |
 | `assets/v2/keyart-{640,1024,1536}.webp`, `keyart-1536.jpg` | Optimized key art: 61–243 KB, down from the 2.5 MB PNG. |
-| `assets/v2/og-1200x630.jpg` | Open Graph / social share image (for the Cloudflare Pages shell's `<head>`). |
+| `assets/v2/og-website-v2-1200x630.jpg` | Release social share card (key art + brand lockup), built by `tools/build-og-image.mjs`. The older unbranded `og-1200x630.jpg` is kept. |
+| `tools/build-marketing-shell.mjs` | Writes a staging or release copy of the production shell (`lifedecode-game/marketing-site`, read-only): pinned `ludo78.js` + V2 metadata, plus noindex for staging. See [`RELEASE.md`](RELEASE.md). |
+| `docs/website-v2/RELEASE.md` | Release plan: how production is deployed, jsDelivr pinning, isolated staging, SEO metadata, go-live and rollback. |
 | `assets/v2/world/*.webp` + `manifest.json` | Polish pass 2: real game art (12 location backgrounds at 320/640/1280w, NPC/pet/outfit/demon/object sprites), built from `lifedecode-game` by `tools/build-world-assets.py`. The manifest records each file's source path and the game commit. |
 | `tools/build-world-assets.py` | Rebuilds `assets/v2/world/` from a read-only `lifedecode-game` checkout (`python3 tools/build-world-assets.py ../lifedecode-game`). |
 | `docs/website-v2/LIVE_VERIFICATION.md` | Every feature claim on the page, its source evidence, and a checkbox for live verification before deploy. |
@@ -162,39 +164,25 @@ This changes the integration in three ways:
    ```
 
    This session never modifies the game repo, so you make that change.
-2. **SEO lives in that shell's `<head>`.** Its `<title>` is still the old "LifeDecode AI – Decode what you can't stop thinking about", and its OG image is the square app icon. Suggested replacements:
-   * Title: `LifeDecode World — A neon-fantasy social world you play in your browser`
-   * Description: `Explore strange, cozy rooms, meet the Silly Squad and other players, and level up your spirit just by showing up. No download — play LifeDecode World in your browser.`
-   * OG image: `assets/v2/og-1200x630.jpg` (1200×630).
+2. **SEO lives in that shell's `<head>`.** Its `<title>` is still the old "LifeDecode AI – Decode what you can't stop thinking about", and its OG image is the square app icon. The release metadata and card are in [`RELEASE.md`](RELEASE.md) §4 and are applied by `tools/build-marketing-shell.mjs`.
 3. **The preview harness still approximates Webflow.** In production the shell has no Webflow CSS, so the real environment is *simpler* than the preview. The `<body>` takeover in `render()` still works, because the shell body only contains `<noscript>` and scripts.
 
 ## Safest deployment procedure
 
-1. Review the preview and screenshots, then approve or request changes. Apply the copy corrections from [`GAME_AUDIT_AND_RECOMMENDATIONS.md`](GAME_AUDIT_AND_RECOMMENDATIONS.md) first.
-2. Open a PR from `feature/website-v2` into `main` in `lifedecode-assets`. Merging alone changes nothing live, because the shell still loads `ludo77.js`.
-3. Test on a non-production URL first. Either:
-   * use a Cloudflare Pages **preview deployment**: push a branch of `lifedecode-game` that changes only `marketing-site/index.html` to the pinned `ludo78.js`, or
-   * load `ludo78.js` from the browser console on `lifedecode.app`.
-
-   Test the following there:
-   * Login with email and Google, including the OAuth redirect back. The redirect URL must be allowed in Supabase for the preview domain, or test OAuth only on production.
-   * Logout.
-   * Account → Delete account.
-   * The support form.
-   * Play Now.
-   * `/terms`, `/policy`, `/privacy` and `/support`.
-   * iPhone Safari and Android Chrome.
-4. Merge the one-line shell change to `lifedecode-game` `main`, which deploys through Cloudflare Pages.
-5. **Rollback**: revert that one line back to `ludo77.js`. `ludo77.js` is never modified.
+See [`RELEASE.md`](RELEASE.md). In short:
+* Pin the shell to `ludo78.js` at an immutable `lifedecode-assets` commit. **No merge into `main` is needed**, so `ludo77.js` and `main` stay exactly as they are.
+* Test on an isolated Cloudflare Pages staging project first.
+* Make the one-file shell change from a clean clone of `lifedecode-game` `origin/main`. A push there also redeploys the Railway game server.
+* Roll back from the Cloudflare deployments list, then revert the shell commit.
 
 ## Known limitations / follow-ups
 
 * **Real location and character art, but no gameplay screenshots yet.** The scene backgrounds contain no players or UI, and the page labels them "Location artwork from the game". Gameplay screenshots still need capturing on the live game with test accounts only (see `GAME_AUDIT_AND_RECOMMENDATIONS.md` §4.6).
-* **Source-confirmed is not live-verified.** Every claim was checked against `lifedecode-game` `main` @ `ecef049`. Tick [`LIVE_VERIFICATION.md`](LIVE_VERIFICATION.md) on the live game before deploying.
+* **Deployed is not play-tested.** Every claim was checked against `lifedecode-game` `main` @ `ecef049`, which GitHub's commit statuses show as successfully deployed to production. Still tick [`LIVE_VERIFICATION.md`](LIVE_VERIFICATION.md) hands-on before deploying.
 * **`/premium` isn't in the route guard.** That's inherited from v77. If `lifedecode.app/premium` is a real Webflow page, the landing script replaces it. Confirm the intent before changing the guard.
 * **Inherited from v77, intentionally untouched (it's in the verbatim core):**
   * If the supabase-js CDN request fails, `openLogin()` waits for a 4.5 s fallback timeout before the modal appears.
   * The "or continue with" divider stays visible in the logged-in Account view.
 * **Removed from the page:** the legal accordion text from v77. The footer keeps all legal and support links, plus a "Privacy Policy and Terms are always available" line.
 * **Restored:** v77 intentionally had one Play CTA. V2 restores a final CTA because this brief requested one.
-* **Weight:** `ludo78.js` is ~160 KB unminified (roughly 35–40 KB gzipped via jsDelivr). Measured locally, first load is ~780–830 KB, against 2,644 KB for ludo77.js; a full scroll is ~1.95 MB, because all world art lazy-loads. jsDelivr can also serve `ludo78.min.js` automatically.
+* **Weight:** `ludo78.js` is ~187 KB unminified (49 KB gzipped). Measured locally, first load is ~820 KB on desktop and ~960 KB on a DPR-3 phone, against 2,644 KB for ludo77.js. A full scroll is ~2.2 MB, because all world and skin art lazy-loads. jsDelivr can also serve `ludo78.min.js` automatically, but the shell deliberately loads the unminified file the QA ran against.
