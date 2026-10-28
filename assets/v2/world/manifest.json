@@ -290,6 +290,30 @@
       ],
       "bytes": 83690
     },
+    "loc-plaza-cinema-320.webp": {
+      "source": "public/assets/plaza.png",
+      "size": [
+        320,
+        213
+      ],
+      "bytes": 17958
+    },
+    "loc-plaza-cinema-640.webp": {
+      "source": "public/assets/plaza.png",
+      "size": [
+        640,
+        427
+      ],
+      "bytes": 59180
+    },
+    "loc-plaza-cinema-1280.webp": {
+      "source": "public/assets/plaza.png",
+      "size": [
+        659,
+        439
+      ],
+      "bytes": 62342
+    },
     "npc-ria.webp": {
       "source": "public/assets/ria.png",
       "size": [
@@ -449,102 +473,6 @@
         300
       ],
       "bytes": 35696
-    },
-    "outfit-cowboy-hat.webp": {
-      "source": "public/assets/cowboyhat2.png",
-      "size": [
-        427,
-        200
-      ],
-      "bytes": 25986
-    },
-    "outfit-cowboy-body.webp": {
-      "source": "public/assets/cowboybody10.png",
-      "size": [
-        165,
-        260
-      ],
-      "bytes": 18164
-    },
-    "outfit-ninja-hat.webp": {
-      "source": "public/assets/ninjahat3.png",
-      "size": [
-        149,
-        200
-      ],
-      "bytes": 13380
-    },
-    "outfit-ninja-body.webp": {
-      "source": "public/assets/ninjabody7.png",
-      "size": [
-        177,
-        260
-      ],
-      "bytes": 20970
-    },
-    "outfit-pirate-hat.webp": {
-      "source": "public/assets/piratehat3.png",
-      "size": [
-        177,
-        200
-      ],
-      "bytes": 10146
-    },
-    "outfit-pirate-body.webp": {
-      "source": "public/assets/piratebody7.png",
-      "size": [
-        145,
-        260
-      ],
-      "bytes": 16688
-    },
-    "outfit-princess-hat.webp": {
-      "source": "public/assets/princesshat3.png",
-      "size": [
-        197,
-        200
-      ],
-      "bytes": 18150
-    },
-    "outfit-princess-body.webp": {
-      "source": "public/assets/princessbody2.png",
-      "size": [
-        200,
-        260
-      ],
-      "bytes": 22162
-    },
-    "outfit-tree-hat.webp": {
-      "source": "public/assets/treeemperorhat2.png",
-      "size": [
-        164,
-        200
-      ],
-      "bytes": 16874
-    },
-    "outfit-tree-body.webp": {
-      "source": "public/assets/treeemperor2.png",
-      "size": [
-        154,
-        260
-      ],
-      "bytes": 20526
-    },
-    "outfit-void-hat.webp": {
-      "source": "public/assets/voidemperorhat5.png",
-      "size": [
-        136,
-        200
-      ],
-      "bytes": 13348
-    },
-    "outfit-void-body.webp": {
-      "source": "public/assets/voidemperor.png",
-      "size": [
-        156,
-        260
-      ],
-      "bytes": 19016
     }
   }
 }

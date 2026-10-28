@@ -38,6 +38,9 @@ LOCATIONS = [
     ("main-street-pizza", "pizza_interior_main.png", None),
     ("bloom-gate", "bloomgate.png", None),
     ("chill-zone", "chillzone.png", None),
+    # The Cinema facade on the Plaza (with its in-world "coming soon" sign),
+    # used only on the "In development" Cinema update card.
+    ("plaza-cinema", "plaza.png", (0.0, 0.335, 0.70, 0.598)),
 ]
 LOCATION_WIDTHS = (320, 640, 1280)
 
@@ -68,19 +71,6 @@ SPRITES = [
     ("pet-helion", "helion.png", 300),
     ("pet-madius", "madius.png", 300),
     ("pet-aqua", "aqua.png", 300),
-    # Outfit pieces as sold at AstraVault (content/cosmetics.js)
-    ("outfit-cowboy-hat", "cowboyhat2.png", 200),
-    ("outfit-cowboy-body", "cowboybody10.png", 260),
-    ("outfit-ninja-hat", "ninjahat3.png", 200),
-    ("outfit-ninja-body", "ninjabody7.png", 260),
-    ("outfit-pirate-hat", "piratehat3.png", 200),
-    ("outfit-pirate-body", "piratebody7.png", 260),
-    ("outfit-princess-hat", "princesshat3.png", 200),
-    ("outfit-princess-body", "princessbody2.png", 260),
-    ("outfit-tree-hat", "treeemperorhat2.png", 200),
-    ("outfit-tree-body", "treeemperor2.png", 260),
-    ("outfit-void-hat", "voidemperorhat5.png", 200),
-    ("outfit-void-body", "voidemperor.png", 260),
 ]
 
 

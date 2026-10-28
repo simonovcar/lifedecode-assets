@@ -159,7 +159,7 @@
         { id: "mind-zone", name: "Mind Zone", tag: "Unlocks as you progress", text: "A sunset forest path that opens up as you progress — and it leads somewhere deeper." },
         { id: "path-of-ascension", name: "Path of Ascension", tag: "The Dojo", text: "Master Kaien's training hall. Take trials, fight Shadow Duels and climb the belts." },
         { id: "shadow-arena", name: "Shadow Arena", tag: "Unlocks as you progress", text: "A broken plain beneath a black sun, where The Doubter is waiting for you." },
-        { id: "astravault", name: "AstraVault", tag: "Outfits & style", text: "Astra's vault of outfits. She will size you up in about half a second." },
+        { id: "astravault", name: "AstraVault", tag: "Full character skins", text: "Astra's vault of skins. She will size you up in about half a second." },
         { id: "pet-shop", name: "Pet Shop", tag: "Adopt a companion", text: "Sixteen pets, from Rare to Ancient, waiting to follow you around the world." },
         { id: "wonder-of-homes", name: "Wonder of Homes", tag: "The housing district", text: "Mushroom Home, Wizzard Tower and Cloud Nest — pick one and make it yours." },
         { id: "main-street-pizza", name: "Main Street Pizza", tag: "Player-owned business", text: "Order a slice to keep Hunger at bay — or buy the whole restaurant and run it." },
@@ -169,24 +169,24 @@
       more: ["Inside the Mind Zone", "Ascension Peaks", "Wonder House", "LifeMart", "LifeFactory", "Cloud Nest", "Mushroom Home", "Wizzard Tower"],
       note: "Location artwork from the game. Some places unlock as you progress."
     },
-    // Outfit sets sold at AstraVault (public/content/cosmetics.js). The key
-    // art shows spirits wearing them — they are outfits, not NPCs.
+    // Full character skins from Astra's Vault. Owner direction (Oct 2026):
+    // in the current game a skin changes the whole look — present complete
+    // skins, never separate clothing pieces. (The shared repo's
+    // cosmetics.js still describes slot-based hat/body items; the deployed
+    // game is the source of truth here.) The key art shows complete looks.
     // Crop regions are in source pixels of the 1536x1024 key art, 4:5.
-    outfits: {
-      kicker: "Character customization",
-      title: "Dress your spirit",
-      lead: "Outfits are collected at Astra's Vault — a hat and a body piece in every set. Earn some with Soul Dust, unlock others with LifeCoins, and wear them anywhere in the world.",
+    skins: {
+      kicker: "Full character skins",
+      title: "Choose your form",
+      lead: "A skin transforms your entire spirit — one complete new look, not a costume piece. Unlock full skins at Astra's Vault, change your form whenever you like, and wear it anywhere in the world.",
       sets: [
-        { id: "cowboy", name: "Soul Cowboy", rarity: "Rare set", color: "#4aa8ff", crop: { x: 0, y: 40, w: 600 }, hat: "Soul Cowboy Hat", body: "Soul Cowboy Outfit", alt: "A glowing blue spirit wearing the Soul Cowboy set: a black hat with a gold sheriff's star and a long dark coat, pointing finger-guns.", text: "For spirits who arrive with pure chaotic confidence and let the hat do most of the talking. Yee-haw optional, but encouraged." },
-        { id: "ninja", name: "Shadow Ninja", rarity: "Epic set", color: "#ff5a4a", crop: { x: 490, y: 0, w: 540 }, hat: "Shadow Ninja Hood", body: "Shadow Ninja Robe", alt: "A red, flame-wreathed spirit wearing the Shadow Ninja set: a masked hood and a crimson robe, with a sword hilt over one shoulder.", text: "Says very little. Looks devastating doing it. Main-character energy for spirits who would rather just say \"Hmph.\"" },
-        { id: "pirate", name: "Astral Pirate", rarity: "Epic set", color: "#7dff5a", crop: { x: 900, y: 10, w: 620 }, hat: "Astral Pirate Hat", body: "Astral Pirate Coat", alt: "A cackling green spirit wearing the Astral Pirate set: a skull-and-crossbones hat and a buckled coat, giving a thumbs-up as gold coins fly past.", text: "Financially motivated. Emotionally unavailable. Excellent coat. Yelling \"Arrr! Treasure!\" is not included, but nobody will stop you." },
-        { id: "princess", name: "Dark Princess", rarity: "Epic set", color: "#c77dff", crop: { x: 560, y: 380, w: 430 }, hat: "Dark Princess Crown Hair", body: "Dark Princess Dress", alt: "A violet spirit wearing the Dark Princess set: flowing hair with a jewelled tiara and a gown, chin on one hand, thoroughly unimpressed.", text: "Unimpressed by literally everything, in the best-dressed way possible. \"Really?\" works as a greeting and a review." }
+        { id: "cowboy", name: "Soul Cowboy", color: "#4aa8ff", crop: { x: 0, y: 40, w: 600 }, alt: "A glowing blue spirit in the Soul Cowboy skin: a black hat with a gold sheriff's star and a long dark coat, pointing finger-guns.", text: "Pure chaotic confidence, a gold sheriff's star and a coat that does most of the talking. Yee-haw optional, but encouraged." },
+        { id: "ninja", name: "Shadow Ninja", color: "#ff5a4a", crop: { x: 490, y: 0, w: 540 }, alt: "A red, flame-wreathed spirit in the Shadow Ninja skin: masked, crimson-robed, a sword hilt over one shoulder.", text: "Says very little. Looks devastating doing it. Main-character energy for spirits who would rather just say \"Hmph.\"" },
+        { id: "pirate", name: "Astral Pirate", color: "#7dff5a", crop: { x: 900, y: 10, w: 620 }, alt: "A cackling green spirit in the Astral Pirate skin: a skull-and-crossbones hat and a buckled coat, giving a thumbs-up as gold coins fly past.", text: "Financially motivated. Emotionally unavailable. Excellent coat. Yelling \"Arrr! Treasure!\" is not included, but nobody will stop you." },
+        { id: "princess", name: "Dark Princess", color: "#c77dff", crop: { x: 560, y: 380, w: 430 }, alt: "A violet spirit in the Dark Princess skin: flowing hair, a jewelled tiara and a gown, chin on one hand, thoroughly unimpressed.", text: "Unimpressed by literally everything, in the best-dressed way possible. \"Really?\" works as a greeting and a review." }
       ],
-      alsoTitle: "Also at Astra's Vault",
-      also: [
-        { id: "tree", name: "Tree Emperor", rarity: "Mythic robes" },
-        { id: "void", name: "Void Emperor", rarity: "Mythic robes" }
-      ]
+      moreTitle: "More forms at Astra's Vault",
+      more: ["Tree Emperor", "Void Emperor"]
     },
     adventures: {
       kicker: "Adventures",
@@ -256,16 +256,42 @@
         { id: "wanderer", name: "The Wanderer", place: "Out in the world", color: "#ff7a5a", line: "The Wanderer heard something. They always hear something." }
       ]
     },
-    // Updates feed. status: "live" | "soon" | "dev" | "ongoing".
-    // `date` is optional ISO (YYYY-MM or YYYY-MM-DD) — only set it for things
-    // that really happened on that date. Never add player counts or events
-    // that have not been announced.
-    news: [
-      { status: "dev", label: "In development", date: "", title: "Movie Creator", text: "A creative tool for making your own scenes and films inside LifeDecode World is being built. It isn't available in the game yet — we'll post here when it is." },
-      { status: "soon", label: "Coming soon", date: "", title: "iPhone app", text: "A native iPhone app is in preparation. Until it lands, LifeDecode World plays right in Safari — no download needed." },
-      { status: "ongoing", label: "Ongoing", date: "", title: "The world keeps growing", text: "Twenty places to explore today, from the Plaza to the Shadow Arena — and new corners keep opening up." },
-      { status: "live", label: "Live", date: "2026-07", title: "Account controls", text: "Signed-in players can find Delete account in the Account menu. It opens the official LifeDecode World account deletion page, which explains the whole process." }
-    ],
+    // Updates & roadmap. Status meanings (shown in the lane headers):
+    //   live    — playable today (confirmed in the shared game repo)
+    //   recent  — recently added or still rolling out (label per card)
+    //   soon    — announced / nearly ready, not playable yet
+    //   dev     — being built, not playable yet (incl. local-only work)
+    // Cinema, Movie Creator, deeper Relationships and Mood are NOT in the
+    // shared lifedecode-game repo (main @ ecef049) — keep them "dev" until
+    // they are really available to players. `parts` lists per-subsystem
+    // status for systems that are partly live. `date` only for real dates.
+    updates: {
+      kicker: "News & updates",
+      title: "A world that keeps growing",
+      lead: "What you can play today, what just arrived, and what's being built next — labelled honestly.",
+      lanes: [
+        { status: "live", label: "Live", hint: "Playable today" },
+        { status: "recent", label: "Recently added & ongoing", hint: "New, and still evolving" },
+        { status: "soon", label: "Coming soon", hint: "Nearly ready" },
+        { status: "dev", label: "In development", hint: "Being built — not playable yet" }
+      ],
+      items: [
+        { status: "live", label: "Live", title: "Full character skins", text: "Complete new looks at Astra's Vault." },
+        { status: "live", label: "Live", title: "Duels & the ranked Arena", text: "Nine duel types, Soul Dust wagers and a ranked ladder." },
+        { status: "live", label: "Live", title: "Dojo & Shadow Arena", text: "Eleven belts with Master Kaien and a boss fight with The Doubter." },
+        { status: "live", label: "Live", title: "Homes, pets & businesses", text: "Three homes, sixteen pets and a pizza place you can own." },
+        { status: "live", label: "Live", title: "Friends & social", text: "Friend requests, online status, chat, emotes and home visits." },
+        { status: "live", label: "Live", date: "2026-07", title: "Account controls", text: "Delete account from the Account menu." },
+        { status: "recent", label: "Recently added", title: "Mood & Needs", text: "Your spirit now gets hungry and thirsty — LifeMart snacks and Main Street Pizza keep you going. Mood is the next piece being built.", parts: [{ name: "Hunger", status: "live" }, { name: "Thirst", status: "live" }, { name: "Mood", status: "dev" }] },
+        { status: "recent", label: "Ongoing", title: "A fairer economy", text: "Rewards, purchases and wagers keep moving to server-side checks, so everyone's progress stays fair." },
+        { status: "recent", label: "Ongoing", title: "The world keeps growing", text: "Twenty places to explore today, from the Plaza to the Shadow Arena — and new corners keep opening up." },
+        { status: "soon", label: "Coming soon", title: "iPhone app", text: "A native iPhone app is in preparation. Until then, LifeDecode World plays right in Safari — no download needed." },
+        { status: "dev", label: "In development", title: "Cinema", image: "plaza-cinema", imageAlt: "The Cinema on the Plaza, its marquee reading “Coming soon” — in-game location art.", text: "The Cinema already stands on the Plaza, its marquee still reading “coming soon”. Screenings are being built and aren't open to players yet." },
+        { status: "dev", label: "In development", title: "Movie Creator", text: "A creative tool for making your own scenes and films inside LifeDecode World. Not available in the game yet — we'll post here when it is." },
+        { status: "dev", label: "In development", title: "Relationships", text: "Friends, friend requests and online status are live today. A fuller relationships system is being built on top of them.", parts: [{ name: "Friends & friend requests", status: "live" }, { name: "Deeper relationships", status: "dev" }] }
+      ],
+      note: "Live means available to players today. Anything still being built — including work that only exists in development builds — is labelled In development until it really ships."
+    },
     finale: {
       kicker: "Your spirit is waiting",
       title: "Step into LifeDecode World",
@@ -634,18 +660,27 @@ body.ld-no-scroll{overflow:hidden;}
 #ldw_app .v2_squad_panel{margin-top:24px;}
 #ldw_app .v2_squad_panel[hidden]{display:none;}
 #ldw_app .v2_squad_panel p{color:var(--v-muted);font-size:16px;line-height:1.7;max-width:540px;}
-#ldw_app .v2_pieces{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
-#ldw_app .v2_piece{display:flex;align-items:center;gap:12px;padding:8px 16px 8px 8px;border-radius:16px;border:1px solid var(--v-line);background:rgba(255,255,255,.03);}
-#ldw_app .v2_piece_img{display:flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:12px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--c,#7b4dff) 30%,transparent),rgba(10,10,36,.9) 70%);}
-#ldw_app .v2_piece_img img{max-width:54px;max-height:54px;width:auto;height:auto;}
-#ldw_app .v2_piece small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--v-soft);}
-#ldw_app .v2_piece b{display:block;margin-top:2px;font-size:14px;font-weight:600;color:#fff;}
-#ldw_app .v2_also{margin-top:28px;padding-top:20px;border-top:1px solid var(--v-line);display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;}
+#ldw_app .v2_skin_name{font-family:var(--v-display);font-weight:600;font-size:clamp(22px,2.2vw,28px);line-height:1.15;margin-bottom:8px;}
+/* Skin selector: each tab is a complete-look thumbnail cropped from the key art */
+#ldw_app .v2_skin_tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+#ldw_app .v2_skin_tab{padding:0;gap:0;overflow:hidden;border-radius:18px;align-items:stretch;}
+#ldw_app .v2_skin_tab::before{display:none;}
+#ldw_app .v2_skin_thumb{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:#07081e;}
+#ldw_app .v2_skin_thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,6,22,.75));}
+#ldw_app .v2_skin_thumb img{filter:saturate(.7) brightness(.72);transition:filter .3s ease,transform .6s var(--v-ease);}
+#ldw_app .v2_skin_tab:hover .v2_skin_thumb img{filter:saturate(1) brightness(.9);}
+#ldw_app .v2_skin_tab[aria-selected="true"]{border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 14px 34px color-mix(in srgb,var(--c) 28%,transparent);}
+#ldw_app .v2_skin_tab[aria-selected="true"] .v2_skin_thumb img{filter:none;}
+#ldw_app .v2_skin_label{display:block;padding:10px 12px 12px;}
+#ldw_app .v2_skin_label b{display:block;font-family:var(--v-display);font-weight:600;font-size:14.5px;letter-spacing:.02em;line-height:1.2;}
+#ldw_app .v2_skin_label small{display:block;margin-top:3px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--v-soft);}
+#ldw_app .v2_skin_tab[aria-selected="true"] .v2_skin_label small{color:var(--c);}
+#ldw_app .v2_crop img{position:absolute;max-width:none!important;height:auto;width:calc(1536 / var(--w) * 100%);left:calc(var(--x) / var(--w) * -100%);top:calc(var(--y) / (var(--w) * 1.25) * -100%);}
+#ldw_app .v2_also{margin-top:26px;padding-top:20px;border-top:1px solid var(--v-line);display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;}
 #ldw_app .v2_also > span{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--v-gold);}
-#ldw_app .v2_also_item{display:flex;align-items:center;gap:10px;}
-#ldw_app .v2_also_item img{width:auto;height:48px;}
-#ldw_app .v2_also_item b{display:block;font-family:var(--v-display);font-weight:600;font-size:15px;color:#fff;}
-#ldw_app .v2_also_item small{display:block;font-size:12px;color:var(--v-soft);}
+#ldw_app .v2_more_skins{display:flex;flex-wrap:wrap;gap:8px;}
+#ldw_app .v2_more_skins span{padding:6px 14px;border-radius:999px;border:1px solid var(--v-line-2);background:rgba(244,199,107,.05);font-family:var(--v-display);font-size:14px;font-weight:600;color:#fff;}
+#ldw_app .v2_more_skins .v2_more_soon{font-family:var(--v-sans);font-weight:500;font-size:13px;color:var(--v-soft);border-style:dashed;background:none;}
 #ldw_app .v2_squad_copy .v2_h2,#ldw_app .v2_squad_copy .v2_lead{text-align:left;}
 @media(max-width:880px){
   #ldw_app .v2_squad{grid-template-columns:1fr;}
@@ -653,9 +688,9 @@ body.ld-no-scroll{overflow:hidden;}
   #ldw_app .v2_squad_copy,#ldw_app .v2_squad_copy .v2_h2,#ldw_app .v2_squad_copy .v2_lead{text-align:center;}
   #ldw_app .v2_squad_panel{text-align:center;}
   #ldw_app .v2_squad_panel p{margin-left:auto;margin-right:auto;}
-  #ldw_app .v2_pieces,#ldw_app .v2_also{justify-content:center;}
+  #ldw_app .v2_also,#ldw_app .v2_more_skins{justify-content:center;}
 }
-@media(max-width:420px){#ldw_app .v2_tab{padding:13px 14px;}#ldw_app .v2_tab b{font-size:15px;}#ldw_app .v2_piece{padding-right:12px;}}
+@media(max-width:520px){#ldw_app .v2_skin_tabs{grid-template-columns:repeat(2,minmax(0,1fr));}#ldw_app .v2_skin_thumb{aspect-ratio:1/1;}}
 
 /* Adventures — cinematic spreads */
 #ldw_app .v2_adv{display:grid;gap:clamp(18px,2.2vw,28px);width:var(--v-wide);margin:0 auto;}
@@ -735,21 +770,56 @@ body.ld-no-scroll{overflow:hidden;}
 @media(max-width:880px){#ldw_app .v2_comm{grid-template-columns:1fr;align-items:start;}#ldw_app .v2_comm .v2_h2,#ldw_app .v2_comm .v2_lead{text-align:center;}#ldw_app .v2_comm .v2_kicker{display:flex;justify-content:center;}#ldw_app .v2_locals{margin:0 -20px;padding-left:20px;padding-right:20px;}#ldw_app .v2_local{flex-basis:72%;}#ldw_app .v2_locals_nav{display:none;}}
 @media(max-width:520px){#ldw_app .v2_points{grid-template-columns:1fr;gap:0;}}
 
-/* News */
-#ldw_app .v2_news{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
-#ldw_app .v2_news_card{--s:#5fe3ff;position:relative;display:flex;flex-direction:column;padding:26px 24px 28px;border-radius:var(--v-radius);border:1px solid var(--v-line);background:linear-gradient(180deg,rgba(12,12,42,.88),rgba(7,8,26,.92));overflow:hidden;}
-#ldw_app .v2_news_card::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:linear-gradient(90deg,var(--s),transparent 80%);}
-#ldw_app .v2_news_card[data-status="live"]{--s:#86ff9e;}
-#ldw_app .v2_news_card[data-status="soon"]{--s:#f4c76b;}
-#ldw_app .v2_news_card[data-status="dev"]{--s:#c79bff;}
-#ldw_app .v2_news_card[data-status="ongoing"]{--s:#5fe3ff;}
-#ldw_app .v2_news_meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12px;color:var(--v-soft);}
+/* News & updates — status board */
+#ldw_app .v2_board{position:relative;}
+#ldw_app .v2_lane_tabs{display:none;}
+#ldw_app .v2_lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start;}
+#ldw_app .v2_lane{--s:#5fe3ff;border-radius:24px;border:1px solid var(--v-line);background:linear-gradient(180deg,color-mix(in srgb,var(--s) 6%,rgba(10,11,36,.9)),rgba(7,8,26,.6));padding:14px;}
+#ldw_app .v2_lane[data-status="live"],#ldw_app [data-status="live"]{--s:#86ff9e;}
+#ldw_app .v2_lane[data-status="recent"],#ldw_app [data-status="recent"]{--s:#5fe3ff;}
+#ldw_app .v2_lane[data-status="soon"],#ldw_app [data-status="soon"]{--s:#f4c76b;}
+#ldw_app .v2_lane[data-status="dev"],#ldw_app [data-status="dev"]{--s:#c79bff;}
+#ldw_app .v2_lane_head{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:6px 8px 14px;}
+#ldw_app .v2_lane_head small{font-size:13px;color:var(--v-soft);}
+#ldw_app .v2_lane_list{display:grid;gap:10px;}
+#ldw_app .v2_live_list{border-radius:16px;border:1px solid var(--v-line);background:rgba(8,9,30,.92);overflow:hidden;}
+#ldw_app .v2_live_list li{position:relative;padding:13px 16px 13px 30px;border-bottom:1px solid var(--v-line);}
+#ldw_app .v2_live_list li:last-child{border-bottom:0;}
+#ldw_app .v2_live_list li::before{content:"";position:absolute;left:14px;top:20px;width:6px;height:6px;border-radius:50%;background:var(--s);box-shadow:0 0 8px var(--s);}
+#ldw_app .v2_live_list b{display:block;font-family:var(--v-display);font-weight:600;font-size:15.5px;line-height:1.3;color:#fff;}
+#ldw_app .v2_live_list span{display:block;margin-top:3px;color:var(--v-muted);font-size:13.5px;line-height:1.5;}
+#ldw_app .v2_live_list time{display:block;margin-top:4px;font-size:11.5px;letter-spacing:.08em;color:var(--v-soft);}
+#ldw_app .v2_news_card{position:relative;display:flex;flex-direction:column;padding:18px 18px 20px;border-radius:16px;border:1px solid var(--v-line);background:rgba(8,9,30,.92);overflow:hidden;transition:border-color .25s ease,transform .25s var(--v-ease);}
+#ldw_app .v2_news_card:hover{border-color:color-mix(in srgb,var(--s) 40%,transparent);transform:translateY(-2px);}
+#ldw_app .v2_news_card::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:2px;border-radius:2px;background:var(--s);opacity:.8;}
+#ldw_app .v2_news_card--art{padding-top:0;}
+#ldw_app .v2_news_art{position:relative;margin:0 -18px 14px;aspect-ratio:16/9;overflow:hidden;}
+#ldw_app .v2_news_art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#ldw_app .v2_news_art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,9,30,.95));}
+#ldw_app .v2_news_card--art::before{top:auto;height:40%;}
+#ldw_app .v2_news_meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-size:12px;color:var(--v-soft);}
+#ldw_app .v2_lane .v2_news_meta .v2_status{display:none;}
+#ldw_app .v2_lane[data-status="recent"] .v2_news_meta .v2_status{display:inline-flex;}
 #ldw_app .v2_status{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;border:1px solid color-mix(in srgb,var(--s) 45%,transparent);background:color-mix(in srgb,var(--s) 10%,transparent);color:var(--s);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
 #ldw_app .v2_status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;}
-#ldw_app .v2_news_card h3{margin-top:18px;font-family:var(--v-display);font-weight:600;font-size:21px;color:#fff;}
-#ldw_app .v2_news_card p{margin-top:10px;color:var(--v-muted);font-size:14.5px;line-height:1.65;}
-@media(max-width:1080px){#ldw_app .v2_news{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:600px){#ldw_app .v2_news{grid-template-columns:1fr;}}
+#ldw_app .v2_news_card h3{margin-top:2px;font-family:var(--v-display);font-weight:600;font-size:18px;line-height:1.25;color:#fff;}
+#ldw_app .v2_news_meta:not(:empty) + h3{margin-top:10px;}
+#ldw_app .v2_news_card p{margin-top:8px;color:var(--v-muted);font-size:14px;line-height:1.6;}
+#ldw_app .v2_parts{margin-top:12px;display:grid;gap:6px;}
+#ldw_app .v2_parts li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--v-line);font-size:13px;color:#fff;}
+#ldw_app .v2_parts em{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--s);}
+#ldw_app .v2_parts em::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+@media(max-width:1080px){#ldw_app .v2_lanes{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:700px){
+  #ldw_app .v2_lane_tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -20px 14px;padding:2px 20px 6px;scrollbar-width:none;}
+  #ldw_app .v2_lane_tabs::-webkit-scrollbar{display:none;}
+  #ldw_app .v2_lane_tab{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--v-line);background:rgba(255,255,255,.03);color:var(--v-muted);font:600 13px/1 var(--v-sans);cursor:pointer;}
+  #ldw_app .v2_lane_tab b{font-weight:700;font-size:11px;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.08);color:#fff;}
+  #ldw_app .v2_lane_tab[aria-pressed="true"]{color:#fff;border-color:color-mix(in srgb,var(--s) 60%,transparent);background:color-mix(in srgb,var(--s) 14%,transparent);}
+  #ldw_app .v2_lanes{grid-template-columns:1fr;}
+  #ldw_app .v2_lane{display:none;}
+  #ldw_app .v2_lane.is-active{display:block;}
+}
 
 /* Finale */
 #ldw_app .v2_finale{position:relative;width:var(--v-wide);margin:0 auto;border-radius:32px;overflow:hidden;isolation:isolate;border:1px solid var(--v-line-2);padding:clamp(64px,9vw,128px) 24px;text-align:center;box-shadow:0 40px 120px rgba(0,0,0,.5);}
@@ -811,7 +881,7 @@ body.ld-no-scroll{overflow:hidden;}
     const C = CONTENT;
     const W = esc(CFG.WORLD_URL);
     const F = C.world.featured;
-    const O = C.outfits;
+    const O = C.skins;
     const A = C.adventures;
 
     const thumbs = F.map((l, i) => (
@@ -828,29 +898,20 @@ body.ld-no-scroll{overflow:hidden;}
     )).join("");
 
     const tabs = O.sets.map((s, i) => (
-      '<button class="v2_tab" type="button" role="tab" id="ldv2_tab_' + esc(s.id) + '" aria-controls="ldv2_panel_' + esc(s.id) + '" aria-selected="' + (i === 0 ? "true" : "false") + '" tabindex="' + (i === 0 ? "0" : "-1") + '" data-squad="' + esc(s.id) + '" style="--c:' + esc(s.color) + '">' +
-        '<b>' + esc(s.name) + '</b><span>' + esc(s.rarity) + '</span>' +
+      '<button class="v2_tab v2_skin_tab" type="button" role="tab" id="ldv2_tab_' + esc(s.id) + '" aria-controls="ldv2_panel_' + esc(s.id) + '" aria-selected="' + (i === 0 ? "true" : "false") + '" tabindex="' + (i === 0 ? "0" : "-1") + '" data-squad="' + esc(s.id) + '" style="--c:' + esc(s.color) + '">' +
+        '<span class="v2_skin_thumb v2_crop" aria-hidden="true">' + keyArtPicture({ alt: "", style: cropStyle(s.crop) }) + '</span>' +
+        '<span class="v2_skin_label"><b>' + esc(s.name) + '</b><small>Full skin</small></span>' +
       '</button>'
     )).join("");
 
-    const piece = (id, label, name, color) => (
-      '<div class="v2_piece" style="--c:' + esc(color) + '">' +
-        '<span class="v2_piece_img">' + spriteImg("outfit-" + id, { alt: "" }) + '</span>' +
-        '<span><small>' + esc(label) + '</small><b>' + esc(name) + '</b></span>' +
-      '</div>'
-    );
-
     const panels = O.sets.map((s, i) => (
       '<div class="v2_squad_panel" role="tabpanel" id="ldv2_panel_' + esc(s.id) + '" aria-labelledby="ldv2_tab_' + esc(s.id) + '"' + (i === 0 ? '' : ' hidden') + '>' +
+        '<div class="v2_skin_name" style="color:' + esc(s.color) + '">' + esc(s.name) + '</div>' +
         '<p>' + esc(s.text) + '</p>' +
-        '<div class="v2_pieces" aria-label="Pieces in the ' + esc(s.name) + ' set">' + piece(s.id + "-hat", "Hat", s.hat, s.color) + piece(s.id + "-body", "Body", s.body, s.color) + '</div>' +
       '</div>'
     )).join("");
 
-    const also = O.also.map((a) => (
-      '<div class="v2_also_item">' + spriteImg("outfit-" + a.id + "-body", { alt: a.name + " robes" }) +
-        '<span><b>' + esc(a.name) + '</b><small>' + esc(a.rarity) + '</small></span></div>'
-    )).join("");
+    const moreSkins = O.more.map((m) => '<span>' + esc(m) + '</span>').join("");
 
     const belts = A.belts.map((b) => '<li style="--c:' + esc(b.color) + '" title="' + esc(b.name) + '"></li>').join("");
 
@@ -879,16 +940,34 @@ body.ld-no-scroll{overflow:hidden;}
       '</li>'
     )).join("");
 
-    const news = C.news.map((n) => {
+    const U = C.updates;
+    const statusLabel = { live: "Live", recent: "Recently added", soon: "Coming soon", dev: "In development" };
+    const updateCard = (n) => {
       const dateLabel = formatNewsDate(n.date);
-      return '<li><article class="v2_news_card" data-status="' + esc(n.status) + '">' +
+      return '<li><article class="v2_news_card' + (n.image ? ' v2_news_card--art' : '') + '" data-status="' + esc(n.status) + '">' +
+        (n.image ? '<div class="v2_news_art">' + worldPicture(n.image, { sizes: "(max-width:700px) 100vw, 360px", alt: n.imageAlt || "" }) + '</div>' : '') +
         '<div class="v2_news_meta"><span class="v2_status">' + esc(n.label) + '</span>' +
           (dateLabel ? '<time datetime="' + esc(n.date) + '">' + esc(dateLabel) + '</time>' : '') +
         '</div>' +
         '<h3>' + esc(n.title) + '</h3>' +
         '<p>' + esc(n.text) + '</p>' +
+        (n.parts ? '<ul class="v2_parts" aria-label="Status by part">' + n.parts.map((pt) => '<li data-status="' + esc(pt.status) + '"><span>' + esc(pt.name) + '</span><em>' + esc(statusLabel[pt.status] || pt.status) + '</em></li>').join("") + '</ul>' : '') +
       '</article></li>';
-    }).join("");
+    };
+    const laneTabs = U.lanes.map((l, i) => (
+      '<button class="v2_lane_tab" type="button" aria-controls="ldv2_lane_' + esc(l.status) + '" aria-pressed="' + (i === 0 ? "true" : "false") + '" data-status="' + esc(l.status) + '">' + esc(l.label) + ' <b>' + U.items.filter((n) => n.status === l.status).length + '</b></button>'
+    )).join("");
+    const lanes = U.lanes.map((l, i) => (
+      '<div class="v2_lane' + (i === 0 ? ' is-active' : '') + '" id="ldv2_lane_' + esc(l.status) + '" role="region" aria-label="' + esc(l.label) + '" data-status="' + esc(l.status) + '">' +
+        '<div class="v2_lane_head"><span class="v2_status">' + esc(l.label) + '</span><small>' + esc(l.hint) + '</small></div>' +
+        (l.status === "live"
+          ? '<ul class="v2_live_list">' + U.items.filter((n) => n.status === "live").map((n) => {
+              const dateLabel = formatNewsDate(n.date);
+              return '<li><b>' + esc(n.title) + '</b><span>' + esc(n.text) + '</span>' + (dateLabel ? '<time datetime="' + esc(n.date) + '">' + esc(dateLabel) + '</time>' : '') + '</li>';
+            }).join("") + '</ul>'
+          : '<ul class="v2_lane_list">' + U.items.filter((n) => n.status === l.status).map(updateCard).join("") + '</ul>') +
+      '</div>'
+    )).join("");
 
     const facts = C.prologue.facts.map((f) => '<li class="v2_fact"><b>' + esc(f.title) + '</b><span>' + esc(f.text) + '</span></li>').join("");
 
@@ -921,7 +1000,7 @@ body.ld-no-scroll{overflow:hidden;}
 <div class="v2_page">
   <main id="ldv2_main" tabindex="-1">
     <section class="v2_hero" id="ldv2_top" aria-labelledby="ldv2_title">
-      <div class="v2_hero_art">${keyArtPicture({ eager: true, alt: "LifeDecode World key art: four glowing spirits wearing the Soul Cowboy, Shadow Ninja, Astral Pirate and Dark Princess outfits against a dark, starry sky." })}</div>
+      <div class="v2_hero_art">${keyArtPicture({ eager: true, alt: "LifeDecode World key art: four glowing spirits in the Soul Cowboy, Shadow Ninja, Astral Pirate and Dark Princess skins against a dark, starry sky." })}</div>
       <div class="v2_hero_shade" aria-hidden="true"></div>
       <div class="v2_hero_content">
         <p class="v2_eyebrow"><span>${esc(C.hero.eyebrow[0])}<span class="v2_eyebrow_more"> &middot; ${esc(C.hero.eyebrow[1])}</span></span></p>
@@ -982,15 +1061,15 @@ body.ld-no-scroll{overflow:hidden;}
       <div class="v2_container v2_squad">
         <figure class="v2_portrait v2_reveal">
           ${frames}
-          <figcaption class="v2_portrait_caption"><span>Official key art</span><span id="ldv2_squad_name">${esc(O.sets[0].name)}</span></figcaption>
+          <figcaption class="v2_portrait_caption"><span>Full skin</span><span id="ldv2_squad_name">${esc(O.sets[0].name)}</span></figcaption>
         </figure>
         <div class="v2_squad_copy v2_reveal">
           <div class="v2_kicker">${esc(O.kicker)}</div>
           <h2 class="v2_h2" id="ldv2_spirit_title">${esc(O.title)}</h2>
           <p class="v2_lead">${esc(O.lead)}</p>
-          <div class="v2_tabs" role="tablist" aria-label="Outfit sets">${tabs}</div>
+          <div class="v2_tabs v2_skin_tabs" role="tablist" aria-label="Full character skins">${tabs}</div>
           ${panels}
-          <div class="v2_also"><span>${esc(O.alsoTitle)}</span>${also}</div>
+          <div class="v2_also"><span>${esc(O.moreTitle)}</span><div class="v2_more_skins">${moreSkins}<span class="v2_more_soon">and more to unlock</span></div></div>
         </div>
       </div>
     </section>
@@ -1073,11 +1152,15 @@ body.ld-no-scroll{overflow:hidden;}
     <section class="v2_section" id="ldv2_news" aria-labelledby="ldv2_news_title">
       <div class="v2_container">
         <div class="v2_head v2_reveal">
-          <div class="v2_kicker">News &amp; updates</div>
-          <h2 class="v2_h2" id="ldv2_news_title">What's live. What's next.</h2>
-          <p class="v2_lead">An honest look at what you can play today and what's still being built.</p>
+          <div class="v2_kicker">${esc(U.kicker)}</div>
+          <h2 class="v2_h2" id="ldv2_news_title">${esc(U.title)}</h2>
+          <p class="v2_lead">${esc(U.lead)}</p>
         </div>
-        <ul class="v2_news v2_stagger">${news}</ul>
+        <div class="v2_board v2_reveal">
+          <div class="v2_lane_tabs" role="group" aria-label="Show updates by status">${laneTabs}</div>
+          <div class="v2_lanes">${lanes}</div>
+        </div>
+        <p class="v2_note">${esc(U.note)}</p>
       </div>
     </section>
 
@@ -1241,7 +1324,7 @@ body.ld-no-scroll{overflow:hidden;}
     if (!tabs.length) return;
 
     bindTablist(tabs, (index, focus) => {
-      const data = CONTENT.outfits.sets[index];
+      const data = CONTENT.skins.sets[index];
       if (!data) return;
       setSelectedTab(tabs, index, focus);
       tabs.forEach((t) => {
@@ -1319,6 +1402,20 @@ body.ld-no-scroll{overflow:hidden;}
       btn.addEventListener("click", () => {
         buttons.forEach((b) => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
         if (result) result.textContent = btn.getAttribute("data-result") || "";
+      });
+    });
+  }
+
+  // Updates board: all lanes show side by side on wider screens; on phones
+  // the status chips switch which single lane is visible.
+  function bindUpdateLanes() {
+    const chips = Array.from(document.querySelectorAll("#ldw_app .v2_lane_tab"));
+    const lanes = Array.from(document.querySelectorAll("#ldw_app .v2_lane"));
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const status = chip.getAttribute("data-status");
+        chips.forEach((c) => c.setAttribute("aria-pressed", c === chip ? "true" : "false"));
+        lanes.forEach((l) => l.classList.toggle("is-active", l.getAttribute("data-status") === status));
       });
     });
   }
@@ -1410,6 +1507,7 @@ body.ld-no-scroll{overflow:hidden;}
       bindWorldGallery();
       bindArenaChoices();
       bindLocalsNav();
+      bindUpdateLanes();
       bindAuthModalExtras();
       bindMotion();
       console.log("[LD] World landing loaded:", CFG.VERSION);

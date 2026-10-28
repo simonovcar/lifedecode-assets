@@ -73,7 +73,7 @@ for (const vp of VIEWPORTS) {
       if (!r.width) return false;
       // Elements inside a horizontal scroller (mobile room carousel) or a
       // clipping frame are allowed to extend past the viewport.
-      if (el.closest(".v2_locations, .v2_portrait, .v2_finale_art, .v2_hero_art, .v2_atmos, .ldw_hp_field, .v2_locals, .v2_rail, .v2_life")) return false;
+      if (el.closest(".v2_locations, .v2_portrait, .v2_finale_art, .v2_hero_art, .v2_atmos, .ldw_hp_field, .v2_locals, .v2_rail, .v2_life, .v2_skin_thumb, .v2_lane_tabs")) return false;
       return r.right > window.innerWidth + 1 || r.left < -1;
     }).slice(0, 5).map((el) => el.className || el.tagName);
     return {

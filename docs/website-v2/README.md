@@ -51,14 +51,14 @@ The page sections, in order (polish pass 2):
 1. **Hero** with the key art (left-aligned copy on desktop).
 2. **Prologue / manifesto**: "Not soulless. Not a lecture." The absolute "Not pay-to-win" claim is gone; the page says "Free to play · Optional in-game purchases" instead.
 3. **Explore the World**: a cinematic stage plus a 12-thumbnail tablist of **real location art**, and the other 8 locations as chips.
-4. **Dress your spirit**: the key-art viewer, reframed as **outfit sets from Astra's Vault**, showing the real hat and body pieces, plus the Tree and Void Emperor sets.
+4. **Choose your form** (correction pass 3): **full character skins**. A key-art portrait plus a 4-tile skin selector shows complete looks only, with no separate hat/body pieces. Tree and Void Emperor are listed as further forms.
 5. **Adventures**:
    * a Dojo spread (Master Kaien sprite, real belt colours);
    * a Shadow Arena spread (The Doubter, with the real round-1 choices you can try);
    * a duels panel with the 9 duel types.
 6. **Make it your life**: art cards for pets, homes (Soul Furnace), work and business (Main Street Pizza) and daily rituals (Daily Chest). On phones they're a swipeable row.
 7. **A world you share**: multiplayer and social points, plus a carousel of **8 real NPCs** (in-world sprites, quoted quest lines).
-8. **News & updates**, with honest status labels.
+8. **News & updates — "A world that keeps growing"** (correction pass 3): a four-lane status board (Live · Recently added & ongoing · Coming soon · In development). Partly-live systems list per-part status (Mood & Needs, Relationships). The Cinema card uses the Plaza's Cinema facade art. On phones, status chips switch lanes.
 9. **Final CTA** and **footer**.
 
 Visual and technical changes:
