@@ -129,6 +129,8 @@
   // ---------------------------------------------------------------------
   const ART = function (name) { return ASSET_BASE + "assets/v2/world/" + name; };
 
+/*@@SKIN_ROSTER@@*/
+
   const CONTENT = {
     hero: {
       eyebrow: ["Free to play", "A social world in your browser"],
@@ -171,36 +173,20 @@
     },
     // Full character skins — the NEW skin system (owner, Oct 2026): one
     // complete character sprite replacement per skin, no hat/body overlays.
-    // It lives in the owner's local development worktree, not in the shared
-    // lifedecode-game repo, so this sandbox has no skin PNGs. `art: false`
-    // renders an abstract colour plate (never fake character art). Drop the
-    // real PNGs in with tools/build-skin-assets.py, then set `art: true`.
-    // c1/c2 are plate colours only, picked from each skin's name.
-    // The old Cowboy/Ninja/Pirate/Princess key art is NOT a purchasable skin
-    // and must not appear here (it stays in the hero only).
+    // Artwork = the owner's original PNGs (local dev worktree), optimized by
+    // tools/build-skin-assets.py into assets/v2/skins/ + SKIN_ROSTER above.
+    // Names marked nameVerified:false come from internal filenames and must
+    // be confirmed against the game's skin registry before release. Rarity
+    // is not in the supplied files, so none is shown. Never add art that
+    // didn't come from the game. The old Cowboy/Ninja/Pirate/Princess key
+    // art is not a skin (hero only).
     skins: {
       kicker: "Full character skins",
       title: "Choose your form",
-      lead: "A skin replaces your whole spirit with one complete new form — no separate pieces, no mixing and matching. Start as Base Blue or Base Rose, then become something stranger.",
+      lead: "A skin replaces your whole spirit with one complete new form — no separate pieces, no mixing and matching. Every spirit starts as Base Blue or Base Rose, and the collection only gets stranger from there.",
       status: "New skin collection · In development",
-      starters: [
-        { id: "base-blue", name: "Base Blue", c1: "#4aa8ff", c2: "#0b2a55", art: false },
-        { id: "base-rose", name: "Base Rose", c1: "#ff8ac2", c2: "#4a0f2e", art: false }
-      ],
-      items: [
-        { id: "emberborn", name: "Emberborn", c1: "#ff7a2e", c2: "#4a1405", art: false },
-        { id: "abyssal-tide", name: "Abyssal Tide", c1: "#1fc9c9", c2: "#062a4a", art: false },
-        { id: "clockwork-soul", name: "Clockwork Soul", c1: "#e0b050", c2: "#3a2608", art: false },
-        { id: "void-wanderer", name: "Void Wanderer", c1: "#9a6bff", c2: "#12082a", art: false },
-        { id: "verdant-keeper", name: "Verdant Keeper", c1: "#56e08f", c2: "#0c3a20", art: false },
-        { id: "frost-revenant", name: "Frost Revenant", c1: "#a6ecff", c2: "#16365a", art: false },
-        { id: "crimson-oracle", name: "Crimson Oracle", c1: "#ff3d5e", c2: "#3e0716", art: false },
-        { id: "luminous-druid", name: "Luminous Druid", c1: "#e8f57a", c2: "#26421a", art: false },
-        { id: "shadow-harlequin", name: "Shadow Harlequin", c1: "#ff5fd8", c2: "#1a0624", art: false },
-        { id: "starforged-knight", name: "Starforged Knight", c1: "#c9d8ff", c2: "#1c2460", art: false },
-        { id: "bone-warden", name: "Bone Warden", c1: "#efe4cc", c2: "#3a3328", art: false }
-      ],
-      note: "The full-character skin collection is in development. Availability will be announced in News & updates."
+      roster: SKIN_ROSTER,
+      note: "Original in-game artwork. The full-character skin collection is in development — availability will be announced in News & updates."
     },
     adventures: {
       kicker: "Adventures",
@@ -271,7 +257,10 @@
       ]
     },
     // Updates & roadmap. Lane meanings:
-    //   live   — in the shared lifedecode-game main branch (public build)
+    //   live   — "Available now". Confirmed in the shared lifedecode-game
+    //            main branch, but GitHub main is NOT proof of what is
+    //            deployed: set liveVerified:true only after checking the item
+    //            on world.lifedecode.app (build --check warns until then).
     //   recent — recently added or still rolling out (label per card)
     //   soon   — announced, not playable yet
     //   dev    — implemented or being built in the owner's development
@@ -286,20 +275,20 @@
       title: "A world that keeps growing",
       lead: "What you can play today, what's rolling out, and what's already built behind the scenes.",
       lanes: [
-        { status: "live", label: "Live", hint: "Playable today" },
-        { status: "recent", label: "Ongoing", hint: "Rolling out and evolving" },
+        { status: "live", label: "Available now", hint: "Playable today" },
+        { status: "recent", label: "Rolling out", hint: "Improving over time" },
         { status: "soon", label: "Coming soon", hint: "Announced" },
         { status: "dev", label: "In development", hint: "Working in our development build — not public yet" }
       ],
       items: [
-        { status: "live", title: "Duels & the ranked Arena", text: "Nine duel types, Soul Dust wagers and a ranked ladder." },
-        { status: "live", title: "Dojo & Shadow Arena", text: "Eleven belts with Master Kaien and a boss fight with The Doubter." },
-        { status: "live", title: "Homes, pets & businesses", text: "Three homes, sixteen pets and a pizza place you can own." },
-        { status: "live", title: "Friends & social", text: "Friend requests, online status, chat, emotes and home visits." },
-        { status: "live", title: "Hunger & Thirst", text: "Keep your spirit fed and watered at LifeMart and Main Street Pizza." },
-        { status: "live", date: "2026-07", title: "Account controls", text: "Delete account from the Account menu." },
-        { status: "recent", label: "Ongoing", title: "A fairer economy", text: "Rewards, purchases and wagers keep moving to server-side checks, so everyone's progress stays fair." },
-        { status: "recent", label: "Ongoing", title: "The world keeps growing", text: "Twenty places to explore today, and new corners keep opening up." },
+        { status: "live", liveVerified: false, title: "Duels & the ranked Arena", text: "Nine duel types, Soul Dust wagers and a ranked ladder." },
+        { status: "live", liveVerified: false, title: "Dojo & Shadow Arena", text: "Eleven belts with Master Kaien and a boss fight with The Doubter." },
+        { status: "live", liveVerified: false, title: "Homes, pets & businesses", text: "Three homes, sixteen pets and a pizza place you can own." },
+        { status: "live", liveVerified: false, title: "Friends & social", text: "Friend requests, online status, chat, emotes and home visits." },
+        { status: "live", liveVerified: false, title: "Hunger & Thirst", text: "Keep your spirit fed and watered at LifeMart and Main Street Pizza." },
+        { status: "live", liveVerified: false, date: "2026-07", title: "Account controls", text: "Delete account from the Account menu." },
+        { status: "recent", label: "Rolling out", title: "A fairer economy", text: "Rewards, purchases and wagers keep moving to server-side checks, so everyone's progress stays fair." },
+        { status: "recent", label: "Rolling out", title: "The world keeps growing", text: "Twenty places to explore today, and new corners keep opening up." },
         { status: "soon", label: "Coming soon", title: "iPhone app", text: "A native iPhone app is in preparation. Until then, LifeDecode World plays right in Safari." },
         { status: "dev", title: "Cinema", wide: true, image: "plaza-cinema", imageAlt: "The Cinema on the Plaza, its marquee reading \u201cComing soon\u201d — in-game location art.", text: "A cinema and screening system is built in development, with deeper Movie Creator integration on the way. Its doors on the Plaza aren't open to players yet.", parts: [{ name: "Cinema & screenings", status: "built" }, { name: "Movie Creator integration", status: "wip" }] },
         { status: "dev", title: "Movie Creator", text: "Film creation and editing are built in development. Submission, moderation and public Cinema screenings are still unfinished.", parts: [{ name: "Create & edit films", status: "built" }, { name: "Submit, moderate & screen", status: "wip" }] },
@@ -307,7 +296,7 @@
         { status: "dev", title: "Mood & Needs", text: "Energy, Social, Fun and moodlets join Hunger and Thirst in the development build.", parts: [{ name: "Hunger & Thirst", status: "live" }, { name: "Energy, Social & Fun", status: "built" }, { name: "Moodlets", status: "built" }] },
         { status: "dev", title: "Full character skins", text: "Eleven complete character forms plus two starter looks, each one a whole new spirit — built in development.", parts: [{ name: "Skin system & collection", status: "built" }] }
       ],
-      note: "Live means available to players today. Everything under In development is real, working code in our development build — it moves to Live only when players can use it."
+      note: "Available now means players can use it today. Everything under In development is real, working code in our development build — it moves across only when it ships."
     },
     finale: {
       kicker: "Your spirit is waiting",
@@ -651,28 +640,44 @@ body.ld-no-scroll{overflow:hidden;}
   #ldw_app .v2_thumb{flex:0 0 38%;scroll-snap-align:start;}
 }
 
-/* Choose your form — full character skin collection */
+/* Choose your form — full character skin gallery */
 #ldw_app .v2_skins_wrap{position:relative;}
-#ldw_app .v2_skins_wrap::before{content:"";position:absolute;inset:0 -10%;background:radial-gradient(40% 50% at 50% 55%,rgba(123,77,255,.14),transparent 70%);pointer-events:none;}
 #ldw_app .v2_skins_status{margin-top:18px;}
-#ldw_app .v2_skins{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;}
-#ldw_app .v2_skin_card{display:flex;flex-direction:column;border-radius:18px;border:1px solid var(--v-line);background:rgba(8,9,30,.85);overflow:hidden;transition:transform .35s var(--v-ease),border-color .3s ease,box-shadow .35s var(--v-ease);}
-#ldw_app .v2_skin_card:hover{transform:translateY(-4px);border-color:rgba(244,199,107,.35);box-shadow:0 22px 50px rgba(0,0,0,.4);}
-#ldw_app .v2_skin_plate{--c1:#7b4dff;--c2:#140a2e;position:relative;aspect-ratio:1/1;overflow:hidden;background:radial-gradient(70% 70% at 50% 42%,color-mix(in srgb,var(--c1) 55%,transparent),transparent 72%),linear-gradient(165deg,var(--c2),#06071a 85%);}
-#ldw_app .v2_skin_plate::after{content:"";position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.55),transparent 60%),radial-gradient(1px 1px at 72% 22%,rgba(255,255,255,.4),transparent 60%),radial-gradient(1.2px 1.2px at 60% 78%,rgba(255,255,255,.35),transparent 60%),radial-gradient(1px 1px at 30% 70%,rgba(255,255,255,.3),transparent 60%);}
-#ldw_app .v2_skin_plate img{position:absolute;inset:6% 8% 0;width:84%;height:94%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 0 18px color-mix(in srgb,var(--c1) 55%,transparent));}
-#ldw_app .v2_skin_orb{position:absolute;left:50%;top:46%;width:42%;aspect-ratio:1/1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 38% 34%,#fff 0%,color-mix(in srgb,var(--c1) 85%,#fff) 22%,var(--c1) 48%,color-mix(in srgb,var(--c1) 40%,transparent) 70%,transparent 72%);box-shadow:0 0 40px color-mix(in srgb,var(--c1) 60%,transparent);opacity:.9;}
-#ldw_app .v2_skin_orb::after{content:"";position:absolute;inset:-28%;border-radius:50%;border:1px solid color-mix(in srgb,var(--c1) 45%,transparent);}
-#ldw_app .v2_skin_meta{padding:12px 14px 14px;border-top:1px solid rgba(255,255,255,.06);}
-#ldw_app .v2_skin_meta b{display:block;font-family:var(--v-display);font-weight:600;font-size:15px;line-height:1.25;color:#fff;}
-#ldw_app .v2_skin_meta small{display:block;margin-top:3px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--v-soft);}
-#ldw_app .v2_skin_card--starter{border-color:rgba(244,199,107,.3);}
-#ldw_app .v2_skin_card--starter .v2_skin_meta small{color:var(--v-gold);}
-#ldw_app .v2_skin_pair{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:1/1;}
-#ldw_app .v2_skin_pair .v2_skin_plate{aspect-ratio:auto;height:100%;}
-#ldw_app .v2_skin_pair .v2_skin_orb{width:62%;}
-@media(max-width:1080px){#ldw_app .v2_skins{grid-template-columns:repeat(4,minmax(0,1fr));}}
-@media(max-width:700px){#ldw_app .v2_skins{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}#ldw_app .v2_skin_meta{padding:9px 10px 11px;}#ldw_app .v2_skin_meta b{font-size:13px;}#ldw_app .v2_skin_meta small{font-size:9.5px;letter-spacing:.12em;}#ldw_app .v2_skin_card:hover{transform:none;}}
+#ldw_app .v2_sk{--g:#8a6bff;position:relative;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(18px,2.6vw,36px);align-items:stretch;}
+#ldw_app .v2_sk_stage{position:relative;min-height:clamp(560px,52vw,700px);border-radius:30px;overflow:hidden;isolation:isolate;border:1px solid var(--v-line-2);background:#07081e;box-shadow:0 40px 110px rgba(0,0,0,.5);}
+#ldw_app .v2_sk_stage::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(60% 52% at 50% 48%,color-mix(in srgb,var(--g) 42%,transparent),transparent 72%),radial-gradient(90% 60% at 50% 105%,color-mix(in srgb,var(--g) 30%,transparent),transparent 70%),linear-gradient(180deg,#0a0b2a,#05061a);transition:background .6s ease;}
+#ldw_app .v2_sk_stage::after{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(1.2px 1.2px at 12% 18%,rgba(255,255,255,.7),transparent 60%),radial-gradient(1px 1px at 82% 12%,rgba(255,255,255,.5),transparent 60%),radial-gradient(1.4px 1.4px at 70% 64%,rgba(255,255,255,.45),transparent 60%),radial-gradient(1px 1px at 24% 72%,rgba(255,255,255,.4),transparent 60%),radial-gradient(1.2px 1.2px at 46% 30%,rgba(255,255,255,.35),transparent 60%);}
+#ldw_app .v2_sk_media{position:absolute;left:0;right:0;top:9%;bottom:21%;}
+#ldw_app .v2_sk_media img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 50%;filter:drop-shadow(0 0 34px color-mix(in srgb,var(--g) 55%,transparent)) drop-shadow(0 18px 30px rgba(0,0,0,.45));transition:opacity .45s ease,transform .6s var(--v-ease);}
+#ldw_app .v2_sk_media img.is-hidden{opacity:0;transform:translateY(10px) scale(.98);}
+#ldw_app .v2_sk_caption{position:absolute;left:clamp(22px,3vw,36px);right:clamp(22px,3vw,36px);bottom:clamp(22px,3vw,32px);}
+#ldw_app .v2_sk_caption small{font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--v-gold);}
+#ldw_app .v2_sk_caption h3{margin-top:6px;font-family:var(--v-display);font-weight:600;font-size:clamp(26px,2.8vw,40px);line-height:1.08;color:#fff;text-shadow:0 0 24px color-mix(in srgb,var(--g) 50%,transparent);}
+#ldw_app .v2_sk_nav{position:absolute;right:clamp(16px,2.2vw,24px);top:clamp(16px,2.2vw,24px);display:flex;align-items:center;gap:8px;z-index:1;}
+#ldw_app .v2_sk_nav .v2_stage_count{min-width:56px;font-size:13px;}
+#ldw_app .v2_sk_side{display:flex;flex-direction:column;gap:14px;min-width:0;}
+#ldw_app .v2_sk_legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--v-soft);}
+#ldw_app .v2_sk_legend b{color:#fff;font-weight:700;margin-right:4px;}
+#ldw_app .v2_sk_legend .is-starter::before{content:"";display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--v-gold);vertical-align:1px;}
+#ldw_app .v2_sk_grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;}
+#ldw_app .v2_sk_thumb{--g:#8a6bff;position:relative;display:block;aspect-ratio:2/3;padding:0;border-radius:12px;overflow:hidden;border:1px solid var(--v-line);background:radial-gradient(80% 60% at 50% 55%,color-mix(in srgb,var(--g) 30%,transparent),transparent 75%),#090a24;cursor:pointer;transition:border-color .2s ease,transform .2s var(--v-ease),box-shadow .2s ease;}
+#ldw_app .v2_sk_thumb img{position:absolute;inset:6% 6% 4%;width:88%;height:90%;object-fit:contain;transition:transform .35s var(--v-ease),filter .25s ease;filter:saturate(.85) brightness(.85);}
+#ldw_app .v2_sk_thumb:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--g) 50%,transparent);}
+#ldw_app .v2_sk_thumb:hover img{filter:none;transform:scale(1.05);}
+#ldw_app .v2_sk_thumb[aria-selected="true"]{border-color:var(--v-gold);box-shadow:0 0 0 1px var(--v-gold),0 10px 24px color-mix(in srgb,var(--g) 35%,transparent);}
+#ldw_app .v2_sk_thumb[aria-selected="true"] img{filter:none;}
+#ldw_app .v2_sk_thumb.is-starter::after{content:"";position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--v-gold);box-shadow:0 0 6px rgba(244,199,107,.8);}
+@media(max-width:1080px){#ldw_app .v2_sk{grid-template-columns:1fr;}#ldw_app .v2_sk_stage{min-height:560px;}#ldw_app .v2_sk_grid{grid-template-columns:repeat(12,minmax(0,1fr));}}
+@media(max-width:700px){
+  #ldw_app .v2_sk_stage{min-height:0;height:560px;border-radius:24px;}
+  #ldw_app .v2_sk_media{top:4%;bottom:36%;}
+  #ldw_app .v2_sk_caption{left:20px;right:20px;bottom:80px;}
+  #ldw_app .v2_sk_nav{left:20px;right:20px;top:auto;justify-content:space-between;bottom:18px;}
+  #ldw_app .v2_sk_grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-template-columns:none;grid-auto-columns:64px;overflow-x:auto;scroll-snap-type:x proximity;margin:0 -20px;padding:2px 20px 10px;scrollbar-width:none;}
+  #ldw_app .v2_sk_grid::-webkit-scrollbar{display:none;}
+  #ldw_app .v2_sk_thumb{scroll-snap-align:start;}
+  #ldw_app .v2_sk_thumb:hover{transform:none;}
+}
 
 /* Adventures — cinematic spreads */
 #ldw_app .v2_adv{display:grid;gap:clamp(18px,2.2vw,28px);width:var(--v-wide);margin:0 auto;}
@@ -894,21 +899,17 @@ body.ld-no-scroll{overflow:hidden;}
       '</button>'
     )).join("");
 
-    const SKIN_ART = (id) => ASSET_BASE + "assets/v2/skins/" + id + ".webp";
-    const skinPlate = (k, label) => (
-      '<div class="v2_skin_plate" style="--c1:' + esc(k.c1) + ';--c2:' + esc(k.c2) + '">' +
-        (k.art
-          ? '<img src="' + SKIN_ART(k.id) + '" alt="' + esc(k.name) + ' — ' + esc(label) + '" loading="lazy" decoding="async">'
-          : '<span class="v2_skin_orb" aria-hidden="true"></span>') +
-      '</div>'
-    );
-    const skinCards = O.items.map((k) => (
-      '<li class="v2_skin_card' + (k.art ? ' has-art' : '') + '">' + skinPlate(k, "full character skin") +
-        '<div class="v2_skin_meta"><b>' + esc(k.name) + '</b><small>Full skin</small></div></li>'
+    // Skin gallery: one large preview + a thumbnail tablist of every skin.
+    const SKIN_IMG = (id, size) => ASSET_BASE + "assets/v2/skins/" + id + "-" + size + ".webp";
+    const skinKind = (k) => (k.starter ? "Starter form" : "Full character skin");
+    const firstSkin = O.roster.find((k) => !k.starter) || O.roster[0];
+    const skinThumbs = O.roster.map((k) => (
+      '<button class="v2_sk_thumb' + (k.starter ? ' is-starter' : '') + '" type="button" role="tab" id="ldv2_sk_' + esc(k.id) + '" aria-controls="ldv2_sk_stage" aria-selected="' + (k === firstSkin ? "true" : "false") + '" tabindex="' + (k === firstSkin ? "0" : "-1") + '" data-skin="' + esc(k.id) + '" style="--g:' + esc(k.glow) + '" title="' + esc(k.name) + '">' +
+        '<img data-src="' + SKIN_IMG(k.id, "thumb") + '" width="' + k.tw + '" height="' + k.th + '" alt="' + esc(k.name) + '" decoding="async">' +
+      '</button>'
     )).join("");
-    const starterCard = '<li class="v2_skin_card v2_skin_card--starter">' +
-      '<div class="v2_skin_pair">' + O.starters.map((k) => skinPlate(k, "starter form")).join("") + '</div>' +
-      '<div class="v2_skin_meta"><b>' + O.starters.map((k) => esc(k.name)).join(" · ") + '</b><small>Starter forms</small></div></li>';
+    const skinStageImg = (k) => '<img src="' + SKIN_IMG(k.id, "1200") + '" srcset="' + SKIN_IMG(k.id, "600") + ' 600w, ' + SKIN_IMG(k.id, "1200") + ' 1200w" sizes="(max-width:700px) 70vw, 420px" width="' + k.w + '" height="' + k.h + '" alt="' + esc(k.name) + ' — ' + esc(skinKind(k).toLowerCase()) + ', original in-game artwork" loading="lazy" decoding="async">';
+    const skinCount = O.roster.filter((k) => !k.starter).length;
 
     const belts = A.belts.map((b) => '<li style="--c:' + esc(b.color) + '" title="' + esc(b.name) + '"></li>').join("");
 
@@ -938,7 +939,7 @@ body.ld-no-scroll{overflow:hidden;}
     )).join("");
 
     const U = C.updates;
-    const statusLabel = { live: "Live", built: "Dev build", wip: "In progress", recent: "Ongoing", soon: "Coming soon", dev: "In development" };
+    const statusLabel = { live: "Available", built: "Dev build", wip: "In progress", recent: "Rolling out", soon: "Coming soon", dev: "In development" };
     const updateCard = (n) => {
       const dateLabel = formatNewsDate(n.date);
       return '<li' + (n.wide ? ' class="v2_news_wide"' : '') + '><article class="v2_news_card' + (n.image ? ' v2_news_card--art' : '') + '" data-status="' + esc(n.status) + '">' +
@@ -1064,7 +1065,24 @@ body.ld-no-scroll{overflow:hidden;}
           <p class="v2_lead">${esc(O.lead)}</p>
           <p class="v2_skins_status" data-status="dev"><span class="v2_status">${esc(O.status)}</span></p>
         </div>
-        <ul class="v2_skins v2_stagger" aria-label="Full character skins">${starterCard}${skinCards}</ul>
+        <div class="v2_sk v2_reveal" style="--g:${esc(firstSkin.glow)}">
+          <div class="v2_sk_stage" id="ldv2_sk_stage" role="tabpanel" aria-labelledby="ldv2_sk_${esc(firstSkin.id)}">
+            <div class="v2_sk_media">${skinStageImg(firstSkin)}</div>
+            <div class="v2_sk_caption" aria-live="polite">
+              <small id="ldv2_sk_kind">${esc(skinKind(firstSkin))}</small>
+              <h3 id="ldv2_sk_name">${esc(firstSkin.name)}</h3>
+            </div>
+            <div class="v2_sk_nav">
+              <button class="v2_iconbtn" type="button" id="ldv2_sk_prev" aria-label="Previous skin">${ICON_ARROW_L}</button>
+              <span class="v2_stage_count" id="ldv2_sk_count" aria-hidden="true">${String(O.roster.indexOf(firstSkin) + 1).padStart(2, "0")} / ${O.roster.length}</span>
+              <button class="v2_iconbtn" type="button" id="ldv2_sk_next" aria-label="Next skin">${ICON_ARROW_R}</button>
+            </div>
+          </div>
+          <div class="v2_sk_side">
+            <div class="v2_sk_legend"><span><b>${skinCount}</b> full skins</span><span class="is-starter"><b>2</b> starter forms</span></div>
+            <div class="v2_sk_grid" role="tablist" aria-label="Choose a skin to preview">${skinThumbs}</div>
+          </div>
+        </div>
         <p class="v2_note">${esc(O.note)}</p>
       </div>
     </section>
@@ -1312,6 +1330,74 @@ body.ld-no-scroll{overflow:hidden;}
     if (focus && tabs[index]) tabs[index].focus();
   }
 
+  // Skin gallery: thumbnails (tablist) drive one large cross-faded preview.
+  function bindSkinGallery() {
+    const roster = CONTENT.skins.roster;
+    const tabs = Array.from(document.querySelectorAll("#ldw_app .v2_sk_thumb[data-skin]"));
+    const wrap = document.querySelector("#ldw_app .v2_sk");
+    const stage = document.getElementById("ldv2_sk_stage");
+    const media = stage && stage.querySelector(".v2_sk_media");
+    const nameEl = document.getElementById("ldv2_sk_name");
+    const kindEl = document.getElementById("ldv2_sk_kind");
+    const countEl = document.getElementById("ldv2_sk_count");
+    if (!tabs.length || !media) return;
+    const img = (id, size) => ASSET_BASE + "assets/v2/skins/" + id + "-" + size + ".webp";
+    let current = Math.max(0, tabs.findIndex((t) => t.getAttribute("aria-selected") === "true"));
+
+    function show(index, focus) {
+      index = (index + roster.length) % roster.length;
+      const k = roster[index];
+      setSelectedTab(tabs, index, focus);
+      if (index !== current) {
+        const old = media.querySelector("img:not(.is-hidden)") || media.querySelector("img");
+        const next = document.createElement("img");
+        next.src = img(k.id, "1200");
+        next.srcset = img(k.id, "600") + " 600w, " + img(k.id, "1200") + " 1200w";
+        next.sizes = "(max-width:700px) 70vw, 420px";
+        next.width = k.w; next.height = k.h; next.decoding = "async";
+        next.alt = k.name + " — " + (k.starter ? "starter form" : "full character skin") + ", original in-game artwork";
+        next.className = "is-hidden";
+        media.appendChild(next);
+        const reveal = () => {
+          next.classList.remove("is-hidden");
+          if (old) { old.classList.add("is-hidden"); setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 500); }
+        };
+        if (next.complete && next.naturalWidth) reveal();
+        else { next.addEventListener("load", reveal, { once: true }); next.addEventListener("error", reveal, { once: true }); }
+      }
+      current = index;
+      if (wrap) wrap.style.setProperty("--g", k.glow);
+      stage.setAttribute("aria-labelledby", tabs[index].id);
+      if (nameEl) nameEl.textContent = k.name;
+      if (kindEl) kindEl.textContent = k.starter ? "Starter form" : "Full character skin";
+      if (countEl) countEl.textContent = String(index + 1).padStart(2, "0") + " / " + roster.length;
+    }
+
+    bindTablist(tabs, show);
+    // Thumbnails (48 files) load only once the gallery is about a screen
+    // away — Chromium's native lazy-load margin would fetch them with the page.
+    const thumbs = Array.from(document.querySelectorAll("#ldw_app .v2_sk_thumb img[data-src]"));
+    const loadThumbs = () => thumbs.forEach((im) => { if (!im.src) im.src = im.getAttribute("data-src"); });
+    if ("IntersectionObserver" in window && wrap) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { loadThumbs(); io.disconnect(); }
+      }, { rootMargin: "900px 0px" });
+      io.observe(wrap);
+    } else {
+      loadThumbs();
+    }
+    // Warm the large preview on hover/focus so selection feels instant.
+    tabs.forEach((t, i) => {
+      const warm = () => { const pre = new Image(); pre.src = img(roster[i].id, window.innerWidth <= 700 ? "600" : "1200"); };
+      t.addEventListener("pointerenter", warm, { once: true });
+      t.addEventListener("focus", warm, { once: true });
+    });
+    const prev = document.getElementById("ldv2_sk_prev");
+    const nextBtn = document.getElementById("ldv2_sk_next");
+    if (prev) prev.addEventListener("click", () => show(current - 1, false));
+    if (nextBtn) nextBtn.addEventListener("click", () => show(current + 1, false));
+  }
+
   // Explore the World: one stage image swapped in place (cross-faded via a
   // second <img>), driven by the thumbnail tablist and prev/next buttons.
   function bindWorldGallery() {
@@ -1473,6 +1559,7 @@ body.ld-no-scroll{overflow:hidden;}
       bindHeaderScrollState();
       bindArtFallback();
       bindWorldGallery();
+      bindSkinGallery();
       bindArenaChoices();
       bindLocalsNav();
       bindUpdateLanes();

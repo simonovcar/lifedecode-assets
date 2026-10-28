@@ -87,7 +87,7 @@ for (const vp of VIEWPORTS) {
       if (!r.width) return false;
       // Elements inside a horizontal scroller (mobile room carousel) or a
       // clipping frame are allowed to extend past the viewport.
-      if (el.closest(".v2_locations, .v2_portrait, .v2_finale_art, .v2_hero_art, .v2_atmos, .ldw_hp_field, .v2_locals, .v2_rail, .v2_life, .v2_skin_thumb, .v2_lane_tabs")) return false;
+      if (el.closest(".v2_locations, .v2_portrait, .v2_finale_art, .v2_hero_art, .v2_atmos, .ldw_hp_field, .v2_locals, .v2_rail, .v2_life, .v2_lane_tabs, .v2_sk_grid, .v2_sk_media")) return false;
       return r.right > window.innerWidth + 1 || r.left < -1;
     }).slice(0, 5).map((el) => el.className || el.tagName);
     return {
@@ -127,8 +127,18 @@ for (const vp of VIEWPORTS) {
   await page.keyboard.press("Tab");
   c.firstTabTarget = await page.evaluate(() => document.activeElement && document.activeElement.textContent.trim());
 
-  // Skins collection: the real skin roster, and no old outfit art in it.
-  c.skins = await page.evaluate(() => ({ cards: document.querySelectorAll("#ldv2_spirit .v2_skin_card").length, names: Array.from(document.querySelectorAll("#ldv2_spirit .v2_skin_meta b")).map((b) => b.textContent), keyArtInSection: document.querySelectorAll("#ldv2_spirit img[data-ldv2-art]").length, oldNames: /Cowboy|Ninja|Pirate|Princess/.test(document.getElementById("ldv2_spirit").textContent) }));
+  // Skin gallery: real roster, no old outfit key art, and the preview follows selection.
+  c.skins = await page.evaluate(() => ({ thumbs: document.querySelectorAll("#ldv2_spirit .v2_sk_thumb").length, starters: document.querySelectorAll("#ldv2_spirit .v2_sk_thumb.is-starter").length, selected: document.getElementById("ldv2_sk_name").textContent, keyArtInSection: document.querySelectorAll("#ldv2_spirit img[data-ldv2-art]").length, oldNames: /Cowboy|Ninja|Pirate|Princess/.test(document.getElementById("ldv2_spirit").textContent) }));
+  await page.click("#ldv2_sk_void-wanderer");
+  await page.waitForTimeout(900);
+  c.skinAfterClick = await page.evaluate(() => ({ name: document.getElementById("ldv2_sk_name").textContent, count: document.getElementById("ldv2_sk_count").textContent, img: (document.querySelector(".v2_sk_media img:not(.is-hidden)") || {}).currentSrc, loaded: (document.querySelector(".v2_sk_media img:not(.is-hidden)") || {}).naturalWidth > 0, imgs: document.querySelectorAll(".v2_sk_media img").length }));
+  await page.focus("#ldv2_sk_void-wanderer");
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(700);
+  c.skinAfterArrow = await page.evaluate(() => ({ name: document.getElementById("ldv2_sk_name").textContent, focused: document.activeElement.id }));
+  await page.click("#ldv2_sk_next");
+  await page.waitForTimeout(700);
+  c.skinAfterNext = await page.evaluate(() => document.getElementById("ldv2_sk_name").textContent);
   c.roadmap = await page.evaluate(() => Array.from(document.querySelectorAll(".v2_lane")).map((l) => l.getAttribute("data-status") + ":" + l.querySelectorAll(".v2_live_list > li, .v2_lane_list > li").length));
 
   // World gallery: next button + thumbnail selection update the stage.

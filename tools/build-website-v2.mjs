@@ -61,7 +61,9 @@ function build() {
     if (!modals.includes(from)) throw new Error("modal a11y anchor missing: " + from);
     modals = modals.replace(from, to);
   }
-  const values = { ...CHUNKS, HTML_MODALS: modals };
+  // Generated content (tools/build-skin-assets.py): the full-character skin roster.
+  const SKIN_ROSTER = readFileSync(join(root, "tools", "generated", "skin-roster.js"), "utf8").trimEnd();
+  const values = { ...CHUNKS, HTML_MODALS: modals, SKIN_ROSTER };
   for (const [key, value] of Object.entries(values)) {
     const marker = "/*@@" + key + "@@*/";
     if (!out.includes(marker)) throw new Error("marker missing in template: " + marker);
@@ -93,6 +95,11 @@ function check() {
   const missing = [...ids].filter((id) => !built.includes('id="' + id + '"'));
   console.log((missing.length ? "FAIL " : "OK   ") + "DOM_IDS (" + ids.size + " referenced" + (missing.length ? ", missing: " + missing.join(", ") : "") + ")");
   if (missing.length) ok = false;
+  // Pre-deploy reminder (non-fatal): GitHub main is not proof of what is
+  // deployed, so every "Available now" roadmap claim must be checked on
+  // world.lifedecode.app and marked liveVerified: true before launch.
+  const unverified = [...built.matchAll(/\{ status: "live"(?![^\n]*liveVerified: true)[^\n]*title: "([^"]+)"/g)].map((m) => m[1]);
+  console.log((unverified.length ? "WARN " : "OK   ") + "LIVE_VERIFIED (" + (unverified.length ? unverified.length + " \"Available now\" claims not yet verified on the live game: " + unverified.join(", ") : "all verified") + ")");
   if (!ok) process.exit(1);
 }
 

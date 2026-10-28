@@ -51,7 +51,11 @@ The page sections, in order (polish pass 2):
 1. **Hero** with the key art (left-aligned copy on desktop).
 2. **Prologue / manifesto**: "Not soulless. Not a lecture." The absolute "Not pay-to-win" claim is gone; the page says "Free to play · Optional in-game purchases" instead.
 3. **Explore the World**: a cinematic stage plus a 12-thumbnail tablist of **real location art**, and the other 8 locations as chips.
-4. **Choose your form** (correction pass 4): the **new full-character skin collection**. That's 2 starter forms (Base Blue, Base Rose) plus 11 skins, shown as a 6-column collection grid with an "In development" status. The skin PNGs aren't reachable from the cloud sandbox, so each plate shows an abstract colour orb until the real art is built (see *Adding the real skin art* below). The old outfit key art appears only in the hero.
+4. **Choose your form** (skins pass): an interactive gallery of the **48 original in-game skin images** (2 starter forms + 46 full skins).
+   * A large preview stage is tinted with each skin's own sampled colour, and has prev/next and a counter.
+   * Next to it is a 48-thumbnail tablist (arrow keys, Home, End); on phones it's a two-row swipe strip.
+   * Thumbnails load only once the gallery is near the viewport.
+   * Labelled "New skin collection · In development". The old outfit key art appears only in the hero.
 5. **Adventures**:
    * a Dojo spread (Master Kaien sprite, real belt colours);
    * a Shadow Arena spread (The Doubter, with the real round-1 choices you can try);
@@ -116,23 +120,25 @@ node tools/qa-website-v2.mjs /tmp/ld-qa
 * Scripts load from the local server, so assets resolve to `/assets/v2/...` instead of jsDelivr. The script derives the asset base from its own `src`, so this matches production behaviour.
 * Auth needs `https://<origin>/` to be an allowed Supabase redirect URL. Real logins and OAuth only work on `lifedecode.app`, not on `localhost`.
 
-## Adding the real skin art
+## Skin art pipeline
 
-The new skin PNGs live in the local development worktree. From a machine that has them:
+The skin PNGs come from the owner's local development worktree (uploaded as `LifeDecode-Skins-Part1..6.zip`). To rebuild:
 
 ```bash
-python3 tools/build-skin-assets.py /path/to/folder-with-skin-pngs
+python3 tools/build-skin-assets.py /path/to/extracted-skin-pngs
 ```
-
-Files are matched by name. These are the expected skins, by slug:
-
-`base-blue`, `base-rose`, `emberborn`, `abyssal-tide`, `clockwork-soul`, `void-wanderer`, `verdant-keeper`, `frost-revenant`, `crimson-oracle`, `luminous-druid`, `shadow-harlequin`, `starforged-knight`, `bone-warden`
-
-The tool writes `assets/v2/skins/<slug>.webp` and a `manifest.json` that lists anything missing. Then set `art: true` for each built skin in `CONTENT.skins` (`tools/ludo78.src.js`) and run:
 
 ```bash
 node tools/build-website-v2.mjs
 ```
+
+Per skin, the tool writes:
+* `assets/v2/skins/<slug>-1200.webp` (preview, about 190 KB);
+* `-600.webp` (phones and 1× screens);
+* `-thumb.webp` (240 px, about 14 KB);
+* plus `manifest.json`, with source file, name provenance and the sampled glow colour.
+
+It also writes `tools/generated/skin-roster.js`, which the build splices into `ludo78.js`. Display names come from `DISPLAY_NAMES` / `STARTERS` in the tool; anything else falls back to its filename. See *Skin names to confirm* in `LIVE_VERIFICATION.md`.
 
 ## Integration (when approved) — corrected after reading lifedecode-game
 
