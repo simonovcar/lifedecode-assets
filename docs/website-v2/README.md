@@ -51,14 +51,14 @@ The page sections, in order (polish pass 2):
 1. **Hero** with the key art (left-aligned copy on desktop).
 2. **Prologue / manifesto**: "Not soulless. Not a lecture." The absolute "Not pay-to-win" claim is gone; the page says "Free to play · Optional in-game purchases" instead.
 3. **Explore the World**: a cinematic stage plus a 12-thumbnail tablist of **real location art**, and the other 8 locations as chips.
-4. **Choose your form** (correction pass 3): **full character skins**. A key-art portrait plus a 4-tile skin selector shows complete looks only, with no separate hat/body pieces. Tree and Void Emperor are listed as further forms.
+4. **Choose your form** (correction pass 4): the **new full-character skin collection**. That's 2 starter forms (Base Blue, Base Rose) plus 11 skins, shown as a 6-column collection grid with an "In development" status. The skin PNGs aren't reachable from the cloud sandbox, so each plate shows an abstract colour orb until the real art is built (see *Adding the real skin art* below). The old outfit key art appears only in the hero.
 5. **Adventures**:
    * a Dojo spread (Master Kaien sprite, real belt colours);
    * a Shadow Arena spread (The Doubter, with the real round-1 choices you can try);
    * a duels panel with the 9 duel types.
 6. **Make it your life**: art cards for pets, homes (Soul Furnace), work and business (Main Street Pizza) and daily rituals (Daily Chest). On phones they're a swipeable row.
 7. **A world you share**: multiplayer and social points, plus a carousel of **8 real NPCs** (in-world sprites, quoted quest lines).
-8. **News & updates — "A world that keeps growing"** (correction pass 3): a four-lane status board (Live · Recently added & ongoing · Coming soon · In development). Partly-live systems list per-part status (Mood & Needs, Relationships). The Cinema card uses the Plaza's Cinema facade art. On phones, status chips switch lanes.
+8. **News & updates — "A world that keeps growing"** (correction pass 4): a compact board with lanes Live · Ongoing · Coming soon · In development. In development spans two columns and holds Cinema (with the facade art), Movie Creator, Relationships, Mood & Needs and Full character skins, each with per-part tags (Live / Dev build / In progress). On phones, chips switch lanes.
 9. **Final CTA** and **footer**.
 
 Visual and technical changes:
@@ -115,6 +115,24 @@ node tools/qa-website-v2.mjs /tmp/ld-qa
 * `preview/webflow-shell.css` is an *approximation* of Webflow's base stylesheet, not the real file. The live Webflow page, its custom code, and the interactions JS (`webflow.js`) weren't reachable from the build sandbox.
 * Scripts load from the local server, so assets resolve to `/assets/v2/...` instead of jsDelivr. The script derives the asset base from its own `src`, so this matches production behaviour.
 * Auth needs `https://<origin>/` to be an allowed Supabase redirect URL. Real logins and OAuth only work on `lifedecode.app`, not on `localhost`.
+
+## Adding the real skin art
+
+The new skin PNGs live in the local development worktree. From a machine that has them:
+
+```bash
+python3 tools/build-skin-assets.py /path/to/folder-with-skin-pngs
+```
+
+Files are matched by name. These are the expected skins, by slug:
+
+`base-blue`, `base-rose`, `emberborn`, `abyssal-tide`, `clockwork-soul`, `void-wanderer`, `verdant-keeper`, `frost-revenant`, `crimson-oracle`, `luminous-druid`, `shadow-harlequin`, `starforged-knight`, `bone-warden`
+
+The tool writes `assets/v2/skins/<slug>.webp` and a `manifest.json` that lists anything missing. Then set `art: true` for each built skin in `CONTENT.skins` (`tools/ludo78.src.js`) and run:
+
+```bash
+node tools/build-website-v2.mjs
+```
 
 ## Integration (when approved) — corrected after reading lifedecode-game
 

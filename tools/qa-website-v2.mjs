@@ -65,6 +65,20 @@ for (const vp of VIEWPORTS) {
   await page.waitForTimeout(900);
   await page.screenshot({ path: `${OUT}/${vp.name}-full.png`, fullPage: true });
 
+  // Phones: every updates lane must fit the viewport when its chip is active.
+  const laneOverflow = await page.evaluate(async () => {
+    const out = {};
+    for (const chip of document.querySelectorAll(".v2_lane_tab")) {
+      if (getComputedStyle(chip).display === "none") break;
+      chip.click();
+      await new Promise((r) => setTimeout(r, 60));
+      const lane = document.getElementById(chip.getAttribute("aria-controls"));
+      out[chip.getAttribute("data-status")] = Math.round(lane.scrollWidth - lane.clientWidth) + "px overflow, page scrollWidth " + document.documentElement.scrollWidth;
+    }
+    const first = document.querySelector(".v2_lane_tab");
+    if (first && getComputedStyle(first).display !== "none") first.click();
+    return out;
+  });
   const metrics = await page.evaluate(() => {
     const doc = document.documentElement;
     const imgs = Array.from(document.querySelectorAll("#ldw_app img"));
@@ -91,7 +105,7 @@ for (const vp of VIEWPORTS) {
       version: window.__LD_WORLD_LANDING_LOADED__ === true
     };
   });
-  report.viewports[vp.name] = { ...metrics, errors, failedRequests: [...new Set(failed)] };
+  report.viewports[vp.name] = { laneOverflow, ...metrics, errors, failedRequests: [...new Set(failed)] };
   await ctx.close();
 }
 
@@ -113,12 +127,9 @@ for (const vp of VIEWPORTS) {
   await page.keyboard.press("Tab");
   c.firstTabTarget = await page.evaluate(() => document.activeElement && document.activeElement.textContent.trim());
 
-  // Squad tabs: click + arrow keys.
-  await page.click("#ldv2_tab_pirate");
-  c.squadAfterClick = await page.evaluate(() => ({ selected: document.querySelector('.v2_tab[aria-selected="true"]').id, panelVisible: !document.getElementById("ldv2_panel_pirate").hidden, frame: document.querySelector(".v2_portrait_frame.is-active").dataset.squadFrame }));
-  await page.focus("#ldv2_tab_pirate");
-  await page.keyboard.press("ArrowRight");
-  c.squadAfterArrow = await page.evaluate(() => ({ selected: document.querySelector('.v2_tab[aria-selected="true"]').id, focused: document.activeElement.id }));
+  // Skins collection: the real skin roster, and no old outfit art in it.
+  c.skins = await page.evaluate(() => ({ cards: document.querySelectorAll("#ldv2_spirit .v2_skin_card").length, names: Array.from(document.querySelectorAll("#ldv2_spirit .v2_skin_meta b")).map((b) => b.textContent), keyArtInSection: document.querySelectorAll("#ldv2_spirit img[data-ldv2-art]").length, oldNames: /Cowboy|Ninja|Pirate|Princess/.test(document.getElementById("ldv2_spirit").textContent) }));
+  c.roadmap = await page.evaluate(() => Array.from(document.querySelectorAll(".v2_lane")).map((l) => l.getAttribute("data-status") + ":" + l.querySelectorAll(".v2_live_list > li, .v2_lane_list > li").length));
 
   // World gallery: next button + thumbnail selection update the stage.
   await page.click("#ldv2_stage_next");
