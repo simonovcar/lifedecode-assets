@@ -3076,6 +3076,52 @@ body.ld-no-scroll{overflow:hidden;}
     });
   }
 
+  // Cross-fades stage images safely under rapid input. Each call is a new
+  // request and only the newest may reveal: an older image that finishes
+  // loading later is discarded, a not-yet-revealed image is dropped as soon
+  // as a newer one is requested, and only the image that was on screen keeps
+  // fading out - so exactly one stage image is ever visible and the stage is
+  // never blank (the current image stays until its successor has decoded).
+  // A failed image retries once with fallbackSrc (if given); if that fails
+  // too, the current image simply stays.
+  function createStageSwap(media, fadeMs, place) {
+    let seq = 0;
+    let pending = null;
+    const drop = (el) => { if (el && el.parentNode) el.parentNode.removeChild(el); };
+    const ready = (img) => new Promise((resolve) => {
+      if (img.complete && img.naturalWidth) return resolve(true);
+      const done = (ok) => { img.removeEventListener("load", onLoad); img.removeEventListener("error", onError); resolve(ok); };
+      const onLoad = () => done(true);
+      const onError = () => done(false);
+      img.addEventListener("load", onLoad);
+      img.addEventListener("error", onError);
+    }).then((ok) => (ok && img.decode ? img.decode().then(() => true, () => true) : ok));
+    return function swap(next, fallbackSrc) {
+      const id = ++seq;
+      drop(pending);
+      pending = next;
+      next.classList.add("is-hidden");
+      place(next);
+      ready(next).then((ok) => {
+        if (ok || !fallbackSrc || id !== seq) return ok;
+        next.removeAttribute("srcset");
+        next.src = fallbackSrc;
+        return ready(next);
+      }).then((ok) => {
+        if (id !== seq) { drop(next); return; }
+        pending = null;
+        if (!ok) { drop(next); return; }
+        Array.from(media.querySelectorAll(":scope > img")).forEach((el) => {
+          if (el === next) return;
+          if (el.classList.contains("is-hidden")) { drop(el); return; }
+          el.classList.add("is-hidden");
+          setTimeout(() => drop(el), fadeMs);
+        });
+        next.classList.remove("is-hidden");
+      });
+    };
+  }
+
   // Accessible tablist helper: roving tabindex, arrow/Home/End keys.
   function bindTablist(tabs, onSelect) {
     tabs.forEach((tab, i) => {
@@ -3120,6 +3166,7 @@ body.ld-no-scroll{overflow:hidden;}
     const picked = groups.map((g) => Math.max(0, g.findIndex((t) => t.getAttribute("aria-selected") === "true")));
     let currentId = groups[col][picked[col]] && groups[col][picked[col]].getAttribute("data-skin");
     let nearView = false;
+    const swapStage = createStageSwap(media, 500, (el) => media.appendChild(el));
 
     // Thumbnails load per collection, and only once the gallery is about a
     // screen away — Chromium's native lazy-load margin would fetch them with the page.
@@ -3132,21 +3179,14 @@ body.ld-no-scroll{overflow:hidden;}
       setSelectedTab(tabs, index, focus);
       picked[col] = index;
       if (k.id !== currentId) {
-        const old = media.querySelector("img:not(.is-hidden)") || media.querySelector("img");
         const next = document.createElement("img");
         next.src = img(k.id, "1200");
         next.srcset = img(k.id, "600") + " 600w, " + img(k.id, "1200") + " 1200w";
         next.sizes = "(max-width:700px) 70vw, 420px";
         next.width = k.w; next.height = k.h; next.decoding = "async";
         next.alt = skinAlt(k);
-        next.className = "is-hidden";
-        media.appendChild(next);
-        const reveal = () => {
-          next.classList.remove("is-hidden");
-          if (old) { old.classList.add("is-hidden"); setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 500); }
-        };
-        if (next.complete && next.naturalWidth) reveal();
-        else { next.addEventListener("load", reveal, { once: true }); next.addEventListener("error", reveal, { once: true }); }
+        // Fallback: the thumbnail of the same skin (already on screen).
+        swapStage(next, img(k.id, "thumb"));
       }
       currentId = k.id;
       if (wrap) wrap.style.setProperty("--g", k.glow);
@@ -3210,28 +3250,18 @@ body.ld-no-scroll{overflow:hidden;}
     const count = document.getElementById("ldv2_stage_count");
     if (!tabs.length || !media) return;
     let current = 0;
+    const swapStage = createStageSwap(media, 650, (el) => media.insertBefore(el, media.firstChild));
 
     function show(index, focus) {
       index = (index + featured.length) % featured.length;
       const loc = featured[index];
       setSelectedTab(tabs, index, focus);
       if (index !== current) {
-        const old = media.querySelector("img:not(.is-hidden)") || media.querySelector("img");
         const holder = document.createElement("div");
         holder.innerHTML = worldPicture(loc.id, { sizes: "(max-width:1480px) 100vw, 1480px", alt: loc.name + " — in-game location art" });
         const next = holder.firstChild;
         next.loading = "eager";
-        next.classList.add("is-hidden");
-        media.insertBefore(next, media.firstChild);
-        const reveal = () => {
-          next.classList.remove("is-hidden");
-          if (old) {
-            old.classList.add("is-hidden");
-            setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 650);
-          }
-        };
-        if (next.complete && next.naturalWidth) reveal();
-        else { next.addEventListener("load", reveal, { once: true }); next.addEventListener("error", reveal, { once: true }); }
+        swapStage(next, ART("loc-" + loc.id + "-640.webp"));
       }
       current = index;
       stage.setAttribute("aria-labelledby", tabs[index].id);

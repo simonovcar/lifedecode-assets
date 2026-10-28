@@ -12,6 +12,7 @@ See [`AUDIT_AND_PLAN.md`](AUDIT_AND_PLAN.md) for the repository audit and design
 | `tools/ludo78.src.js` | Hand-edited V2 source: content model, markup, CSS and the presentation JS. |
 | `tools/build-website-v2.mjs` | Splices the functional core of `ludo77.js` into the source **verbatim** and writes `ludo78.js`. `--check` re-verifies the build. |
 | `tools/qa-website-v2.mjs` | Headless QA: screenshots, overflow, links, auth/support/squad interactions, reduced motion and the `/support` guard. |
+| `tools/qa-gallery-stress.mjs` | Stress test for the skin and world stage galleries: rapid Next/Prev, arrow keys, wave switching and mobile taps while preview images load slowly, out of order or fail. Every animation frame must show exactly one stage image, and the final image must match the selection. `node tools/qa-gallery-stress.mjs <outDir>` (same server and `QA_BASE` / `QA_PAGE` as the QA harness). |
 | `assets/v2/keyart-{640,1024,1536}.webp`, `keyart-1536.jpg` | Optimized key art: 61–243 KB, down from the 2.5 MB PNG. |
 | `assets/v2/og-website-v2-1200x630.jpg` | Release social share card (key art + brand lockup), built by `tools/build-og-image.mjs`. The older unbranded `og-1200x630.jpg` is kept. |
 | `tools/build-marketing-shell.mjs` | Writes a staging or release copy of the production shell (`lifedecode-game/marketing-site`, read-only): pinned `ludo78.js` + V2 metadata, plus noindex for staging. See [`RELEASE.md`](RELEASE.md). |
