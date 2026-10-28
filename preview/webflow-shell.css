@@ -1,0 +1,20 @@
+/* Approximation of Webflow's published base stylesheet (webflow.css /
+   normalize subset) so the preview exercises the same element-level rules
+   the real lifedecode.app page ships. Not the real file — see README. */
+html{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;font-family:sans-serif;height:100%;}
+*{box-sizing:border-box;}
+body{margin:0;min-height:100%;background-color:#fff;font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#333;}
+img{max-width:100%;vertical-align:middle;display:inline-block;border:0;}
+a{background-color:transparent;}
+a:active,a:hover{outline:0;}
+h1{font-size:38px;line-height:44px;margin-top:20px;margin-bottom:10px;font-weight:bold;}
+h2{font-size:32px;line-height:36px;margin-top:20px;margin-bottom:10px;font-weight:bold;}
+h3{font-size:24px;line-height:30px;margin-top:20px;margin-bottom:10px;font-weight:bold;}
+p{margin-top:0;margin-bottom:10px;}
+ul,ol{margin-top:0;margin-bottom:10px;padding-left:40px;}
+figure{margin:0 0 10px;}
+button,[type='button'],[type='reset']{border:0;cursor:pointer;-webkit-appearance:button;}
+button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0;}
+.w-button{display:inline-block;padding:9px 15px;background-color:#3898EC;color:white;border:0;line-height:inherit;text-decoration:none;cursor:pointer;border-radius:0;}
+.w-nav{position:relative;background:#ddd;z-index:1000;}
+.w-container{margin-left:auto;margin-right:auto;max-width:940px;}
