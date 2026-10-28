@@ -1,5 +1,7 @@
 # LifeDecode Website V2 — Audit & Implementation Plan
 
+> **Correction (after reading `lifedecode-game`):** production is not Webflow. `lifedecode.app` is a Cloudflare Pages shell at `lifedecode-game/marketing-site/index.html`, which loads `ludo77.js` from jsDelivr `@main`. The Webflow references below come from comments in the older ludoNN files. See `GAME_AUDIT_AND_RECOMMENDATIONS.md` §1.
+
 Branch: `feature/website-v2` (from `main` @ `a9e89c1`). `main` is untouched.
 
 ## 1. Repository audit (`simonovcar/lifedecode-assets`)

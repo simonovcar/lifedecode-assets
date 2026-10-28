@@ -14,7 +14,7 @@ See [`AUDIT_AND_PLAN.md`](AUDIT_AND_PLAN.md) for the repository audit and design
 | `tools/qa-website-v2.mjs` | Headless QA: screenshots, overflow, links, auth/support/squad interactions, reduced motion and the `/support` guard. |
 | `assets/v2/keyart-{640,1024,1536}.webp`, `keyart-1536.jpg` | Optimized key art: 61–243 KB, down from the 2.5 MB PNG. |
 | `assets/v2/og-1200x630.jpg` | Open Graph / social share image, for Webflow page settings. |
-| `preview/` | Webflow-like preview harness (see below). |
+| `preview/` | Webflow-like preview harness (see below). Note: production is actually a Cloudflare Pages shell, not Webflow; see Integration. |
 | `docs/website-v2/screenshots/` | QA screenshots. |
 
 To change copy, edit `CONTENT` in `tools/ludo78.src.js`, then run the build. Rooms, Silly Squad, pillars and news entries are all data.
@@ -109,48 +109,48 @@ node tools/qa-website-v2.mjs /tmp/ld-qa
 * Scripts load from the local server, so assets resolve to `/assets/v2/...` instead of jsDelivr. The script derives the asset base from its own `src`, so this matches production behaviour.
 * Auth needs `https://<origin>/` to be an allowed Supabase redirect URL. Real logins and OAuth only work on `lifedecode.app`, not on `localhost`.
 
-## Webflow integration (when approved)
+## Integration (when approved) — corrected after reading lifedecode-game
 
-Nothing in Webflow needs to change structurally. The only change is the script URL in the existing custom-code `<script>` tag.
+The live homepage is **not** a Webflow page. `lifedecode.app` is a Cloudflare Pages site built from `lifedecode-game/marketing-site/`. Its `index.html` is a small shell that does two things:
 
-1. **Script tag**. Replace the current `.../ludo77.js` URL with a **commit-pinned** URL, for example:
+1. Loads supabase-js.
+2. Injects `…lifedecode-assets@main/ludo77.js?v=<timestamp>` on every path except `/terms`, `/policy` and `/privacy`.
+
+`/support` is a separate static page.
+
+This changes the integration in three ways:
+
+1. **Switching to V2 is a one-line change in the game repo:** `marketing-site/index.html`, `ludo77.js` → `ludo78.js`. Prefer a commit-pinned URL so the script and its `assets/v2` images update together and rollback is exact:
 
    ```html
-   <script src="https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@<COMMIT_SHA>/ludo78.js"></script>
+   https://cdn.jsdelivr.net/gh/simonovcar/lifedecode-assets@<COMMIT_SHA>/ludo78.js
    ```
 
-   A commit pin means the script and its `assets/v2` images update atomically, skip jsDelivr's branch cache, and can be rolled back instantly. (`@main/ludo78.js` also works after a merge, but caching makes changes appear with a delay.)
-
-2. **SEO** (Webflow → Page settings for Home; JS-injected meta tags aren't read by social scrapers):
+   This session never modifies the game repo, so you make that change.
+2. **SEO lives in that shell's `<head>`.** Its `<title>` is still the old "LifeDecode AI – Decode what you can't stop thinking about", and its OG image is the square app icon. Suggested replacements:
    * Title: `LifeDecode World — A neon-fantasy social world you play in your browser`
-   * Meta description: `Explore strange, cozy rooms, meet the Silly Squad and other players, and level up your spirit just by showing up. No download — play LifeDecode World in your browser.`
-   * Open Graph image: upload `assets/v2/og-1200x630.jpg` to Webflow Assets (or use its jsDelivr URL). Use the same title and description for OG and Twitter.
-
-3. **Preconnect** (optional, for faster fonts and image loads): add these in the Webflow head code.
-
-   ```html
-   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   ```
+   * Description: `Explore strange, cozy rooms, meet the Silly Squad and other players, and level up your spirit just by showing up. No download — play LifeDecode World in your browser.`
+   * OG image: `assets/v2/og-1200x630.jpg` (1200×630).
+3. **The preview harness still approximates Webflow.** In production the shell has no Webflow CSS, so the real environment is *simpler* than the preview. The `<body>` takeover in `render()` still works, because the shell body only contains `<noscript>` and scripts.
 
 ## Safest deployment procedure
 
-1. Review the preview and screenshots, then approve or request changes.
-2. Push `feature/website-v2` and open a PR into `main`. This repo has no CI, and nothing loads `ludo78.js` yet, so merging alone changes nothing on the live site.
-3. Run a live-domain test without touching Webflow production. Either:
-   * use Webflow's **staging** domain (`*.webflow.io`) with the script tag pointed at the commit-pinned `ludo78.js`, or
-   * paste a `ludo78.js` `<script>` into the browser console on a private copy of the page.
+1. Review the preview and screenshots, then approve or request changes. Apply the copy corrections from [`GAME_AUDIT_AND_RECOMMENDATIONS.md`](GAME_AUDIT_AND_RECOMMENDATIONS.md) first.
+2. Open a PR from `feature/website-v2` into `main` in `lifedecode-assets`. Merging alone changes nothing live, because the shell still loads `ludo77.js`.
+3. Test on a non-production URL first. Either:
+   * use a Cloudflare Pages **preview deployment**: push a branch of `lifedecode-game` that changes only `marketing-site/index.html` to the pinned `ludo78.js`, or
+   * load `ludo78.js` from the browser console on `lifedecode.app`.
 
    Test the following there:
-   * Login with email and Google, including the OAuth redirect back to the homepage.
+   * Login with email and Google, including the OAuth redirect back. The redirect URL must be allowed in Supabase for the preview domain, or test OAuth only on production.
    * Logout.
-   * Account → Delete account link.
-   * The support form (the backend route may still be missing; it should show an honest error).
-   * Play Now → `world.lifedecode.app`.
-   * `/terms`, `/policy`, `/privacy` and `/support` stay native.
+   * Account → Delete account.
+   * The support form.
+   * Play Now.
+   * `/terms`, `/policy`, `/privacy` and `/support`.
    * iPhone Safari and Android Chrome.
-4. Swap the production script tag to the commit-pinned `ludo78.js` and publish Webflow.
-5. **Rollback**: point the script tag back to `ludo77.js` and republish. `ludo77.js` is never modified.
+4. Merge the one-line shell change to `lifedecode-game` `main`, which deploys through Cloudflare Pages.
+5. **Rollback**: revert that one line back to `ludo77.js`. `ludo77.js` is never modified.
 
 ## Known limitations / follow-ups
 
