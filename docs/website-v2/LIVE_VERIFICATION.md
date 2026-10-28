@@ -14,7 +14,7 @@ Before deployment, play through each row on `world.lifedecode.app` (a test accou
 | 4 | Plaza links to Brew Haven, Soulcore, Astra's Vault and the Mind Zone path | Plaza caption | Plaza art and transitions (`maps.js`) | ☐ |
 | 5 | Drunk Dave in Brew Haven; coffee machine earns Beans | Brew Haven caption, locals | Quest hints, Brew Haven minigame (`config.js`) | ☐ |
 | 6 | Nyas in Soulcore trades Beans for Soul Dust | Soulcore caption, locals | Soulcore trade (`scenes.js`), quest hints | ☐ |
-| 7 | Full character skins: a gallery of **48 original in-game skin images** (2 starter forms + 46 full skins), each one complete sprite. Labelled **In development** | Choose your form, Updates | Owner-supplied PNGs from the local dev worktree (`LifeDecode-Skins-Part1..6.zip`), optimized by `tools/build-skin-assets.py`. Per-file provenance is in `assets/v2/skins/manifest.json`. **Names:** see *Skin names to confirm* below. **Rarity:** not in the supplied files, so not shown | ☐ |
+| 7 | Full character skins: a gallery of the **46 full skins in the development catalog**, in collections Wave 1 (11), Wave 2 (13) and Wave 3 (22), with catalog rarity (no prices). Labelled **In development**. Starters Base Blue / Base Rose not shown until their real art is supplied | Choose your form, Updates | Verified development catalog (`tools/skin-catalog.json`, from the owner's read-only audit): all 46 enabled, `availability: 'shop'`, level 1 *in the development build*. Owner-supplied PNGs, 1:1 with the catalog assets. **Not verified on the live game:** store overrides (`ld_store_item_overrides`) can hide or change items, and the dev build isn't necessarily deployed | ☐ |
 | 8 | Dojo with Master Kaien: turn-based Shadow Duels (block, dodge, wait, counter); trials vs The Doubter, The Urge and The Shame; 11 belts, White → Mythic | Adventures | `LD_DOJO_DUEL_CONFIG` and `LD_DOJO_ASCENSION_CONFIG` (`config.js`) | ☐ |
 | 9 | Shadow Arena vs The Doubter: dodge projectiles and pick responses; the quoted whisper and the three options are round 1 verbatim | Adventures | `SHADOW_BATTLE_CONFIG` and `SHADOW_DEMON_WAVES` (`config.js`) | ☐ |
 | 10 | Player duels in 9 types; optional Soul Dust wagers; ranked Arena | Adventures | `LD_DUEL_TYPE_META` (`config.js`), duel wager RPCs, Arena Elo | ☐ |
@@ -41,58 +41,14 @@ Before deployment, play through each row on `world.lifedecode.app` (a test accou
 * Framed card portraits.
 
 
-## Skin names to confirm (before release)
+## Skin catalog (verified)
 
-Internal filenames don't always match in-game display names, and no skin registry was supplied.
+Names, PNG mappings, rarity and waves were verified against the development build's skin catalog (owner's read-only audit, Oct 2026). They are stored in `tools/skin-catalog.json`, which is the source of truth for the gallery.
 
-**Confirmed or owner-given (8):**
-* Base Blue and Base Rose: `adultblue3.png` / `adultpink3.png`, byte-identical to the game's `ld_char_blue` / `ld_char_pink` player sprites.
-* Exact filename matches: Emberborn, Abyssal Tide, Clockwork Soul, Void Wanderer, Verdant Keeper.
-* Inferred: **Frost Revenant** from `skin_frost.png`, the only frost skin. ☐ confirm.
-
-**Owner-listed names with no matching file:** Crimson Oracle, Luminous Druid, Shadow Harlequin, Starforged Knight, Bone Warden. One of the files below may be one of these under a different internal name. They are not assigned by guesswork.
-
-**Shown with a name derived from the filename (40):** confirm each, or supply the real display name. Then edit `DISPLAY_NAMES` in `tools/build-skin-assets.py` and rebuild.
-
-| Name shown | Source file | ✓ |
-|---|---|---|
-| Abyssal Oracle | `skin_abyssal_oracle.png` | ☐ |
-| Amethyst Oracle | `skin_amethyst_oracle.png` | ☐ |
-| Ancient Grove | `skin_ancient_grove.png` | ☐ |
-| Bloodmoon Shogun | `skin_bloodmoon_shogun.png` | ☐ |
-| Celestial Ascendant | `skin_celestial_ascendant.png` | ☐ |
-| Crimson Count | `skin_crimson_count.png` | ☐ |
-| Eclipse Warden | `skin_eclipse_warden.png` | ☐ |
-| Hallowveil Harbinger | `skin_hallowveil_harbinger.png` | ☐ |
-| Hollow Puppeteer | `skin_hollow_puppeteer.png` | ☐ |
-| Jade Emperor Spirit | `skin_jade_emperor_spirit.png` | ☐ |
-| Plague Doctor | `skin_plague_doctor.png` | ☐ |
-| Plague Lantern | `skin_plague_lantern.png` | ☐ |
-| Ronin Spirit | `skin_ronin_spirit.png` | ☐ |
-| Sunstone Guardian | `skin_sunstone_guardian.png` | ☐ |
-| The Acorn Guardian | `skin_the_acorn_guardian.png` | ☐ |
-| The Blossom Dreamer | `skin_the_blossom_dreamer.png` | ☐ |
-| The Cinnamon Bandit | `skin_the_cinnamon_bandit.png` | ☐ |
-| The Dreadtide Corsair | `skin_the_dreadtide_corsair.png` | ☐ |
-| The Fool King | `skin_the_fool_king.png` | ☐ |
-| The Gilded Moth | `skin_the_gilded_moth.png` | ☐ |
-| The Lantern Judge | `skin_the_lantern_judge.png` | ☐ |
-| The Lily Crown Prince | `skin_the_lily_crown_prince.png` | ☐ |
-| The Little Dragon Napper | `skin_the_little_dragon_napper.png` | ☐ |
-| The Little Lantern Haunt | `skin_the_little_lantern_haunt.png` | ☐ |
-| The Mooncap Witch | `skin_the_mooncap_witch.png` | ☐ |
-| The Moonmail Courier | `skin_the_moonmail_courier.png` | ☐ |
-| The Patchwork Jester | `skin_the_patchwork_jester.png` | ☐ |
-| The Pocket Buccaneer | `skin_the_pocket_buccaneer.png` | ☐ |
-| The Porcelain Requiem | `skin_the_porcelain_requiem.png` | ☐ |
-| The Puddle Pilot | `skin_the_puddle_pilot.png` | ☐ |
-| The Red Widow | `skin_the_red_widow.png` | ☐ |
-| The Silent Executioner | `skin_the_silent_executioner.png` | ☐ |
-| The Smiling Hollow | `skin_the_smiling_hollow.png` | ☐ |
-| The Stained Glass Sovereign | `skin_the_stained_glass_sovereign.png` | ☐ |
-| The Star Marshal | `skin_the_star_marshal.png` | ☐ |
-| The Starwhisper Bunny | `skin_the_starwhisper_bunny.png` | ☐ |
-| The Teacup Trickster | `skin_the_teacup_trickster.png` | ☐ |
-| The Teacup Winky | `skin_the_teacup_winky.png` | ☐ |
-| The Weeping Saint | `skin_the_weeping_saint.png` | ☐ |
-| Voidwalker | `skin_voidwalker.png` | ☐ |
+* **46 skins**, every one matched 1:1 to an uploaded `skin_*.png`. Rarity: 12 Rare, 20 Epic, 14 Legendary. Waves follow the markers in the game's `scripts/verify-character-skins.js`.
+* Mapping notes:
+  * `frost_revenant` uses `skin_frost.png`; it's the only file whose name differs from its id.
+  * `hollow_puppeteer` displays as **The Hollow Puppeteer**.
+* The earlier owner list (Crimson Oracle, Luminous Druid, Shadow Harlequin, Starforged Knight, Bone Warden) is outdated and discarded. The catalog's Wave 1 is the original 11-skin collection.
+* **Starters:** Base Blue (`spirit_blue`, `spirit_base_blue.png`) and Base Rose (`spirit_rose`, `spirit_base_rose.png`). The game code labels them "Blue" / "Rose"; the site uses the owner's names. ☐ supply both PNGs; until then they're left out of the gallery.
+* **Before release:** ☐ check on world.lifedecode.app which skins are actually purchasable. Production store overrides may differ from the development catalog. Until confirmed, keep the "In development" label.

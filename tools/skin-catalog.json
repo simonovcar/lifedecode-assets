@@ -1,0 +1,347 @@
+{
+ "_about": [
+  "Verified development skin catalog (owner's read-only audit of the local development build, Oct 2026).",
+  "Source: the game's character-skin registry dumped by the owner (46 skins, all enabled, availability 'shop', level 1 in that build);",
+  "waves follow the '// wave 2' and '// wave 3 (22 skins)' markers in scripts/verify-character-skins.js.",
+  "Prices exist in the catalog but are deliberately not recorded here: the marketing site does not show them.",
+  "Production availability is NOT verified: store overrides (ld_store_item_overrides) can hide or change items on the live game."
+ ],
+ "starters": [
+  {
+   "id": "spirit_blue",
+   "name": "Base Blue",
+   "asset": "spirit_base_blue.png",
+   "codeLabel": "Blue"
+  },
+  {
+   "id": "spirit_rose",
+   "name": "Base Rose",
+   "asset": "spirit_base_rose.png",
+   "codeLabel": "Rose"
+  }
+ ],
+ "skins": [
+  {
+   "id": "emberborn",
+   "name": "Emberborn",
+   "rarity": "Rare",
+   "wave": 1,
+   "asset": "skin_emberborn.png"
+  },
+  {
+   "id": "abyssal_tide",
+   "name": "Abyssal Tide",
+   "rarity": "Rare",
+   "wave": 1,
+   "asset": "skin_abyssal_tide.png"
+  },
+  {
+   "id": "clockwork_soul",
+   "name": "Clockwork Soul",
+   "rarity": "Rare",
+   "wave": 1,
+   "asset": "skin_clockwork_soul.png"
+  },
+  {
+   "id": "void_wanderer",
+   "name": "Void Wanderer",
+   "rarity": "Epic",
+   "wave": 1,
+   "asset": "skin_void_wanderer.png"
+  },
+  {
+   "id": "verdant_keeper",
+   "name": "Verdant Keeper",
+   "rarity": "Epic",
+   "wave": 1,
+   "asset": "skin_verdant_keeper.png"
+  },
+  {
+   "id": "frost_revenant",
+   "name": "Frost Revenant",
+   "rarity": "Epic",
+   "wave": 1,
+   "asset": "skin_frost.png"
+  },
+  {
+   "id": "amethyst_oracle",
+   "name": "Amethyst Oracle",
+   "rarity": "Epic",
+   "wave": 1,
+   "asset": "skin_amethyst_oracle.png"
+  },
+  {
+   "id": "celestial_ascendant",
+   "name": "Celestial Ascendant",
+   "rarity": "Legendary",
+   "wave": 1,
+   "asset": "skin_celestial_ascendant.png"
+  },
+  {
+   "id": "sunstone_guardian",
+   "name": "Sunstone Guardian",
+   "rarity": "Legendary",
+   "wave": 1,
+   "asset": "skin_sunstone_guardian.png"
+  },
+  {
+   "id": "eclipse_warden",
+   "name": "Eclipse Warden",
+   "rarity": "Legendary",
+   "wave": 1,
+   "asset": "skin_eclipse_warden.png"
+  },
+  {
+   "id": "bloodmoon_shogun",
+   "name": "Bloodmoon Shogun",
+   "rarity": "Legendary",
+   "wave": 1,
+   "asset": "skin_bloodmoon_shogun.png"
+  },
+  {
+   "id": "plague_lantern",
+   "name": "Plague Lantern",
+   "rarity": "Rare",
+   "wave": 2,
+   "asset": "skin_plague_lantern.png"
+  },
+  {
+   "id": "the_weeping_saint",
+   "name": "The Weeping Saint",
+   "rarity": "Rare",
+   "wave": 2,
+   "asset": "skin_the_weeping_saint.png"
+  },
+  {
+   "id": "the_smiling_hollow",
+   "name": "The Smiling Hollow",
+   "rarity": "Rare",
+   "wave": 2,
+   "asset": "skin_the_smiling_hollow.png"
+  },
+  {
+   "id": "hallowveil_harbinger",
+   "name": "Hallowveil Harbinger",
+   "rarity": "Epic",
+   "wave": 2,
+   "asset": "skin_hallowveil_harbinger.png"
+  },
+  {
+   "id": "the_lantern_judge",
+   "name": "The Lantern Judge",
+   "rarity": "Epic",
+   "wave": 2,
+   "asset": "skin_the_lantern_judge.png"
+  },
+  {
+   "id": "the_red_widow",
+   "name": "The Red Widow",
+   "rarity": "Epic",
+   "wave": 2,
+   "asset": "skin_the_red_widow.png"
+  },
+  {
+   "id": "the_dreadtide_corsair",
+   "name": "The Dreadtide Corsair",
+   "rarity": "Epic",
+   "wave": 2,
+   "asset": "skin_the_dreadtide_corsair.png"
+  },
+  {
+   "id": "the_star_marshal",
+   "name": "The Star Marshal",
+   "rarity": "Epic",
+   "wave": 2,
+   "asset": "skin_the_star_marshal.png"
+  },
+  {
+   "id": "the_teacup_trickster",
+   "name": "The Teacup Trickster",
+   "rarity": "Epic",
+   "wave": 2,
+   "asset": "skin_the_teacup_trickster.png"
+  },
+  {
+   "id": "hollow_puppeteer",
+   "name": "The Hollow Puppeteer",
+   "rarity": "Legendary",
+   "wave": 2,
+   "asset": "skin_hollow_puppeteer.png"
+  },
+  {
+   "id": "jade_emperor_spirit",
+   "name": "Jade Emperor Spirit",
+   "rarity": "Legendary",
+   "wave": 2,
+   "asset": "skin_jade_emperor_spirit.png"
+  },
+  {
+   "id": "the_fool_king",
+   "name": "The Fool King",
+   "rarity": "Legendary",
+   "wave": 2,
+   "asset": "skin_the_fool_king.png"
+  },
+  {
+   "id": "the_stained_glass_sovereign",
+   "name": "The Stained Glass Sovereign",
+   "rarity": "Legendary",
+   "wave": 2,
+   "asset": "skin_the_stained_glass_sovereign.png"
+  },
+  {
+   "id": "abyssal_oracle",
+   "name": "Abyssal Oracle",
+   "rarity": "Rare",
+   "wave": 3,
+   "asset": "skin_abyssal_oracle.png"
+  },
+  {
+   "id": "ancient_grove",
+   "name": "Ancient Grove",
+   "rarity": "Rare",
+   "wave": 3,
+   "asset": "skin_ancient_grove.png"
+  },
+  {
+   "id": "crimson_count",
+   "name": "Crimson Count",
+   "rarity": "Rare",
+   "wave": 3,
+   "asset": "skin_crimson_count.png"
+  },
+  {
+   "id": "plague_doctor",
+   "name": "Plague Doctor",
+   "rarity": "Rare",
+   "wave": 3,
+   "asset": "skin_plague_doctor.png"
+  },
+  {
+   "id": "voidwalker",
+   "name": "Voidwalker",
+   "rarity": "Rare",
+   "wave": 3,
+   "asset": "skin_voidwalker.png"
+  },
+  {
+   "id": "the_blossom_dreamer",
+   "name": "The Blossom Dreamer",
+   "rarity": "Rare",
+   "wave": 3,
+   "asset": "skin_the_blossom_dreamer.png"
+  },
+  {
+   "id": "ronin_spirit",
+   "name": "Ronin Spirit",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_ronin_spirit.png"
+  },
+  {
+   "id": "the_porcelain_requiem",
+   "name": "The Porcelain Requiem",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_porcelain_requiem.png"
+  },
+  {
+   "id": "the_gilded_moth",
+   "name": "The Gilded Moth",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_gilded_moth.png"
+  },
+  {
+   "id": "the_starwhisper_bunny",
+   "name": "The Starwhisper Bunny",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_starwhisper_bunny.png"
+  },
+  {
+   "id": "the_lily_crown_prince",
+   "name": "The Lily Crown Prince",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_lily_crown_prince.png"
+  },
+  {
+   "id": "the_mooncap_witch",
+   "name": "The Mooncap Witch",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_mooncap_witch.png"
+  },
+  {
+   "id": "the_little_dragon_napper",
+   "name": "The Little Dragon Napper",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_little_dragon_napper.png"
+  },
+  {
+   "id": "the_cinnamon_bandit",
+   "name": "The Cinnamon Bandit",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_cinnamon_bandit.png"
+  },
+  {
+   "id": "the_teacup_winky",
+   "name": "The Teacup Winky",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_teacup_winky.png"
+  },
+  {
+   "id": "the_little_lantern_haunt",
+   "name": "The Little Lantern Haunt",
+   "rarity": "Epic",
+   "wave": 3,
+   "asset": "skin_the_little_lantern_haunt.png"
+  },
+  {
+   "id": "the_acorn_guardian",
+   "name": "The Acorn Guardian",
+   "rarity": "Legendary",
+   "wave": 3,
+   "asset": "skin_the_acorn_guardian.png"
+  },
+  {
+   "id": "the_moonmail_courier",
+   "name": "The Moonmail Courier",
+   "rarity": "Legendary",
+   "wave": 3,
+   "asset": "skin_the_moonmail_courier.png"
+  },
+  {
+   "id": "the_patchwork_jester",
+   "name": "The Patchwork Jester",
+   "rarity": "Legendary",
+   "wave": 3,
+   "asset": "skin_the_patchwork_jester.png"
+  },
+  {
+   "id": "the_pocket_buccaneer",
+   "name": "The Pocket Buccaneer",
+   "rarity": "Legendary",
+   "wave": 3,
+   "asset": "skin_the_pocket_buccaneer.png"
+  },
+  {
+   "id": "the_puddle_pilot",
+   "name": "The Puddle Pilot",
+   "rarity": "Legendary",
+   "wave": 3,
+   "asset": "skin_the_puddle_pilot.png"
+  },
+  {
+   "id": "the_silent_executioner",
+   "name": "The Silent Executioner",
+   "rarity": "Legendary",
+   "wave": 3,
+   "asset": "skin_the_silent_executioner.png"
+  }
+ ]
+}

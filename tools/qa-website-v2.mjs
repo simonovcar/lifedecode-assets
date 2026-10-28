@@ -8,7 +8,7 @@
 // prints a JSON report (console errors, failed requests, overflow, links,
 // interaction checks). Network failures to hosts the sandbox blocks (e.g.
 // jsDelivr for supabase-js) are reported separately, not hidden.
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 
 // CommonJS require so a globally installed Playwright resolves too.
@@ -96,7 +96,8 @@ for (const vp of VIEWPORTS) {
       pageHeight: doc.scrollHeight,
       webflowHidden: !!document.querySelector(".w-nav") && getComputedStyle(document.querySelector(".w-nav")).display === "none",
       h1Count: document.querySelectorAll("#ldw_app h1").length,
-      imagesBroken: imgs.filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.currentSrc || i.src),
+      imagesBroken: imgs.filter((i) => i.complete && i.naturalWidth === 0 && i.getAttribute("src")).map((i) => i.currentSrc || i.src),
+      imagesDeferred: imgs.filter((i) => i.hasAttribute("data-src") && !i.getAttribute("src")).length,
       imagesWithoutAlt: imgs.filter((i) => !i.hasAttribute("alt")).length,
       heroImage: (document.querySelector(".v2_hero_art img") || {}).currentSrc || null,
       heroCta: (() => { const a = document.getElementById("ldw_hero_primary_cta"); return a ? { text: a.textContent, href: a.getAttribute("href") } : null; })(),
@@ -127,18 +128,84 @@ for (const vp of VIEWPORTS) {
   await page.keyboard.press("Tab");
   c.firstTabTarget = await page.evaluate(() => document.activeElement && document.activeElement.textContent.trim());
 
-  // Skin gallery: real roster, no old outfit key art, and the preview follows selection.
-  c.skins = await page.evaluate(() => ({ thumbs: document.querySelectorAll("#ldv2_spirit .v2_sk_thumb").length, starters: document.querySelectorAll("#ldv2_spirit .v2_sk_thumb.is-starter").length, selected: document.getElementById("ldv2_sk_name").textContent, keyArtInSection: document.querySelectorAll("#ldv2_spirit img[data-ldv2-art]").length, oldNames: /Cowboy|Ninja|Pirate|Princess/.test(document.getElementById("ldv2_spirit").textContent) }));
+  // Skin gallery: the verified development catalog (tools/skin-catalog.json)
+  // in three collections, catalog rarity, no prices, no legacy starter art,
+  // and the preview follows selection.
+  const stageState = () => page.evaluate(() => {
+    const im = document.querySelector(".v2_sk_media img:not(.is-hidden)") || {};
+    const r = document.getElementById("ldv2_sk_rarity");
+    return { name: document.getElementById("ldv2_sk_name").textContent, kind: document.getElementById("ldv2_sk_kind").textContent, rarity: r.hidden ? null : r.textContent, count: document.getElementById("ldv2_sk_count").textContent, img: im.currentSrc || "", loaded: im.naturalWidth > 0, focused: document.activeElement && document.activeElement.id };
+  });
+  const problems = [];
+  c.skins = await page.evaluate(() => {
+    const sec = document.getElementById("ldv2_spirit");
+    return {
+      cols: Array.from(sec.querySelectorAll(".v2_sk_col")).map((t) => t.textContent.trim()),
+      panels: Array.from(sec.querySelectorAll(".v2_sk_panel")).map((p) => ({ id: p.id, hidden: p.hidden, thumbs: Array.from(p.querySelectorAll(".v2_sk_thumb")).map((t) => ({ id: t.getAttribute("data-skin"), title: t.title, rarity: t.getAttribute("data-rarity") })) })),
+      starters: sec.querySelectorAll(".v2_sk_thumb.is-starter").length,
+      visibleThumbs: Array.from(sec.querySelectorAll(".v2_sk_thumb")).filter((t) => t.offsetParent).length,
+      selected: document.getElementById("ldv2_sk_name").textContent,
+      keyArtInSection: sec.querySelectorAll("#ldv2_spirit img[data-ldv2-art]").length,
+      oldNames: /Cowboy|Ninja|Pirate|Princess|Crimson Oracle|Luminous Druid|Shadow Harlequin|Starforged Knight|Bone Warden/.test(sec.textContent),
+      prices: /\b(250|450)\b|Dust|LifeCoin/i.test(sec.textContent),
+      legacyArt: /adultblue3|adultpink3|base-blue|base-rose/.test(sec.innerHTML)
+    };
+  });
+  const catalog = JSON.parse(readFileSync(new URL("./skin-catalog.json", import.meta.url), "utf8")).skins;
+  [1, 2, 3].forEach((w) => {
+    const want = catalog.filter((k) => k.wave === w);
+    const panel = c.skins.panels.find((p) => p.id === "ldv2_sk_panel_wave-" + w);
+    if (!panel) { problems.push("missing panel wave-" + w); return; }
+    if (panel.thumbs.length !== want.length) problems.push("wave " + w + ": " + panel.thumbs.length + " thumbs, catalog has " + want.length);
+    want.forEach((k, i) => {
+      const t = panel.thumbs[i] || {};
+      if (t.id !== k.id.replace(/_/g, "-") || t.title !== k.name + " · " + k.rarity || t.rarity !== k.rarity.toLowerCase()) problems.push("wave " + w + " #" + (i + 1) + ": got " + JSON.stringify(t) + ", catalog " + k.name + " / " + k.rarity);
+    });
+  });
+  if (c.skins.cols.join("|") !== "Wave 1 11|Wave 2 13|Wave 3 22") problems.push("collection tabs: " + c.skins.cols.join("|"));
+  if (c.skins.starters) problems.push("starter thumbnails shown without their real artwork");
+  ["oldNames", "prices", "legacyArt"].forEach((f) => { if (c.skins[f]) problems.push(f); });
+  if (c.skins.selected !== "Emberborn") problems.push("default selection " + c.skins.selected);
+  if (c.skins.visibleThumbs !== 11) problems.push("visible thumbs " + c.skins.visibleThumbs);
+
   await page.click("#ldv2_sk_void-wanderer");
   await page.waitForTimeout(900);
-  c.skinAfterClick = await page.evaluate(() => ({ name: document.getElementById("ldv2_sk_name").textContent, count: document.getElementById("ldv2_sk_count").textContent, img: (document.querySelector(".v2_sk_media img:not(.is-hidden)") || {}).currentSrc, loaded: (document.querySelector(".v2_sk_media img:not(.is-hidden)") || {}).naturalWidth > 0, imgs: document.querySelectorAll(".v2_sk_media img").length }));
+  c.skinAfterClick = await stageState();
+  if (c.skinAfterClick.name !== "Void Wanderer" || c.skinAfterClick.rarity !== "Epic" || c.skinAfterClick.count !== "04 / 11" || !c.skinAfterClick.loaded || !c.skinAfterClick.img.includes("void-wanderer")) problems.push("click: " + JSON.stringify(c.skinAfterClick));
   await page.focus("#ldv2_sk_void-wanderer");
   await page.keyboard.press("ArrowRight");
   await page.waitForTimeout(700);
-  c.skinAfterArrow = await page.evaluate(() => ({ name: document.getElementById("ldv2_sk_name").textContent, focused: document.activeElement.id }));
+  c.skinAfterArrow = await stageState();
+  if (c.skinAfterArrow.name !== "Verdant Keeper" || c.skinAfterArrow.focused !== "ldv2_sk_verdant-keeper") problems.push("arrow: " + JSON.stringify(c.skinAfterArrow));
   await page.click("#ldv2_sk_next");
   await page.waitForTimeout(700);
-  c.skinAfterNext = await page.evaluate(() => document.getElementById("ldv2_sk_name").textContent);
+  c.skinAfterNext = (await stageState()).name;
+  if (c.skinAfterNext !== "Frost Revenant") problems.push("next: " + c.skinAfterNext);
+
+  // Collections: tab switch shows that wave, keyboard moves between tabs,
+  // prev wraps inside the collection, and each wave remembers its pick.
+  await page.click("#ldv2_sk_col_wave-2");
+  await page.waitForTimeout(800);
+  c.skinWave2 = Object.assign(await stageState(), await page.evaluate(() => ({ visible: Array.from(document.querySelectorAll("#ldv2_sk_panel_wave-2 .v2_sk_thumb img")).filter((i) => i.offsetParent && i.complete && i.naturalWidth).length, otherHidden: document.getElementById("ldv2_sk_panel_wave-1").hidden && document.getElementById("ldv2_sk_panel_wave-3").hidden })));
+  if (c.skinWave2.name !== "Plague Lantern" || c.skinWave2.rarity !== "Rare" || c.skinWave2.count !== "01 / 13" || c.skinWave2.kind !== "Wave 2 · Full character skin" || c.skinWave2.visible !== 13 || !c.skinWave2.otherHidden) problems.push("wave 2: " + JSON.stringify(c.skinWave2));
+  await page.click("#ldv2_sk_prev");
+  await page.waitForTimeout(700);
+  c.skinWave2Prev = await stageState();
+  if (c.skinWave2Prev.name !== "The Stained Glass Sovereign" || c.skinWave2Prev.rarity !== "Legendary" || c.skinWave2Prev.count !== "13 / 13") problems.push("wave 2 prev: " + JSON.stringify(c.skinWave2Prev));
+  await page.focus("#ldv2_sk_col_wave-2");
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(800);
+  c.skinWave3 = Object.assign(await stageState(), await page.evaluate(() => ({ visible: Array.from(document.querySelectorAll("#ldv2_sk_panel_wave-3 .v2_sk_thumb img")).filter((i) => i.offsetParent && i.complete && i.naturalWidth).length })));
+  if (c.skinWave3.name !== "Abyssal Oracle" || c.skinWave3.count !== "01 / 22" || c.skinWave3.focused !== "ldv2_sk_col_wave-3" || c.skinWave3.visible !== 22) problems.push("wave 3: " + JSON.stringify(c.skinWave3));
+  await page.click("#ldv2_sk_the-silent-executioner");
+  await page.waitForTimeout(800);
+  c.skinWave3Pick = await stageState();
+  if (c.skinWave3Pick.name !== "The Silent Executioner" || c.skinWave3Pick.rarity !== "Legendary" || c.skinWave3Pick.count !== "22 / 22" || !c.skinWave3Pick.loaded) problems.push("wave 3 pick: " + JSON.stringify(c.skinWave3Pick));
+  await page.click("#ldv2_sk_col_wave-1");
+  await page.waitForTimeout(800);
+  c.skinBackToWave1 = await stageState();
+  if (c.skinBackToWave1.name !== "Frost Revenant" || c.skinBackToWave1.count !== "06 / 11") problems.push("back to wave 1: " + JSON.stringify(c.skinBackToWave1));
+  c.skinProblems = problems;
   c.roadmap = await page.evaluate(() => Array.from(document.querySelectorAll(".v2_lane")).map((l) => l.getAttribute("data-status") + ":" + l.querySelectorAll(".v2_live_list > li, .v2_lane_list > li").length));
 
   // World gallery: next button + thumbnail selection update the stage.

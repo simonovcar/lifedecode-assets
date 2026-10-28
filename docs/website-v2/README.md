@@ -18,7 +18,7 @@ See [`AUDIT_AND_PLAN.md`](AUDIT_AND_PLAN.md) for the repository audit and design
 | `tools/build-world-assets.py` | Rebuilds `assets/v2/world/` from a read-only `lifedecode-game` checkout (`python3 tools/build-world-assets.py ../lifedecode-game`). |
 | `docs/website-v2/LIVE_VERIFICATION.md` | Every feature claim on the page, its source evidence, and a checkbox for live verification before deploy. |
 | `preview/` | Webflow-like preview harness (see below). Note: production is actually a Cloudflare Pages shell, not Webflow; see Integration. |
-| `docs/website-v2/screenshots/` | QA screenshots. |
+| `docs/website-v2/screenshots/` | QA screenshots (`skins-*` = the skin gallery per collection, desktop and mobile). |
 
 To change copy, edit `CONTENT` in `tools/ludo78.src.js`, then run the build. Rooms, Silly Squad, pillars and news entries are all data.
 
@@ -51,11 +51,13 @@ The page sections, in order (polish pass 2):
 1. **Hero** with the key art (left-aligned copy on desktop).
 2. **Prologue / manifesto**: "Not soulless. Not a lecture." The absolute "Not pay-to-win" claim is gone; the page says "Free to play · Optional in-game purchases" instead.
 3. **Explore the World**: a cinematic stage plus a 12-thumbnail tablist of **real location art**, and the other 8 locations as chips.
-4. **Choose your form** (skins pass): an interactive gallery of the **48 original in-game skin images** (2 starter forms + 46 full skins).
-   * A large preview stage is tinted with each skin's own sampled colour, and has prev/next and a counter.
-   * Next to it is a 48-thumbnail tablist (arrow keys, Home, End); on phones it's a two-row swipe strip.
-   * Thumbnails load only once the gallery is near the viewport.
-   * Labelled "New skin collection · In development". The old outfit key art appears only in the hero.
+4. **Choose your form** (catalog pass): an interactive gallery of all **46 full skins in the verified development catalog** (`tools/skin-catalog.json`), with their exact catalog names, PNG mappings and rarity.
+   * A large preview stage is tinted with each skin's own sampled colour. It shows a Rare / Epic / Legendary badge, the collection, prev/next and a counter.
+   * Collection tabs (Wave 1 · 11, Wave 2 · 13, Wave 3 · 22) each switch to one thumbnail tablist (arrow keys, Home, End), so at most 22 thumbnails show at once. On phones each wave is a two-row swipe strip. Prev/next wrap inside the collection, and each wave remembers its last pick.
+   * Thumbnails load per collection, and only once the gallery is near the viewport (first load: 11 thumbnails).
+   * No prices are shown. The section is labelled "Skin collection · In development", and the note says live availability hasn't been announced. No wave is presented as a future release.
+   * The Base Blue / Base Rose starters get a "Starter forms" tab automatically once `spirit_base_blue.png` / `spirit_base_rose.png` are supplied. Until then they're left out; the older `adultblue3` / `adultpink3` sprites are never shown in their place.
+   * The old outfit key art appears only in the hero.
 5. **Adventures**:
    * a Dojo spread (Master Kaien sprite, real belt colours);
    * a Shadow Arena spread (The Doubter, with the real round-1 choices you can try);
@@ -122,7 +124,7 @@ node tools/qa-website-v2.mjs /tmp/ld-qa
 
 ## Skin art pipeline
 
-The skin PNGs come from the owner's local development worktree (uploaded as `LifeDecode-Skins-Part1..6.zip`). To rebuild:
+The skin PNGs come from the owner's local development build (uploaded as `LifeDecode-Skins-Part1..6.zip`). Names, rarity, waves and file mappings come from `tools/skin-catalog.json`, the verified development catalog (owner's read-only audit). Prices are not recorded there and aren't shown. To rebuild:
 
 ```bash
 python3 tools/build-skin-assets.py /path/to/extracted-skin-pngs
@@ -133,12 +135,14 @@ node tools/build-website-v2.mjs
 ```
 
 Per skin, the tool writes:
-* `assets/v2/skins/<slug>-1200.webp` (preview, about 190 KB);
+* `assets/v2/skins/<slug>-1200.webp` (preview, about 190 KB; the slug is the catalog id, e.g. `frost-revenant` from `skin_frost.png`);
 * `-600.webp` (phones and 1× screens);
 * `-thumb.webp` (240 px, about 14 KB);
-* plus `manifest.json`, with source file, name provenance and the sampled glow colour.
+* plus `manifest.json`, with source file, catalog id, name, rarity, wave, the sampled glow colour, and any catalog assets missing from the upload.
 
-It also writes `tools/generated/skin-roster.js`, which the build splices into `ludo78.js`. Display names come from `DISPLAY_NAMES` / `STARTERS` in the tool; anything else falls back to its filename. See *Skin names to confirm* in `LIVE_VERIFICATION.md`.
+It also writes `tools/generated/skin-roster.js`, which the build splices into `ludo78.js`. A PNG that isn't in the catalog is ignored.
+
+**Starters:** put `spirit_base_blue.png` and `spirit_base_rose.png` in the same folder and rerun both commands. They become `base-blue-*` / `base-rose-*` and get their own "Starter forms" tab. `assets/v2/skins/legacy/` keeps the older `adultblue3` / `adultpink3` images that earlier builds used; they are not the starters and nothing references them.
 
 ## Integration (when approved) — corrected after reading lifedecode-game
 

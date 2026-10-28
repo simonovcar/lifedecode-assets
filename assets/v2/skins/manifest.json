@@ -1,381 +1,19 @@
 {
-  "source": "owner upload (LifeDecode-Skins-Part1..5.zip), local development worktree",
-  "unmatchedOwnerNames": [
-    "Crimson Oracle",
-    "Luminous Druid",
-    "Shadow Harlequin",
-    "Starforged Knight",
-    "Bone Warden"
+  "source": "owner upload (LifeDecode-Skins-Part1..6.zip), local development build",
+  "catalog": "tools/skin-catalog.json (verified development catalog)",
+  "missingAssets": [
+    "spirit_base_blue.png",
+    "spirit_base_rose.png"
   ],
+  "legacy": "legacy/ holds the older adultblue3/adultpink3 sprites; they are not the Base Blue/Base Rose starters and are not used",
   "skins": {
-    "base-blue": {
-      "sourceFile": "adultblue3.png",
-      "internalId": "base_blue",
-      "name": "Base Blue",
-      "nameSource": "owner-named starter; file identical to game sprite ld_char_blue",
-      "glow": "#099fe9",
-      "images": {
-        "1200": {
-          "file": "base-blue-1200.webp",
-          "size": [
-            368,
-            1118
-          ],
-          "bytes": 120840
-        },
-        "600": {
-          "file": "base-blue-600.webp",
-          "size": [
-            197,
-            600
-          ],
-          "bytes": 41434
-        },
-        "thumb": {
-          "file": "base-blue-thumb.webp",
-          "size": [
-            79,
-            240
-          ],
-          "bytes": 8030
-        }
-      }
-    },
-    "base-rose": {
-      "sourceFile": "adultpink3.png",
-      "internalId": "base_rose",
-      "name": "Base Rose",
-      "nameSource": "owner-named starter; file identical to game sprite ld_char_pink",
-      "glow": "#b34fbf",
-      "images": {
-        "1200": {
-          "file": "base-rose-1200.webp",
-          "size": [
-            375,
-            997
-          ],
-          "bytes": 110400
-        },
-        "600": {
-          "file": "base-rose-600.webp",
-          "size": [
-            226,
-            600
-          ],
-          "bytes": 46576
-        },
-        "thumb": {
-          "file": "base-rose-thumb.webp",
-          "size": [
-            90,
-            240
-          ],
-          "bytes": 8686
-        }
-      }
-    },
-    "abyssal-oracle": {
-      "sourceFile": "skin_abyssal_oracle.png",
-      "internalId": "abyssal_oracle",
-      "name": "Abyssal Oracle",
-      "nameSource": "filename",
-      "glow": "#2f8ec2",
-      "images": {
-        "1200": {
-          "file": "abyssal-oracle-1200.webp",
-          "size": [
-            536,
-            1200
-          ],
-          "bytes": 259360
-        },
-        "600": {
-          "file": "abyssal-oracle-600.webp",
-          "size": [
-            268,
-            600
-          ],
-          "bytes": 81104
-        },
-        "thumb": {
-          "file": "abyssal-oracle-thumb.webp",
-          "size": [
-            107,
-            240
-          ],
-          "bytes": 18118
-        }
-      }
-    },
-    "abyssal-tide": {
-      "sourceFile": "skin_abyssal_tide.png",
-      "internalId": "abyssal_tide",
-      "name": "Abyssal Tide",
-      "nameSource": "owner-listed; exact filename match",
-      "glow": "#2c8eb5",
-      "images": {
-        "1200": {
-          "file": "abyssal-tide-1200.webp",
-          "size": [
-            541,
-            1200
-          ],
-          "bytes": 231776
-        },
-        "600": {
-          "file": "abyssal-tide-600.webp",
-          "size": [
-            271,
-            600
-          ],
-          "bytes": 69908
-        },
-        "thumb": {
-          "file": "abyssal-tide-thumb.webp",
-          "size": [
-            108,
-            240
-          ],
-          "bytes": 15880
-        }
-      }
-    },
-    "amethyst-oracle": {
-      "sourceFile": "skin_amethyst_oracle.png",
-      "internalId": "amethyst_oracle",
-      "name": "Amethyst Oracle",
-      "nameSource": "filename",
-      "glow": "#7944e5",
-      "images": {
-        "1200": {
-          "file": "amethyst-oracle-1200.webp",
-          "size": [
-            548,
-            1200
-          ],
-          "bytes": 253388
-        },
-        "600": {
-          "file": "amethyst-oracle-600.webp",
-          "size": [
-            274,
-            600
-          ],
-          "bytes": 77382
-        },
-        "thumb": {
-          "file": "amethyst-oracle-thumb.webp",
-          "size": [
-            110,
-            240
-          ],
-          "bytes": 17430
-        }
-      }
-    },
-    "ancient-grove": {
-      "sourceFile": "skin_ancient_grove.png",
-      "internalId": "ancient_grove",
-      "name": "Ancient Grove",
-      "nameSource": "filename",
-      "glow": "#a08732",
-      "images": {
-        "1200": {
-          "file": "ancient-grove-1200.webp",
-          "size": [
-            457,
-            1200
-          ],
-          "bytes": 255570
-        },
-        "600": {
-          "file": "ancient-grove-600.webp",
-          "size": [
-            229,
-            600
-          ],
-          "bytes": 74296
-        },
-        "thumb": {
-          "file": "ancient-grove-thumb.webp",
-          "size": [
-            91,
-            240
-          ],
-          "bytes": 17612
-        }
-      }
-    },
-    "bloodmoon-shogun": {
-      "sourceFile": "skin_bloodmoon_shogun.png",
-      "internalId": "bloodmoon_shogun",
-      "name": "Bloodmoon Shogun",
-      "nameSource": "filename",
-      "glow": "#c3252e",
-      "images": {
-        "1200": {
-          "file": "bloodmoon-shogun-1200.webp",
-          "size": [
-            553,
-            1200
-          ],
-          "bytes": 263234
-        },
-        "600": {
-          "file": "bloodmoon-shogun-600.webp",
-          "size": [
-            276,
-            600
-          ],
-          "bytes": 77760
-        },
-        "thumb": {
-          "file": "bloodmoon-shogun-thumb.webp",
-          "size": [
-            111,
-            240
-          ],
-          "bytes": 18752
-        }
-      }
-    },
-    "celestial-ascendant": {
-      "sourceFile": "skin_celestial_ascendant.png",
-      "internalId": "celestial_ascendant",
-      "name": "Celestial Ascendant",
-      "nameSource": "filename",
-      "glow": "#e5ba84",
-      "images": {
-        "1200": {
-          "file": "celestial-ascendant-1200.webp",
-          "size": [
-            450,
-            1200
-          ],
-          "bytes": 215402
-        },
-        "600": {
-          "file": "celestial-ascendant-600.webp",
-          "size": [
-            225,
-            600
-          ],
-          "bytes": 65218
-        },
-        "thumb": {
-          "file": "celestial-ascendant-thumb.webp",
-          "size": [
-            90,
-            240
-          ],
-          "bytes": 16268
-        }
-      }
-    },
-    "clockwork-soul": {
-      "sourceFile": "skin_clockwork_soul.png",
-      "internalId": "clockwork_soul",
-      "name": "Clockwork Soul",
-      "nameSource": "owner-listed; exact filename match",
-      "glow": "#25a0b7",
-      "images": {
-        "1200": {
-          "file": "clockwork-soul-1200.webp",
-          "size": [
-            607,
-            1200
-          ],
-          "bytes": 283188
-        },
-        "600": {
-          "file": "clockwork-soul-600.webp",
-          "size": [
-            303,
-            600
-          ],
-          "bytes": 83938
-        },
-        "thumb": {
-          "file": "clockwork-soul-thumb.webp",
-          "size": [
-            121,
-            240
-          ],
-          "bytes": 19838
-        }
-      }
-    },
-    "crimson-count": {
-      "sourceFile": "skin_crimson_count.png",
-      "internalId": "crimson_count",
-      "name": "Crimson Count",
-      "nameSource": "filename",
-      "glow": "#ab1530",
-      "images": {
-        "1200": {
-          "file": "crimson-count-1200.webp",
-          "size": [
-            486,
-            1200
-          ],
-          "bytes": 149882
-        },
-        "600": {
-          "file": "crimson-count-600.webp",
-          "size": [
-            243,
-            600
-          ],
-          "bytes": 49054
-        },
-        "thumb": {
-          "file": "crimson-count-thumb.webp",
-          "size": [
-            97,
-            240
-          ],
-          "bytes": 12232
-        }
-      }
-    },
-    "eclipse-warden": {
-      "sourceFile": "skin_eclipse_warden.png",
-      "internalId": "eclipse_warden",
-      "name": "Eclipse Warden",
-      "nameSource": "filename",
-      "glow": "#bb8d65",
-      "images": {
-        "1200": {
-          "file": "eclipse-warden-1200.webp",
-          "size": [
-            572,
-            1200
-          ],
-          "bytes": 251346
-        },
-        "600": {
-          "file": "eclipse-warden-600.webp",
-          "size": [
-            286,
-            600
-          ],
-          "bytes": 77018
-        },
-        "thumb": {
-          "file": "eclipse-warden-thumb.webp",
-          "size": [
-            114,
-            240
-          ],
-          "bytes": 17628
-        }
-      }
-    },
     "emberborn": {
       "sourceFile": "skin_emberborn.png",
-      "internalId": "emberborn",
+      "catalogId": "emberborn",
       "name": "Emberborn",
-      "nameSource": "owner-listed; exact filename match",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 1,
       "glow": "#f36a0c",
       "images": {
         "1200": {
@@ -404,15 +42,157 @@
         }
       }
     },
-    "frost": {
+    "abyssal-tide": {
+      "sourceFile": "skin_abyssal_tide.png",
+      "catalogId": "abyssal_tide",
+      "name": "Abyssal Tide",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 1,
+      "glow": "#2c8eb5",
+      "images": {
+        "1200": {
+          "file": "abyssal-tide-1200.webp",
+          "size": [
+            541,
+            1200
+          ],
+          "bytes": 231776
+        },
+        "600": {
+          "file": "abyssal-tide-600.webp",
+          "size": [
+            271,
+            600
+          ],
+          "bytes": 69908
+        },
+        "thumb": {
+          "file": "abyssal-tide-thumb.webp",
+          "size": [
+            108,
+            240
+          ],
+          "bytes": 15880
+        }
+      }
+    },
+    "clockwork-soul": {
+      "sourceFile": "skin_clockwork_soul.png",
+      "catalogId": "clockwork_soul",
+      "name": "Clockwork Soul",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 1,
+      "glow": "#25a0b7",
+      "images": {
+        "1200": {
+          "file": "clockwork-soul-1200.webp",
+          "size": [
+            607,
+            1200
+          ],
+          "bytes": 283188
+        },
+        "600": {
+          "file": "clockwork-soul-600.webp",
+          "size": [
+            303,
+            600
+          ],
+          "bytes": 83938
+        },
+        "thumb": {
+          "file": "clockwork-soul-thumb.webp",
+          "size": [
+            121,
+            240
+          ],
+          "bytes": 19838
+        }
+      }
+    },
+    "void-wanderer": {
+      "sourceFile": "skin_void_wanderer.png",
+      "catalogId": "void_wanderer",
+      "name": "Void Wanderer",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 1,
+      "glow": "#6a58a1",
+      "images": {
+        "1200": {
+          "file": "void-wanderer-1200.webp",
+          "size": [
+            479,
+            1200
+          ],
+          "bytes": 228318
+        },
+        "600": {
+          "file": "void-wanderer-600.webp",
+          "size": [
+            239,
+            600
+          ],
+          "bytes": 65814
+        },
+        "thumb": {
+          "file": "void-wanderer-thumb.webp",
+          "size": [
+            96,
+            240
+          ],
+          "bytes": 15208
+        }
+      }
+    },
+    "verdant-keeper": {
+      "sourceFile": "skin_verdant_keeper.png",
+      "catalogId": "verdant_keeper",
+      "name": "Verdant Keeper",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 1,
+      "glow": "#80b053",
+      "images": {
+        "1200": {
+          "file": "verdant-keeper-1200.webp",
+          "size": [
+            438,
+            1200
+          ],
+          "bytes": 223688
+        },
+        "600": {
+          "file": "verdant-keeper-600.webp",
+          "size": [
+            219,
+            600
+          ],
+          "bytes": 68722
+        },
+        "thumb": {
+          "file": "verdant-keeper-thumb.webp",
+          "size": [
+            88,
+            240
+          ],
+          "bytes": 16292
+        }
+      }
+    },
+    "frost-revenant": {
       "sourceFile": "skin_frost.png",
-      "internalId": "frost",
+      "catalogId": "frost_revenant",
       "name": "Frost Revenant",
-      "nameSource": "owner-listed; matched to skin_frost.png (only frost skin) - please confirm",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 1,
       "glow": "#4e93d3",
       "images": {
         "1200": {
-          "file": "frost-1200.webp",
+          "file": "frost-revenant-1200.webp",
           "size": [
             505,
             1200
@@ -420,7 +200,7 @@
           "bytes": 253178
         },
         "600": {
-          "file": "frost-600.webp",
+          "file": "frost-revenant-600.webp",
           "size": [
             252,
             600
@@ -428,7 +208,7 @@
           "bytes": 76516
         },
         "thumb": {
-          "file": "frost-thumb.webp",
+          "file": "frost-revenant-thumb.webp",
           "size": [
             101,
             240
@@ -437,11 +217,293 @@
         }
       }
     },
+    "amethyst-oracle": {
+      "sourceFile": "skin_amethyst_oracle.png",
+      "catalogId": "amethyst_oracle",
+      "name": "Amethyst Oracle",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 1,
+      "glow": "#7944e5",
+      "images": {
+        "1200": {
+          "file": "amethyst-oracle-1200.webp",
+          "size": [
+            548,
+            1200
+          ],
+          "bytes": 253388
+        },
+        "600": {
+          "file": "amethyst-oracle-600.webp",
+          "size": [
+            274,
+            600
+          ],
+          "bytes": 77382
+        },
+        "thumb": {
+          "file": "amethyst-oracle-thumb.webp",
+          "size": [
+            110,
+            240
+          ],
+          "bytes": 17430
+        }
+      }
+    },
+    "celestial-ascendant": {
+      "sourceFile": "skin_celestial_ascendant.png",
+      "catalogId": "celestial_ascendant",
+      "name": "Celestial Ascendant",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 1,
+      "glow": "#e5ba84",
+      "images": {
+        "1200": {
+          "file": "celestial-ascendant-1200.webp",
+          "size": [
+            450,
+            1200
+          ],
+          "bytes": 215402
+        },
+        "600": {
+          "file": "celestial-ascendant-600.webp",
+          "size": [
+            225,
+            600
+          ],
+          "bytes": 65218
+        },
+        "thumb": {
+          "file": "celestial-ascendant-thumb.webp",
+          "size": [
+            90,
+            240
+          ],
+          "bytes": 16268
+        }
+      }
+    },
+    "sunstone-guardian": {
+      "sourceFile": "skin_sunstone_guardian.png",
+      "catalogId": "sunstone_guardian",
+      "name": "Sunstone Guardian",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 1,
+      "glow": "#e58f34",
+      "images": {
+        "1200": {
+          "file": "sunstone-guardian-1200.webp",
+          "size": [
+            510,
+            1200
+          ],
+          "bytes": 241824
+        },
+        "600": {
+          "file": "sunstone-guardian-600.webp",
+          "size": [
+            255,
+            600
+          ],
+          "bytes": 73146
+        },
+        "thumb": {
+          "file": "sunstone-guardian-thumb.webp",
+          "size": [
+            102,
+            240
+          ],
+          "bytes": 17306
+        }
+      }
+    },
+    "eclipse-warden": {
+      "sourceFile": "skin_eclipse_warden.png",
+      "catalogId": "eclipse_warden",
+      "name": "Eclipse Warden",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 1,
+      "glow": "#bb8d65",
+      "images": {
+        "1200": {
+          "file": "eclipse-warden-1200.webp",
+          "size": [
+            572,
+            1200
+          ],
+          "bytes": 251346
+        },
+        "600": {
+          "file": "eclipse-warden-600.webp",
+          "size": [
+            286,
+            600
+          ],
+          "bytes": 77018
+        },
+        "thumb": {
+          "file": "eclipse-warden-thumb.webp",
+          "size": [
+            114,
+            240
+          ],
+          "bytes": 17628
+        }
+      }
+    },
+    "bloodmoon-shogun": {
+      "sourceFile": "skin_bloodmoon_shogun.png",
+      "catalogId": "bloodmoon_shogun",
+      "name": "Bloodmoon Shogun",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 1,
+      "glow": "#c3252e",
+      "images": {
+        "1200": {
+          "file": "bloodmoon-shogun-1200.webp",
+          "size": [
+            553,
+            1200
+          ],
+          "bytes": 263234
+        },
+        "600": {
+          "file": "bloodmoon-shogun-600.webp",
+          "size": [
+            276,
+            600
+          ],
+          "bytes": 77760
+        },
+        "thumb": {
+          "file": "bloodmoon-shogun-thumb.webp",
+          "size": [
+            111,
+            240
+          ],
+          "bytes": 18752
+        }
+      }
+    },
+    "plague-lantern": {
+      "sourceFile": "skin_plague_lantern.png",
+      "catalogId": "plague_lantern",
+      "name": "Plague Lantern",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 2,
+      "glow": "#9ead4e",
+      "images": {
+        "1200": {
+          "file": "plague-lantern-1200.webp",
+          "size": [
+            572,
+            1200
+          ],
+          "bytes": 251148
+        },
+        "600": {
+          "file": "plague-lantern-600.webp",
+          "size": [
+            286,
+            600
+          ],
+          "bytes": 80092
+        },
+        "thumb": {
+          "file": "plague-lantern-thumb.webp",
+          "size": [
+            114,
+            240
+          ],
+          "bytes": 18954
+        }
+      }
+    },
+    "the-weeping-saint": {
+      "sourceFile": "skin_the_weeping_saint.png",
+      "catalogId": "the_weeping_saint",
+      "name": "The Weeping Saint",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 2,
+      "glow": "#8c8882",
+      "images": {
+        "1200": {
+          "file": "the-weeping-saint-1200.webp",
+          "size": [
+            588,
+            1200
+          ],
+          "bytes": 264054
+        },
+        "600": {
+          "file": "the-weeping-saint-600.webp",
+          "size": [
+            294,
+            600
+          ],
+          "bytes": 78638
+        },
+        "thumb": {
+          "file": "the-weeping-saint-thumb.webp",
+          "size": [
+            118,
+            240
+          ],
+          "bytes": 16896
+        }
+      }
+    },
+    "the-smiling-hollow": {
+      "sourceFile": "skin_the_smiling_hollow.png",
+      "catalogId": "the_smiling_hollow",
+      "name": "The Smiling Hollow",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 2,
+      "glow": "#5d4654",
+      "images": {
+        "1200": {
+          "file": "the-smiling-hollow-1200.webp",
+          "size": [
+            568,
+            1200
+          ],
+          "bytes": 246510
+        },
+        "600": {
+          "file": "the-smiling-hollow-600.webp",
+          "size": [
+            284,
+            600
+          ],
+          "bytes": 73900
+        },
+        "thumb": {
+          "file": "the-smiling-hollow-thumb.webp",
+          "size": [
+            114,
+            240
+          ],
+          "bytes": 17082
+        }
+      }
+    },
     "hallowveil-harbinger": {
       "sourceFile": "skin_hallowveil_harbinger.png",
-      "internalId": "hallowveil_harbinger",
+      "catalogId": "hallowveil_harbinger",
       "name": "Hallowveil Harbinger",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 2,
       "glow": "#d5713a",
       "images": {
         "1200": {
@@ -470,11 +532,188 @@
         }
       }
     },
+    "the-lantern-judge": {
+      "sourceFile": "skin_the_lantern_judge.png",
+      "catalogId": "the_lantern_judge",
+      "name": "The Lantern Judge",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 2,
+      "glow": "#9f613a",
+      "images": {
+        "1200": {
+          "file": "the-lantern-judge-1200.webp",
+          "size": [
+            511,
+            1200
+          ],
+          "bytes": 247202
+        },
+        "600": {
+          "file": "the-lantern-judge-600.webp",
+          "size": [
+            255,
+            600
+          ],
+          "bytes": 75608
+        },
+        "thumb": {
+          "file": "the-lantern-judge-thumb.webp",
+          "size": [
+            102,
+            240
+          ],
+          "bytes": 16834
+        }
+      }
+    },
+    "the-red-widow": {
+      "sourceFile": "skin_the_red_widow.png",
+      "catalogId": "the_red_widow",
+      "name": "The Red Widow",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 2,
+      "glow": "#81272b",
+      "images": {
+        "1200": {
+          "file": "the-red-widow-1200.webp",
+          "size": [
+            628,
+            1200
+          ],
+          "bytes": 263726
+        },
+        "600": {
+          "file": "the-red-widow-600.webp",
+          "size": [
+            314,
+            600
+          ],
+          "bytes": 76586
+        },
+        "thumb": {
+          "file": "the-red-widow-thumb.webp",
+          "size": [
+            126,
+            240
+          ],
+          "bytes": 16496
+        }
+      }
+    },
+    "the-dreadtide-corsair": {
+      "sourceFile": "skin_the_dreadtide_corsair.png",
+      "catalogId": "the_dreadtide_corsair",
+      "name": "The Dreadtide Corsair",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 2,
+      "glow": "#228c9a",
+      "images": {
+        "1200": {
+          "file": "the-dreadtide-corsair-1200.webp",
+          "size": [
+            599,
+            1200
+          ],
+          "bytes": 335014
+        },
+        "600": {
+          "file": "the-dreadtide-corsair-600.webp",
+          "size": [
+            300,
+            600
+          ],
+          "bytes": 99110
+        },
+        "thumb": {
+          "file": "the-dreadtide-corsair-thumb.webp",
+          "size": [
+            120,
+            240
+          ],
+          "bytes": 21188
+        }
+      }
+    },
+    "the-star-marshal": {
+      "sourceFile": "skin_the_star_marshal.png",
+      "catalogId": "the_star_marshal",
+      "name": "The Star Marshal",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 2,
+      "glow": "#a4866b",
+      "images": {
+        "1200": {
+          "file": "the-star-marshal-1200.webp",
+          "size": [
+            590,
+            1200
+          ],
+          "bytes": 320246
+        },
+        "600": {
+          "file": "the-star-marshal-600.webp",
+          "size": [
+            295,
+            600
+          ],
+          "bytes": 91270
+        },
+        "thumb": {
+          "file": "the-star-marshal-thumb.webp",
+          "size": [
+            118,
+            240
+          ],
+          "bytes": 19916
+        }
+      }
+    },
+    "the-teacup-trickster": {
+      "sourceFile": "skin_the_teacup_trickster.png",
+      "catalogId": "the_teacup_trickster",
+      "name": "The Teacup Trickster",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 2,
+      "glow": "#b6855c",
+      "images": {
+        "1200": {
+          "file": "the-teacup-trickster-1200.webp",
+          "size": [
+            579,
+            1200
+          ],
+          "bytes": 278040
+        },
+        "600": {
+          "file": "the-teacup-trickster-600.webp",
+          "size": [
+            289,
+            600
+          ],
+          "bytes": 86268
+        },
+        "thumb": {
+          "file": "the-teacup-trickster-thumb.webp",
+          "size": [
+            116,
+            240
+          ],
+          "bytes": 20704
+        }
+      }
+    },
     "hollow-puppeteer": {
       "sourceFile": "skin_hollow_puppeteer.png",
-      "internalId": "hollow_puppeteer",
-      "name": "Hollow Puppeteer",
-      "nameSource": "filename",
+      "catalogId": "hollow_puppeteer",
+      "name": "The Hollow Puppeteer",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 2,
       "glow": "#922729",
       "images": {
         "1200": {
@@ -505,9 +744,11 @@
     },
     "jade-emperor-spirit": {
       "sourceFile": "skin_jade_emperor_spirit.png",
-      "internalId": "jade_emperor_spirit",
+      "catalogId": "jade_emperor_spirit",
       "name": "Jade Emperor Spirit",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 2,
       "glow": "#709e77",
       "images": {
         "1200": {
@@ -536,275 +777,13 @@
         }
       }
     },
-    "plague-doctor": {
-      "sourceFile": "skin_plague_doctor.png",
-      "internalId": "plague_doctor",
-      "name": "Plague Doctor",
-      "nameSource": "filename",
-      "glow": "#59a948",
-      "images": {
-        "1200": {
-          "file": "plague-doctor-1200.webp",
-          "size": [
-            490,
-            1200
-          ],
-          "bytes": 208686
-        },
-        "600": {
-          "file": "plague-doctor-600.webp",
-          "size": [
-            245,
-            600
-          ],
-          "bytes": 63548
-        },
-        "thumb": {
-          "file": "plague-doctor-thumb.webp",
-          "size": [
-            98,
-            240
-          ],
-          "bytes": 14602
-        }
-      }
-    },
-    "plague-lantern": {
-      "sourceFile": "skin_plague_lantern.png",
-      "internalId": "plague_lantern",
-      "name": "Plague Lantern",
-      "nameSource": "filename",
-      "glow": "#9ead4e",
-      "images": {
-        "1200": {
-          "file": "plague-lantern-1200.webp",
-          "size": [
-            572,
-            1200
-          ],
-          "bytes": 251148
-        },
-        "600": {
-          "file": "plague-lantern-600.webp",
-          "size": [
-            286,
-            600
-          ],
-          "bytes": 80092
-        },
-        "thumb": {
-          "file": "plague-lantern-thumb.webp",
-          "size": [
-            114,
-            240
-          ],
-          "bytes": 18954
-        }
-      }
-    },
-    "ronin-spirit": {
-      "sourceFile": "skin_ronin_spirit.png",
-      "internalId": "ronin_spirit",
-      "name": "Ronin Spirit",
-      "nameSource": "filename",
-      "glow": "#b3332a",
-      "images": {
-        "1200": {
-          "file": "ronin-spirit-1200.webp",
-          "size": [
-            724,
-            1200
-          ],
-          "bytes": 246874
-        },
-        "600": {
-          "file": "ronin-spirit-600.webp",
-          "size": [
-            362,
-            600
-          ],
-          "bytes": 72444
-        },
-        "thumb": {
-          "file": "ronin-spirit-thumb.webp",
-          "size": [
-            145,
-            240
-          ],
-          "bytes": 17458
-        }
-      }
-    },
-    "sunstone-guardian": {
-      "sourceFile": "skin_sunstone_guardian.png",
-      "internalId": "sunstone_guardian",
-      "name": "Sunstone Guardian",
-      "nameSource": "filename",
-      "glow": "#e58f34",
-      "images": {
-        "1200": {
-          "file": "sunstone-guardian-1200.webp",
-          "size": [
-            510,
-            1200
-          ],
-          "bytes": 241824
-        },
-        "600": {
-          "file": "sunstone-guardian-600.webp",
-          "size": [
-            255,
-            600
-          ],
-          "bytes": 73146
-        },
-        "thumb": {
-          "file": "sunstone-guardian-thumb.webp",
-          "size": [
-            102,
-            240
-          ],
-          "bytes": 17306
-        }
-      }
-    },
-    "the-acorn-guardian": {
-      "sourceFile": "skin_the_acorn_guardian.png",
-      "internalId": "the_acorn_guardian",
-      "name": "The Acorn Guardian",
-      "nameSource": "filename",
-      "glow": "#d07b1d",
-      "images": {
-        "1200": {
-          "file": "the-acorn-guardian-1200.webp",
-          "size": [
-            623,
-            1200
-          ],
-          "bytes": 292208
-        },
-        "600": {
-          "file": "the-acorn-guardian-600.webp",
-          "size": [
-            312,
-            600
-          ],
-          "bytes": 84992
-        },
-        "thumb": {
-          "file": "the-acorn-guardian-thumb.webp",
-          "size": [
-            125,
-            240
-          ],
-          "bytes": 19316
-        }
-      }
-    },
-    "the-blossom-dreamer": {
-      "sourceFile": "skin_the_blossom_dreamer.png",
-      "internalId": "the_blossom_dreamer",
-      "name": "The Blossom Dreamer",
-      "nameSource": "filename",
-      "glow": "#e48081",
-      "images": {
-        "1200": {
-          "file": "the-blossom-dreamer-1200.webp",
-          "size": [
-            525,
-            1200
-          ],
-          "bytes": 229928
-        },
-        "600": {
-          "file": "the-blossom-dreamer-600.webp",
-          "size": [
-            263,
-            600
-          ],
-          "bytes": 65676
-        },
-        "thumb": {
-          "file": "the-blossom-dreamer-thumb.webp",
-          "size": [
-            105,
-            240
-          ],
-          "bytes": 14936
-        }
-      }
-    },
-    "the-cinnamon-bandit": {
-      "sourceFile": "skin_the_cinnamon_bandit.png",
-      "internalId": "the_cinnamon_bandit",
-      "name": "The Cinnamon Bandit",
-      "nameSource": "filename",
-      "glow": "#d97b28",
-      "images": {
-        "1200": {
-          "file": "the-cinnamon-bandit-1200.webp",
-          "size": [
-            721,
-            1200
-          ],
-          "bytes": 275912
-        },
-        "600": {
-          "file": "the-cinnamon-bandit-600.webp",
-          "size": [
-            360,
-            600
-          ],
-          "bytes": 79978
-        },
-        "thumb": {
-          "file": "the-cinnamon-bandit-thumb.webp",
-          "size": [
-            144,
-            240
-          ],
-          "bytes": 17254
-        }
-      }
-    },
-    "the-dreadtide-corsair": {
-      "sourceFile": "skin_the_dreadtide_corsair.png",
-      "internalId": "the_dreadtide_corsair",
-      "name": "The Dreadtide Corsair",
-      "nameSource": "filename",
-      "glow": "#228c9a",
-      "images": {
-        "1200": {
-          "file": "the-dreadtide-corsair-1200.webp",
-          "size": [
-            599,
-            1200
-          ],
-          "bytes": 335014
-        },
-        "600": {
-          "file": "the-dreadtide-corsair-600.webp",
-          "size": [
-            300,
-            600
-          ],
-          "bytes": 99110
-        },
-        "thumb": {
-          "file": "the-dreadtide-corsair-thumb.webp",
-          "size": [
-            120,
-            240
-          ],
-          "bytes": 21188
-        }
-      }
-    },
     "the-fool-king": {
       "sourceFile": "skin_the_fool_king.png",
-      "internalId": "the_fool_king",
+      "catalogId": "the_fool_king",
       "name": "The Fool King",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 2,
       "glow": "#4c66aa",
       "images": {
         "1200": {
@@ -833,11 +812,328 @@
         }
       }
     },
+    "the-stained-glass-sovereign": {
+      "sourceFile": "skin_the_stained_glass_sovereign.png",
+      "catalogId": "the_stained_glass_sovereign",
+      "name": "The Stained Glass Sovereign",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 2,
+      "glow": "#7c7e96",
+      "images": {
+        "1200": {
+          "file": "the-stained-glass-sovereign-1200.webp",
+          "size": [
+            476,
+            1200
+          ],
+          "bytes": 282570
+        },
+        "600": {
+          "file": "the-stained-glass-sovereign-600.webp",
+          "size": [
+            238,
+            600
+          ],
+          "bytes": 84236
+        },
+        "thumb": {
+          "file": "the-stained-glass-sovereign-thumb.webp",
+          "size": [
+            95,
+            240
+          ],
+          "bytes": 19532
+        }
+      }
+    },
+    "abyssal-oracle": {
+      "sourceFile": "skin_abyssal_oracle.png",
+      "catalogId": "abyssal_oracle",
+      "name": "Abyssal Oracle",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 3,
+      "glow": "#2f8ec2",
+      "images": {
+        "1200": {
+          "file": "abyssal-oracle-1200.webp",
+          "size": [
+            536,
+            1200
+          ],
+          "bytes": 259360
+        },
+        "600": {
+          "file": "abyssal-oracle-600.webp",
+          "size": [
+            268,
+            600
+          ],
+          "bytes": 81104
+        },
+        "thumb": {
+          "file": "abyssal-oracle-thumb.webp",
+          "size": [
+            107,
+            240
+          ],
+          "bytes": 18118
+        }
+      }
+    },
+    "ancient-grove": {
+      "sourceFile": "skin_ancient_grove.png",
+      "catalogId": "ancient_grove",
+      "name": "Ancient Grove",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 3,
+      "glow": "#a08732",
+      "images": {
+        "1200": {
+          "file": "ancient-grove-1200.webp",
+          "size": [
+            457,
+            1200
+          ],
+          "bytes": 255570
+        },
+        "600": {
+          "file": "ancient-grove-600.webp",
+          "size": [
+            229,
+            600
+          ],
+          "bytes": 74296
+        },
+        "thumb": {
+          "file": "ancient-grove-thumb.webp",
+          "size": [
+            91,
+            240
+          ],
+          "bytes": 17612
+        }
+      }
+    },
+    "crimson-count": {
+      "sourceFile": "skin_crimson_count.png",
+      "catalogId": "crimson_count",
+      "name": "Crimson Count",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 3,
+      "glow": "#ab1530",
+      "images": {
+        "1200": {
+          "file": "crimson-count-1200.webp",
+          "size": [
+            486,
+            1200
+          ],
+          "bytes": 149882
+        },
+        "600": {
+          "file": "crimson-count-600.webp",
+          "size": [
+            243,
+            600
+          ],
+          "bytes": 49054
+        },
+        "thumb": {
+          "file": "crimson-count-thumb.webp",
+          "size": [
+            97,
+            240
+          ],
+          "bytes": 12232
+        }
+      }
+    },
+    "plague-doctor": {
+      "sourceFile": "skin_plague_doctor.png",
+      "catalogId": "plague_doctor",
+      "name": "Plague Doctor",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 3,
+      "glow": "#59a948",
+      "images": {
+        "1200": {
+          "file": "plague-doctor-1200.webp",
+          "size": [
+            490,
+            1200
+          ],
+          "bytes": 208686
+        },
+        "600": {
+          "file": "plague-doctor-600.webp",
+          "size": [
+            245,
+            600
+          ],
+          "bytes": 63548
+        },
+        "thumb": {
+          "file": "plague-doctor-thumb.webp",
+          "size": [
+            98,
+            240
+          ],
+          "bytes": 14602
+        }
+      }
+    },
+    "voidwalker": {
+      "sourceFile": "skin_voidwalker.png",
+      "catalogId": "voidwalker",
+      "name": "Voidwalker",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 3,
+      "glow": "#4249e6",
+      "images": {
+        "1200": {
+          "file": "voidwalker-1200.webp",
+          "size": [
+            557,
+            1200
+          ],
+          "bytes": 256912
+        },
+        "600": {
+          "file": "voidwalker-600.webp",
+          "size": [
+            279,
+            600
+          ],
+          "bytes": 73654
+        },
+        "thumb": {
+          "file": "voidwalker-thumb.webp",
+          "size": [
+            111,
+            240
+          ],
+          "bytes": 17364
+        }
+      }
+    },
+    "the-blossom-dreamer": {
+      "sourceFile": "skin_the_blossom_dreamer.png",
+      "catalogId": "the_blossom_dreamer",
+      "name": "The Blossom Dreamer",
+      "starter": false,
+      "rarity": "Rare",
+      "wave": 3,
+      "glow": "#e48081",
+      "images": {
+        "1200": {
+          "file": "the-blossom-dreamer-1200.webp",
+          "size": [
+            525,
+            1200
+          ],
+          "bytes": 229928
+        },
+        "600": {
+          "file": "the-blossom-dreamer-600.webp",
+          "size": [
+            263,
+            600
+          ],
+          "bytes": 65676
+        },
+        "thumb": {
+          "file": "the-blossom-dreamer-thumb.webp",
+          "size": [
+            105,
+            240
+          ],
+          "bytes": 14936
+        }
+      }
+    },
+    "ronin-spirit": {
+      "sourceFile": "skin_ronin_spirit.png",
+      "catalogId": "ronin_spirit",
+      "name": "Ronin Spirit",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#b3332a",
+      "images": {
+        "1200": {
+          "file": "ronin-spirit-1200.webp",
+          "size": [
+            724,
+            1200
+          ],
+          "bytes": 246874
+        },
+        "600": {
+          "file": "ronin-spirit-600.webp",
+          "size": [
+            362,
+            600
+          ],
+          "bytes": 72444
+        },
+        "thumb": {
+          "file": "ronin-spirit-thumb.webp",
+          "size": [
+            145,
+            240
+          ],
+          "bytes": 17458
+        }
+      }
+    },
+    "the-porcelain-requiem": {
+      "sourceFile": "skin_the_porcelain_requiem.png",
+      "catalogId": "the_porcelain_requiem",
+      "name": "The Porcelain Requiem",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#8568ac",
+      "images": {
+        "1200": {
+          "file": "the-porcelain-requiem-1200.webp",
+          "size": [
+            453,
+            1200
+          ],
+          "bytes": 250622
+        },
+        "600": {
+          "file": "the-porcelain-requiem-600.webp",
+          "size": [
+            227,
+            600
+          ],
+          "bytes": 75504
+        },
+        "thumb": {
+          "file": "the-porcelain-requiem-thumb.webp",
+          "size": [
+            91,
+            240
+          ],
+          "bytes": 17674
+        }
+      }
+    },
     "the-gilded-moth": {
       "sourceFile": "skin_the_gilded_moth.png",
-      "internalId": "the_gilded_moth",
+      "catalogId": "the_gilded_moth",
       "name": "The Gilded Moth",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
       "glow": "#c4a07a",
       "images": {
         "1200": {
@@ -866,44 +1162,48 @@
         }
       }
     },
-    "the-lantern-judge": {
-      "sourceFile": "skin_the_lantern_judge.png",
-      "internalId": "the_lantern_judge",
-      "name": "The Lantern Judge",
-      "nameSource": "filename",
-      "glow": "#9f613a",
+    "the-starwhisper-bunny": {
+      "sourceFile": "skin_the_starwhisper_bunny.png",
+      "catalogId": "the_starwhisper_bunny",
+      "name": "The Starwhisper Bunny",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#c2a6a2",
       "images": {
         "1200": {
-          "file": "the-lantern-judge-1200.webp",
+          "file": "the-starwhisper-bunny-1200.webp",
           "size": [
-            511,
+            532,
             1200
           ],
-          "bytes": 247202
+          "bytes": 235702
         },
         "600": {
-          "file": "the-lantern-judge-600.webp",
+          "file": "the-starwhisper-bunny-600.webp",
           "size": [
-            255,
+            266,
             600
           ],
-          "bytes": 75608
+          "bytes": 67644
         },
         "thumb": {
-          "file": "the-lantern-judge-thumb.webp",
+          "file": "the-starwhisper-bunny-thumb.webp",
           "size": [
-            102,
+            106,
             240
           ],
-          "bytes": 16834
+          "bytes": 15414
         }
       }
     },
     "the-lily-crown-prince": {
       "sourceFile": "skin_the_lily_crown_prince.png",
-      "internalId": "the_lily_crown_prince",
+      "catalogId": "the_lily_crown_prince",
       "name": "The Lily Crown Prince",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
       "glow": "#899d63",
       "images": {
         "1200": {
@@ -932,77 +1232,13 @@
         }
       }
     },
-    "the-little-dragon-napper": {
-      "sourceFile": "skin_the_little_dragon_napper.png",
-      "internalId": "the_little_dragon_napper",
-      "name": "The Little Dragon Napper",
-      "nameSource": "filename",
-      "glow": "#c2935b",
-      "images": {
-        "1200": {
-          "file": "the-little-dragon-napper-1200.webp",
-          "size": [
-            566,
-            1200
-          ],
-          "bytes": 269714
-        },
-        "600": {
-          "file": "the-little-dragon-napper-600.webp",
-          "size": [
-            283,
-            600
-          ],
-          "bytes": 78756
-        },
-        "thumb": {
-          "file": "the-little-dragon-napper-thumb.webp",
-          "size": [
-            113,
-            240
-          ],
-          "bytes": 17966
-        }
-      }
-    },
-    "the-little-lantern-haunt": {
-      "sourceFile": "skin_the_little_lantern_haunt.png",
-      "internalId": "the_little_lantern_haunt",
-      "name": "The Little Lantern Haunt",
-      "nameSource": "filename",
-      "glow": "#189bbc",
-      "images": {
-        "1200": {
-          "file": "the-little-lantern-haunt-1200.webp",
-          "size": [
-            549,
-            1200
-          ],
-          "bytes": 242278
-        },
-        "600": {
-          "file": "the-little-lantern-haunt-600.webp",
-          "size": [
-            275,
-            600
-          ],
-          "bytes": 70190
-        },
-        "thumb": {
-          "file": "the-little-lantern-haunt-thumb.webp",
-          "size": [
-            110,
-            240
-          ],
-          "bytes": 16154
-        }
-      }
-    },
     "the-mooncap-witch": {
       "sourceFile": "skin_the_mooncap_witch.png",
-      "internalId": "the_mooncap_witch",
+      "catalogId": "the_mooncap_witch",
       "name": "The Mooncap Witch",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
       "glow": "#4c89d9",
       "images": {
         "1200": {
@@ -1031,11 +1267,188 @@
         }
       }
     },
+    "the-little-dragon-napper": {
+      "sourceFile": "skin_the_little_dragon_napper.png",
+      "catalogId": "the_little_dragon_napper",
+      "name": "The Little Dragon Napper",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#c2935b",
+      "images": {
+        "1200": {
+          "file": "the-little-dragon-napper-1200.webp",
+          "size": [
+            566,
+            1200
+          ],
+          "bytes": 269714
+        },
+        "600": {
+          "file": "the-little-dragon-napper-600.webp",
+          "size": [
+            283,
+            600
+          ],
+          "bytes": 78756
+        },
+        "thumb": {
+          "file": "the-little-dragon-napper-thumb.webp",
+          "size": [
+            113,
+            240
+          ],
+          "bytes": 17966
+        }
+      }
+    },
+    "the-cinnamon-bandit": {
+      "sourceFile": "skin_the_cinnamon_bandit.png",
+      "catalogId": "the_cinnamon_bandit",
+      "name": "The Cinnamon Bandit",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#d97b28",
+      "images": {
+        "1200": {
+          "file": "the-cinnamon-bandit-1200.webp",
+          "size": [
+            721,
+            1200
+          ],
+          "bytes": 275912
+        },
+        "600": {
+          "file": "the-cinnamon-bandit-600.webp",
+          "size": [
+            360,
+            600
+          ],
+          "bytes": 79978
+        },
+        "thumb": {
+          "file": "the-cinnamon-bandit-thumb.webp",
+          "size": [
+            144,
+            240
+          ],
+          "bytes": 17254
+        }
+      }
+    },
+    "the-teacup-winky": {
+      "sourceFile": "skin_the_teacup_winky.png",
+      "catalogId": "the_teacup_winky",
+      "name": "The Teacup Winky",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#cc8e40",
+      "images": {
+        "1200": {
+          "file": "the-teacup-winky-1200.webp",
+          "size": [
+            590,
+            1200
+          ],
+          "bytes": 282100
+        },
+        "600": {
+          "file": "the-teacup-winky-600.webp",
+          "size": [
+            295,
+            600
+          ],
+          "bytes": 82838
+        },
+        "thumb": {
+          "file": "the-teacup-winky-thumb.webp",
+          "size": [
+            118,
+            240
+          ],
+          "bytes": 18844
+        }
+      }
+    },
+    "the-little-lantern-haunt": {
+      "sourceFile": "skin_the_little_lantern_haunt.png",
+      "catalogId": "the_little_lantern_haunt",
+      "name": "The Little Lantern Haunt",
+      "starter": false,
+      "rarity": "Epic",
+      "wave": 3,
+      "glow": "#189bbc",
+      "images": {
+        "1200": {
+          "file": "the-little-lantern-haunt-1200.webp",
+          "size": [
+            549,
+            1200
+          ],
+          "bytes": 242278
+        },
+        "600": {
+          "file": "the-little-lantern-haunt-600.webp",
+          "size": [
+            275,
+            600
+          ],
+          "bytes": 70190
+        },
+        "thumb": {
+          "file": "the-little-lantern-haunt-thumb.webp",
+          "size": [
+            110,
+            240
+          ],
+          "bytes": 16154
+        }
+      }
+    },
+    "the-acorn-guardian": {
+      "sourceFile": "skin_the_acorn_guardian.png",
+      "catalogId": "the_acorn_guardian",
+      "name": "The Acorn Guardian",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 3,
+      "glow": "#d07b1d",
+      "images": {
+        "1200": {
+          "file": "the-acorn-guardian-1200.webp",
+          "size": [
+            623,
+            1200
+          ],
+          "bytes": 292208
+        },
+        "600": {
+          "file": "the-acorn-guardian-600.webp",
+          "size": [
+            312,
+            600
+          ],
+          "bytes": 84992
+        },
+        "thumb": {
+          "file": "the-acorn-guardian-thumb.webp",
+          "size": [
+            125,
+            240
+          ],
+          "bytes": 19316
+        }
+      }
+    },
     "the-moonmail-courier": {
       "sourceFile": "skin_the_moonmail_courier.png",
-      "internalId": "the_moonmail_courier",
+      "catalogId": "the_moonmail_courier",
       "name": "The Moonmail Courier",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 3,
       "glow": "#bc7964",
       "images": {
         "1200": {
@@ -1066,9 +1479,11 @@
     },
     "the-patchwork-jester": {
       "sourceFile": "skin_the_patchwork_jester.png",
-      "internalId": "the_patchwork_jester",
+      "catalogId": "the_patchwork_jester",
       "name": "The Patchwork Jester",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 3,
       "glow": "#c86e35",
       "images": {
         "1200": {
@@ -1099,9 +1514,11 @@
     },
     "the-pocket-buccaneer": {
       "sourceFile": "skin_the_pocket_buccaneer.png",
-      "internalId": "the_pocket_buccaneer",
+      "catalogId": "the_pocket_buccaneer",
       "name": "The Pocket Buccaneer",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 3,
       "glow": "#367f95",
       "images": {
         "1200": {
@@ -1130,44 +1547,13 @@
         }
       }
     },
-    "the-porcelain-requiem": {
-      "sourceFile": "skin_the_porcelain_requiem.png",
-      "internalId": "the_porcelain_requiem",
-      "name": "The Porcelain Requiem",
-      "nameSource": "filename",
-      "glow": "#8568ac",
-      "images": {
-        "1200": {
-          "file": "the-porcelain-requiem-1200.webp",
-          "size": [
-            453,
-            1200
-          ],
-          "bytes": 250622
-        },
-        "600": {
-          "file": "the-porcelain-requiem-600.webp",
-          "size": [
-            227,
-            600
-          ],
-          "bytes": 75504
-        },
-        "thumb": {
-          "file": "the-porcelain-requiem-thumb.webp",
-          "size": [
-            91,
-            240
-          ],
-          "bytes": 17674
-        }
-      }
-    },
     "the-puddle-pilot": {
       "sourceFile": "skin_the_puddle_pilot.png",
-      "internalId": "the_puddle_pilot",
+      "catalogId": "the_puddle_pilot",
       "name": "The Puddle Pilot",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 3,
       "glow": "#acb36d",
       "images": {
         "1200": {
@@ -1196,44 +1582,13 @@
         }
       }
     },
-    "the-red-widow": {
-      "sourceFile": "skin_the_red_widow.png",
-      "internalId": "the_red_widow",
-      "name": "The Red Widow",
-      "nameSource": "filename",
-      "glow": "#81272b",
-      "images": {
-        "1200": {
-          "file": "the-red-widow-1200.webp",
-          "size": [
-            628,
-            1200
-          ],
-          "bytes": 263726
-        },
-        "600": {
-          "file": "the-red-widow-600.webp",
-          "size": [
-            314,
-            600
-          ],
-          "bytes": 76586
-        },
-        "thumb": {
-          "file": "the-red-widow-thumb.webp",
-          "size": [
-            126,
-            240
-          ],
-          "bytes": 16496
-        }
-      }
-    },
     "the-silent-executioner": {
       "sourceFile": "skin_the_silent_executioner.png",
-      "internalId": "the_silent_executioner",
+      "catalogId": "the_silent_executioner",
       "name": "The Silent Executioner",
-      "nameSource": "filename",
+      "starter": false,
+      "rarity": "Legendary",
+      "wave": 3,
       "glow": "#621822",
       "images": {
         "1200": {
@@ -1259,336 +1614,6 @@
             240
           ],
           "bytes": 13754
-        }
-      }
-    },
-    "the-smiling-hollow": {
-      "sourceFile": "skin_the_smiling_hollow.png",
-      "internalId": "the_smiling_hollow",
-      "name": "The Smiling Hollow",
-      "nameSource": "filename",
-      "glow": "#5d4654",
-      "images": {
-        "1200": {
-          "file": "the-smiling-hollow-1200.webp",
-          "size": [
-            568,
-            1200
-          ],
-          "bytes": 246510
-        },
-        "600": {
-          "file": "the-smiling-hollow-600.webp",
-          "size": [
-            284,
-            600
-          ],
-          "bytes": 73900
-        },
-        "thumb": {
-          "file": "the-smiling-hollow-thumb.webp",
-          "size": [
-            114,
-            240
-          ],
-          "bytes": 17082
-        }
-      }
-    },
-    "the-stained-glass-sovereign": {
-      "sourceFile": "skin_the_stained_glass_sovereign.png",
-      "internalId": "the_stained_glass_sovereign",
-      "name": "The Stained Glass Sovereign",
-      "nameSource": "filename",
-      "glow": "#7c7e96",
-      "images": {
-        "1200": {
-          "file": "the-stained-glass-sovereign-1200.webp",
-          "size": [
-            476,
-            1200
-          ],
-          "bytes": 282570
-        },
-        "600": {
-          "file": "the-stained-glass-sovereign-600.webp",
-          "size": [
-            238,
-            600
-          ],
-          "bytes": 84236
-        },
-        "thumb": {
-          "file": "the-stained-glass-sovereign-thumb.webp",
-          "size": [
-            95,
-            240
-          ],
-          "bytes": 19532
-        }
-      }
-    },
-    "the-star-marshal": {
-      "sourceFile": "skin_the_star_marshal.png",
-      "internalId": "the_star_marshal",
-      "name": "The Star Marshal",
-      "nameSource": "filename",
-      "glow": "#a4866b",
-      "images": {
-        "1200": {
-          "file": "the-star-marshal-1200.webp",
-          "size": [
-            590,
-            1200
-          ],
-          "bytes": 320246
-        },
-        "600": {
-          "file": "the-star-marshal-600.webp",
-          "size": [
-            295,
-            600
-          ],
-          "bytes": 91270
-        },
-        "thumb": {
-          "file": "the-star-marshal-thumb.webp",
-          "size": [
-            118,
-            240
-          ],
-          "bytes": 19916
-        }
-      }
-    },
-    "the-starwhisper-bunny": {
-      "sourceFile": "skin_the_starwhisper_bunny.png",
-      "internalId": "the_starwhisper_bunny",
-      "name": "The Starwhisper Bunny",
-      "nameSource": "filename",
-      "glow": "#c2a6a2",
-      "images": {
-        "1200": {
-          "file": "the-starwhisper-bunny-1200.webp",
-          "size": [
-            532,
-            1200
-          ],
-          "bytes": 235702
-        },
-        "600": {
-          "file": "the-starwhisper-bunny-600.webp",
-          "size": [
-            266,
-            600
-          ],
-          "bytes": 67644
-        },
-        "thumb": {
-          "file": "the-starwhisper-bunny-thumb.webp",
-          "size": [
-            106,
-            240
-          ],
-          "bytes": 15414
-        }
-      }
-    },
-    "the-teacup-trickster": {
-      "sourceFile": "skin_the_teacup_trickster.png",
-      "internalId": "the_teacup_trickster",
-      "name": "The Teacup Trickster",
-      "nameSource": "filename",
-      "glow": "#b6855c",
-      "images": {
-        "1200": {
-          "file": "the-teacup-trickster-1200.webp",
-          "size": [
-            579,
-            1200
-          ],
-          "bytes": 278040
-        },
-        "600": {
-          "file": "the-teacup-trickster-600.webp",
-          "size": [
-            289,
-            600
-          ],
-          "bytes": 86268
-        },
-        "thumb": {
-          "file": "the-teacup-trickster-thumb.webp",
-          "size": [
-            116,
-            240
-          ],
-          "bytes": 20704
-        }
-      }
-    },
-    "the-teacup-winky": {
-      "sourceFile": "skin_the_teacup_winky.png",
-      "internalId": "the_teacup_winky",
-      "name": "The Teacup Winky",
-      "nameSource": "filename",
-      "glow": "#cc8e40",
-      "images": {
-        "1200": {
-          "file": "the-teacup-winky-1200.webp",
-          "size": [
-            590,
-            1200
-          ],
-          "bytes": 282100
-        },
-        "600": {
-          "file": "the-teacup-winky-600.webp",
-          "size": [
-            295,
-            600
-          ],
-          "bytes": 82838
-        },
-        "thumb": {
-          "file": "the-teacup-winky-thumb.webp",
-          "size": [
-            118,
-            240
-          ],
-          "bytes": 18844
-        }
-      }
-    },
-    "the-weeping-saint": {
-      "sourceFile": "skin_the_weeping_saint.png",
-      "internalId": "the_weeping_saint",
-      "name": "The Weeping Saint",
-      "nameSource": "filename",
-      "glow": "#8c8882",
-      "images": {
-        "1200": {
-          "file": "the-weeping-saint-1200.webp",
-          "size": [
-            588,
-            1200
-          ],
-          "bytes": 264054
-        },
-        "600": {
-          "file": "the-weeping-saint-600.webp",
-          "size": [
-            294,
-            600
-          ],
-          "bytes": 78638
-        },
-        "thumb": {
-          "file": "the-weeping-saint-thumb.webp",
-          "size": [
-            118,
-            240
-          ],
-          "bytes": 16896
-        }
-      }
-    },
-    "verdant-keeper": {
-      "sourceFile": "skin_verdant_keeper.png",
-      "internalId": "verdant_keeper",
-      "name": "Verdant Keeper",
-      "nameSource": "owner-listed; exact filename match",
-      "glow": "#80b053",
-      "images": {
-        "1200": {
-          "file": "verdant-keeper-1200.webp",
-          "size": [
-            438,
-            1200
-          ],
-          "bytes": 223688
-        },
-        "600": {
-          "file": "verdant-keeper-600.webp",
-          "size": [
-            219,
-            600
-          ],
-          "bytes": 68722
-        },
-        "thumb": {
-          "file": "verdant-keeper-thumb.webp",
-          "size": [
-            88,
-            240
-          ],
-          "bytes": 16292
-        }
-      }
-    },
-    "void-wanderer": {
-      "sourceFile": "skin_void_wanderer.png",
-      "internalId": "void_wanderer",
-      "name": "Void Wanderer",
-      "nameSource": "owner-listed; exact filename match (Part6 upload)",
-      "glow": "#6a58a1",
-      "images": {
-        "1200": {
-          "file": "void-wanderer-1200.webp",
-          "size": [
-            479,
-            1200
-          ],
-          "bytes": 228318
-        },
-        "600": {
-          "file": "void-wanderer-600.webp",
-          "size": [
-            239,
-            600
-          ],
-          "bytes": 65814
-        },
-        "thumb": {
-          "file": "void-wanderer-thumb.webp",
-          "size": [
-            96,
-            240
-          ],
-          "bytes": 15208
-        }
-      }
-    },
-    "voidwalker": {
-      "sourceFile": "skin_voidwalker.png",
-      "internalId": "voidwalker",
-      "name": "Voidwalker",
-      "nameSource": "filename",
-      "glow": "#4249e6",
-      "images": {
-        "1200": {
-          "file": "voidwalker-1200.webp",
-          "size": [
-            557,
-            1200
-          ],
-          "bytes": 256912
-        },
-        "600": {
-          "file": "voidwalker-600.webp",
-          "size": [
-            279,
-            600
-          ],
-          "bytes": 73654
-        },
-        "thumb": {
-          "file": "voidwalker-thumb.webp",
-          "size": [
-            111,
-            240
-          ],
-          "bytes": 17364
         }
       }
     }
